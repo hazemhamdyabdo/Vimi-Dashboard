@@ -1,14 +1,17 @@
 <script setup lang="ts">
-const test = ref(5)
-
+const test = ref(5);
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-    <v-btn>
-      Button
-    </v-btn>
+    <img
+      alt="Vue logo"
+      class="logo"
+      src="@/assets/logo.svg"
+      width="125"
+      height="125"
+    />
+    <v-btn> Button </v-btn>
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink>
