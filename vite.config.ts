@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from "unplugin-vue-components/vite";
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -16,9 +17,21 @@ export default defineConfig({
       },
       dirs: [
         './composables',
+        'src/components',
+        './components/**',
+        './composables/**',
+      ],
+    }),
+    Components({
+      dts: true,
+      dirs: [
+        './src/components',
+        './components/**',
         './composables/**',
       ],
     })
+
+
   ],
   resolve: {
     alias: {
