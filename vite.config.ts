@@ -10,14 +10,14 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', 'vue-router'],
       dts: './auto-imports.d.ts',
-       eslintrc: {       
+      eslintrc: {
         enabled: true,
         filepath: "./.eslintrc-auto-import.json",
       },
-        dirs: [
-    './composables' ,
-    './composables/**', 
-  ],
+      dirs: [
+        './composables',
+        './composables/**',
+      ],
     })
   ],
   resolve: {
