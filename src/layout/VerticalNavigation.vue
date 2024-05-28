@@ -12,14 +12,6 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
   acc.push(item);
   return acc;
 }, []);
-
-// const setItemOpen = (item: any) => {
-//   item.isOpen = !item.isOpen;
-// };
-
-// const isOpen = (item: any) => {
-//   return item.isOpen;
-// };
 </script>
 
 <template>
