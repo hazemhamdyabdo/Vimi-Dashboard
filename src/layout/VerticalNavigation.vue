@@ -17,7 +17,7 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
 <template>
   <v-card>
     <v-layout>
-      <v-navigation-drawer style="width: 268px">
+      <v-navigation-drawer style="min-width: 268px; padding: 1rem 1rem">
         <template v-for="item in builtMenu">
           <v-list-item :subtitle="item.parent"></v-list-item>
           <v-list density="compact" nav style="margin-bottom: 2rem">
@@ -36,7 +36,11 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
         </template>
       </v-navigation-drawer>
 
-      <v-main style="height: 95dvh"></v-main>
+      <v-main style="background: #faf9fe">
+        <div class="route-container">
+          <RouterView />
+        </div>
+      </v-main>
     </v-layout>
   </v-card>
 </template>
@@ -54,5 +58,12 @@ a:hover {
   background: #733ee4;
   border-radius: 8px;
   color: #fff;
+}
+.route-container {
+  padding: 2rem 3rem;
+}
+a p {
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
 }
 </style>

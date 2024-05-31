@@ -20,9 +20,9 @@ const router = createRouter({
       component: () => import('@/pages/Dashboard.vue'),
       children: [
         {
-          path: 'products',
-          name: 'products',
-          component: () => import('@/pages/TestInner.vue'),
+          path: "products",
+          name: "products",
+          component: () => import("@/pages/AddProducts.vue"),
         },
         {
           path: 'listing',

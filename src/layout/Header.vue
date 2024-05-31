@@ -60,6 +60,7 @@ header {
   font-style: normal;
   font-weight: 700;
   line-height: 48px;
+  font-family: "Montagu Slab", serif;
 }
 .second {
   color: #733ee4;
@@ -67,6 +68,7 @@ header {
   font-style: normal;
   font-weight: 300;
   line-height: 48px;
+  font-family: "Montagu Slab", serif;
 }
 .header-bar {
   display: flex;
