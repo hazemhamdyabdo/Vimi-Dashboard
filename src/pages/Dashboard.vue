@@ -8,7 +8,6 @@ import navItems from "@/navigation/vertical";
   <div>
     <HeaderView />
     <VerticalNavigation :navItems="navItems" />
-    <RouterView />
   </div>
 </template>
 
