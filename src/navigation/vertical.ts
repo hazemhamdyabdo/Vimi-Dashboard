@@ -5,43 +5,43 @@ export default [
       {
         name: "Dashboard",
         icon: "dashboard",
-        path: "dashboard",
+        path: { name: "dashboard" },
 
       },
       {
         name: "Products",
         icon: "products",
-        path: "products",
+        path: { name: "products" },
       },
       {
         name: "Categories",
         icon: "categories",
-        path: "categories",
+        // path: { name: "categories" },
       },
       {
         name: "Orders",
         icon: "orders",
-        path: "orders",
+        // path: { name: "orders" },
       },
       {
         name: "Tickets",
         icon: "tickets",
-        path: "tickets",
+        // path: { name: "tickets" },
       },
       {
         name: "Promotion",
         icon: "Adds",
-        path: "promotion",
+        // path: { name: "promotion" },
       },
       {
         name: "Notifications",
         icon: "notifications-nav",
-        path: "notifications",
+        // path: { name: "notifications" },
       },
       {
         name: "Users",
         icon: "users",
-        path: "users",
+        // path: { name: "users" },
       },
     ],
   },
@@ -51,12 +51,12 @@ export default [
       {
         name: "Settings",
         icon: "settings",
-        path: "settings",
+        // path: { name: "settings" },
       },
       {
         name: "Log out",
         icon: "logout",
-        path: "logout",
+        // path: { name: "logout" },
       },
 
     ],

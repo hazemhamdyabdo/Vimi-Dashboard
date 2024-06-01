@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-9 w-100 bg-f4f3f9">
+  <div class="px-12 w-100">
     <listingHeader />
     <listingItems class="my-6" />
     <div class="d-flex justify-space-between w-100">
@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import listingHeader from '@/components/listing/listingHeader.vue';
+import listingHeader from "@/components/listing/listingHeader.vue";
 const page = 1;
 const pageCount = 4;
 </script>

@@ -9,7 +9,7 @@
     <div class="header-bar">
       <div class="header-title">
         <img src="@/icons/Group 48096656.svg" />
-        <h2 class="header-title-text">Products</h2>
+        <h2 class="header-title-text">{{ $route.meta.title }}</h2>
       </div>
       <div class="header-account">
         <img src="@/icons/notifications.svg" />
@@ -49,7 +49,7 @@ header {
 .logo {
   border: 1px solid #d4d5dc;
   border-right: none;
-  width: 304px;
+  min-width: 304px;
   height: 72px;
   padding-left: 1rem;
   padding-top: 0.5rem;

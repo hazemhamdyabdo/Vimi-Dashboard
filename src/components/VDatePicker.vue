@@ -8,6 +8,7 @@
         variant="outlined"
         append-inner-icon="mdi-calendar"
         v-bind="props"
+        density="compact"
         hide-details
         class="text-field"
         height="40px"

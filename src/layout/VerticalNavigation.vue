@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(['navItems']);
+const props = defineProps(["navItems"]);
 const builtMenu = ref();
 builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
   if (item.children && item.children.length > 0) {
@@ -17,7 +17,7 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
 <template>
   <v-card class="w-100">
     <v-layout>
-      <v-navigation-drawer style="min-width: 268px; padding: 1rem 1rem">
+      <v-navigation-drawer style="min-width: 304px; padding: 1rem 1rem">
         <template v-for="item in builtMenu">
           <v-list-item :subtitle="item.parent"></v-list-item>
           <v-list density="compact" nav style="margin-bottom: 2rem">
@@ -36,8 +36,8 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
         </template>
       </v-navigation-drawer>
 
-      <v-main style="background: #faf9fe">
-        <div>
+      <v-main style="background: #faf9fe; min-height: 100vh">
+        <div class="pa-9">
           <RouterView />
         </div>
       </v-main>
@@ -59,8 +59,13 @@ a:hover {
   border-radius: 8px;
   color: #fff;
 }
+.router-link-active .router-link-exact-active {
+  background: #733ee4;
+  border-radius: 8px;
+  color: #fff;
+}
 a p {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 600;
 }
 </style>
