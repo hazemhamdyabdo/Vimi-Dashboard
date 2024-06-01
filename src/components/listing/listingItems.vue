@@ -86,7 +86,7 @@
 
       <template v-slot:item.actions="{ item }">
         <div class="d-flex">
-          <v-icon class="me-2 cursor-pointer" size="small" color="#AFAACB">
+          <v-icon class="me-3 cursor-pointer" size="small" color="#AFAACB">
             mdi-pencil
           </v-icon>
           <v-icon class="cursor-pointer" size="small" color="#AFAACB">
@@ -325,6 +325,11 @@ const headers = [
 
 .listin-table {
   border-radius: 8px;
+}
+
+.listin-table thead tr:first-child {
+  background-color: #9089b233;
+  color: #21094a;
 }
 
 .listin-table tr > td:first-child {

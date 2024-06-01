@@ -7,12 +7,7 @@ import navItems from '@/navigation/vertical';
 <template>
   <div>
     <HeaderView />
-    <div class="d-flex">
-      <VerticalNavigation :navItems="navItems" />
-      <div class="w-100">
-        <RouterView />
-      </div>
-    </div>
+    <VerticalNavigation :navItems="navItems" />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(["navItems"]);
+const props = defineProps(['navItems']);
 const builtMenu = ref();
 builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
   if (item.children && item.children.length > 0) {
@@ -15,7 +15,7 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
 </script>
 
 <template>
-  <v-card>
+  <v-card class="w-100">
     <v-layout>
       <v-navigation-drawer style="width: 268px">
         <template v-for="item in builtMenu">
@@ -36,7 +36,11 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
         </template>
       </v-navigation-drawer>
 
-      <v-main style="height: 95dvh"></v-main>
+      <v-main style="background: #faf9fe">
+        <div>
+          <RouterView />
+        </div>
+      </v-main>
     </v-layout>
   </v-card>
 </template>
@@ -54,5 +58,9 @@ a:hover {
   background: #733ee4;
   border-radius: 8px;
   color: #fff;
+}
+a p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
 }
 </style>
