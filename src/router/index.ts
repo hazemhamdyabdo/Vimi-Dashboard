@@ -20,14 +20,14 @@ const router = createRouter({
       component: () => import('@/pages/Dashboard.vue'),
       children: [
         {
-          path: "products",
-          name: "products",
-          component: () => import("@/pages/AddProducts.vue"),
-        },
-        {
           path: 'listing',
           name: 'listing',
           component: () => import('@/pages/listing.vue'),
+        },
+        {
+          path: 'add-product',
+          name: 'add-product',
+          component: () => import('@/pages/AddProducts.vue'),
         },
       ],
     },

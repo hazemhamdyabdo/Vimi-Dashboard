@@ -33,10 +33,12 @@
       </v-card>
       <v-spacer />
       <div class="flex my-auto">
-        <v-btn flat color="#733EE4" class="rounded-lg" height="48">
-          <v-icon size="20"> mdi-plus </v-icon>
-          <p>Add Product</p>
-        </v-btn>
+        <router-link to="add-product">
+          <v-btn flat color="#733EE4" class="rounded-lg" height="48">
+            <v-icon size="20"> mdi-plus </v-icon>
+            <p>Add Product</p>
+          </v-btn>
+        </router-link>
       </div>
     </div>
   </div>
