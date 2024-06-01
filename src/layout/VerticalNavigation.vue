@@ -36,7 +36,7 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
         </template>
       </v-navigation-drawer>
 
-      <v-main style="background: #faf9fe; height: 100vh">
+      <v-main style="background: #faf9fe; min-height: 100vh">
         <div class="pa-9">
           <RouterView />
         </div>
@@ -55,6 +55,11 @@ a {
   padding: 0.5rem 1rem;
 }
 a:hover {
+  background: #733ee4;
+  border-radius: 8px;
+  color: #fff;
+}
+.router-link-active .router-link-exact-active {
   background: #733ee4;
   border-radius: 8px;
   color: #fff;
