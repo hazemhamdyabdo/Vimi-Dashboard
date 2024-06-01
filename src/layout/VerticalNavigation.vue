@@ -36,7 +36,7 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
         </template>
       </v-navigation-drawer>
 
-      <v-main style="background: #faf9fe">
+      <v-main style="background: #faf9fe; height: 100vh">
         <div class="pa-9">
           <RouterView />
         </div>
