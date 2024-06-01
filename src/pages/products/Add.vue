@@ -439,7 +439,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .card {
   border-radius: 12px;
   padding: 1rem 2rem;
@@ -532,7 +532,9 @@
   margin-bottom: 0.8rem;
   padding-left: 0.4rem;
 }
+</style>
 
+<style>
 .v-field__outline__start {
   display: none;
 }
