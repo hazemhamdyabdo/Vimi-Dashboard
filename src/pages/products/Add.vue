@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <section class="add-products px-12">
+  <section class="add-products px-6">
     <VContainer>
       <VRow>
         <VCol cols="8">
@@ -439,10 +439,11 @@
   </div>
 </template>
 
-<style scoped>
+<style>
 .card {
   border-radius: 12px;
   padding: 1rem 2rem;
+  box-shadow: none;
 }
 
 .add-products-actions {
@@ -456,7 +457,6 @@
   border: 1px solid #733ee4;
 }
 .card-info-input {
-  /* width: 640px; */
   height: 40px;
   background: #faf9fe;
 }
@@ -531,5 +531,16 @@
   font-weight: 400;
   margin-bottom: 0.8rem;
   padding-left: 0.4rem;
+}
+
+.v-field__outline__start {
+  border-radius: 12px !important;
+  border: 1px solid #e8e7ef !important;
+  border-right: none !important;
+}
+.v-field__outline__end {
+  border-radius: 12px !important;
+  border: 1px solid #e8e7ef !important;
+  border-left: none !important;
 }
 </style>
