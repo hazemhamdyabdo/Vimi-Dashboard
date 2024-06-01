@@ -17,7 +17,7 @@ builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
 <template>
   <v-card class="w-100">
     <v-layout>
-      <v-navigation-drawer style="width: 268px">
+      <v-navigation-drawer style="min-width: 268px; padding: 1rem 1rem">
         <template v-for="item in builtMenu">
           <v-list-item :subtitle="item.parent"></v-list-item>
           <v-list density="compact" nav style="margin-bottom: 2rem">
