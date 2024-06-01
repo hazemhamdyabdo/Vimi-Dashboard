@@ -26,7 +26,7 @@ const router = createRouter({
           name: 'products',
           component: () => import('@/pages/products/List.vue'),
           meta: {
-            title: 'products',
+            title: 'Products',
           },
         },
         {
