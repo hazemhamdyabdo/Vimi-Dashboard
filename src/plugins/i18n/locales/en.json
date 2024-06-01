@@ -1,0 +1,24 @@
+{
+"products": "Products",
+"dashboard": "Dashboard",
+"categories": "Categories",
+"orders": "Orders",
+"tickets": "Tickets",
+"addProduct": "Add Product",
+"addProducts": "Add Products",
+"addCategory": "Add Category",
+"addCategories": "Add Categories",
+"addOrder": "Add Order",
+"addOrders": "Add Orders",
+"addTicket": "Add Ticket",
+"addTickets": "Add Tickets",
+"viewProduct": "View Product",
+"viewProducts": "View Products",
+"viewCategory": "View Category",
+"viewCategories": "View Categories",
+"viewOrder": "View Order",  
+"viewOrders": "View Orders",
+"viewTicket": "View Ticket",
+"viewTickets": "View Tickets"
+
+}  

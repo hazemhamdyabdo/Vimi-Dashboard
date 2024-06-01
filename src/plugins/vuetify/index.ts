@@ -9,7 +9,7 @@ import * as directives from 'vuetify/directives'
 export default createVuetify({
   components,
   directives,
- icons: {
+  icons: {
     defaultSet: 'mdi',
     aliases,
     sets: {
