@@ -28,12 +28,12 @@ const router = createRouter({
           },
         },
         {
-          path: 'products',
-          name: 'products',
+          path: 'listing',
+          name: 'listing',
           component: () => import('@/pages/products/Listing.vue'),
           meta: {
-            title: 'Products',
-          }
+            title: 'listing',
+          },
         },
         {
           path: 'add-product',
@@ -41,7 +41,7 @@ const router = createRouter({
           component: () => import('@/pages/products/AddProducts.vue'),
           meta: {
             title: 'Add Product',
-          }
+          },
         },
       ],
     },
