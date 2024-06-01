@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <section class="add-products" style="display: flex; gap: 1rem">
+  <section class="add-products px-12" style="display: flex; gap: 2rem">
     <div>
       <VCard class="card card-products" style="margin-bottom: 1rem">
         <h3 class="card-title">Add Products</h3>
@@ -21,7 +21,7 @@
                 justify-content: center;
               "
             >
-              <img src="../icons/upload.svg" style="cursor: pointer" />
+              <img src="@/icons/upload.svg" style="cursor: pointer" />
               <p class="card-file-text">Upload Image</p>
             </div>
           </VCard>
@@ -424,8 +424,11 @@
   border-radius: 12px;
   padding: 1rem 2rem;
 }
+
+.add-products-actions {
+  padding: 1rem 2rem 2rem 2rem;
+}
 .card-info {
-  /* width: 704px; */
   height: auto;
 }
 .card-info-btn {

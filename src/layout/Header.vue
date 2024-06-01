@@ -49,7 +49,7 @@ header {
 .logo {
   border: 1px solid #d4d5dc;
   border-right: none;
-  width: 304px;
+  min-width: 304px;
   height: 72px;
   padding-left: 1rem;
   padding-top: 0.5rem;

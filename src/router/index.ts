@@ -22,12 +22,12 @@ const router = createRouter({
         {
           path: 'listing',
           name: 'listing',
-          component: () => import('@/pages/listing.vue'),
+          component: () => import('@/pages/products/Listing.vue'),
         },
         {
           path: 'add-product',
           name: 'add-product',
-          component: () => import('@/pages/AddProducts.vue'),
+          component: () => import('@/pages/products/AddProducts.vue'),
         },
       ],
     },
