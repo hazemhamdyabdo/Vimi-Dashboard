@@ -233,11 +233,12 @@
                     "
                   />
                 </v-col>
+                <p style="color: #733ee4" class="pa-4">Schedule discount</p>
               </VRow>
             </VCard>
           </VCol>
         </VCol>
-        <VCol cols="4">
+        <VCol cols="4" class="pt-5">
           <VCard class="card card-type" style="margin-bottom: 2rem">
             <h3 class="card-title">Type</h3>
             <v-col cols="12" class="px-2 pr-6">
@@ -269,12 +270,7 @@
                   placeholder="Write tag"
                   variant="outlined"
                   bg-color="#faf9fe"
-                  style="
-                    color: #afaacb;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                  "
+                  style="color: #afaacb; font-size: 14px"
                 />
               </VCol>
               <VCol cols="2">
@@ -323,7 +319,7 @@
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title mb-8">Expiry date</h3>
-            <VDatePicker label="Expiry date" />
+            <GDatePicker label="Expiry date" />
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title">Brand</h3>
@@ -367,7 +363,7 @@
               />
             </VCol>
             <h4 class="card-info-title">Dimensions</h4>
-            <v-row class="mb-6" no-gutters style="gap: 1rem">
+            <v-row class="mb-6 pe-2" no-gutters style="gap: 2rem">
               <v-col>
                 <VTextField
                   label=""
@@ -376,12 +372,6 @@
                   density="compact"
                   variant="outlined"
                   bg-color="#faf9fe"
-                  style="
-                    color: #afaacb;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                  "
                 />
               </v-col>
 
@@ -393,12 +383,6 @@
                   density="compact"
                   variant="outlined"
                   bg-color="#faf9fe"
-                  style="
-                    color: #afaacb;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                  "
                 />
               </v-col>
 
@@ -410,12 +394,6 @@
                   density="compact"
                   variant="outlined"
                   bg-color="#faf9fe"
-                  style="
-                    color: #afaacb;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                  "
                 />
               </v-col>
             </v-row>
@@ -442,7 +420,6 @@
 <style scoped>
 .card {
   border-radius: 12px;
-  padding: 1rem 2rem;
   box-shadow: none;
 }
 

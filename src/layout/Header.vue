@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+</script>
 
 <template>
   <header>
@@ -9,7 +13,7 @@
     <div class="header-bar">
       <div class="header-title">
         <img src="@/icons/Group 48096656.svg" />
-        <h2 class="header-title-text">{{ $t($route.meta.title) }}</h2>
+        <h2 class="header-title-text">{{ t($route.meta.title as string) }}</h2>
       </div>
       <div class="header-account">
         <img src="@/icons/notifications.svg" />
