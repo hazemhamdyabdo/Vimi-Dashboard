@@ -534,13 +534,10 @@
 }
 
 .v-field__outline__start {
-  border-radius: 12px !important;
-  border: 1px solid #e8e7ef !important;
-  border-right: none !important;
+  display: none;
 }
 .v-field__outline__end {
   border-radius: 12px !important;
   border: 1px solid #e8e7ef !important;
-  border-left: none !important;
 }
 </style>
