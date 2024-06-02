@@ -71,44 +71,37 @@ const isMenuOpen = ref(false);
                     "
                   ></VTextField>
                 </VCol>
-                <VCol cols="12">
+                <VCol cols="12" style="position: relative">
                   <h4 class="card-info-title">General info</h4>
-                  <VTextarea
-                    label=""
+                  <Editor
+                    theme="snow"
+                    toolbar="essentials"
                     placeholder="Write info"
-                    variant="outlined"
-                    rows="4"
-                    class="card-info-input"
-                    type="text-area"
-                    bg-color="#faf9fe"
                     style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
+                      border: 1px solid #e8e7ef;
+                      border-radius: 8px;
+                      background: #faf9fe;
+                      height: 150px;
+                      margin-bottom: 0rem;
                     "
-                  ></VTextarea>
+                  />
                 </VCol>
-                <VCol cols="12" class="mt-16">
+                <VCol cols="12" style="position: relative">
                   <h4 class="card-info-title">Suggested use</h4>
-                  <VTextarea
-                    label=""
+                  <Editor
+                    theme="snow"
+                    toolbar="essentials"
                     placeholder="Write suggested use"
-                    variant="outlined"
-                    rows="4"
-                    class="card-info-input"
-                    type="text-area"
-                    bg-color="#faf9fe"
                     style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
+                      border: 1px solid #e8e7ef;
+                      border-radius: 8px;
+                      background: #faf9fe;
+                      height: 150px;
                     "
                   />
                 </VCol>
               </VRow>
-              <VRow disable-gutters style="gap: 1rem; margin-top: 6rem">
+              <VRow disable-gutters style="gap: 1rem">
                 <VCol>
                   <h4 class="card-info-title">Category</h4>
                   <v-select
@@ -594,5 +587,17 @@ const isMenuOpen = ref(false);
 .v-field__outline__end {
   border-radius: 12px !important;
   border: 1px solid #e8e7ef !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: none;
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.6rem;
+  width: 100%;
+  z-index: 1;
+}
+.ql-container.ql-snow {
+  color: #7066a2;
 }
 </style>
