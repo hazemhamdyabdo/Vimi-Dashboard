@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const isMenuOpen = ref(false);
+</script>
 <template>
   <section class="add-products px-6">
     <VContainer>
@@ -233,7 +235,22 @@
                     "
                   />
                 </v-col>
-                <p style="color: #733ee4" class="pa-4">Schedule discount</p>
+                <VMenu v-model="isMenuOpen" :close-on-content-click="false">
+                  <template v-slot:activator="{ props }">
+                    <span
+                      style="color: #733ee4; cursor: pointer"
+                      class="pa-4"
+                      v-bind="props"
+                    >
+                      Schedule discount
+                    </span>
+                  </template>
+                  <VDatePicker
+                    @input="isMenuOpen = false"
+                    label=""
+                    density="compact"
+                  />
+                </VMenu>
               </VRow>
             </VCard>
           </VCol>
