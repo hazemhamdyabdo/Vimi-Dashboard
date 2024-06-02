@@ -420,6 +420,7 @@
 <style scoped>
 .card {
   border-radius: 12px;
+  padding: 1rem 1rem;
   box-shadow: none;
 }
 
