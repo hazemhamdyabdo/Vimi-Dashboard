@@ -1,0 +1,24 @@
+{
+   "products": "المنتجات",
+   "dashboard": "لوحة التحكم",
+   "categories": "الفئات",
+   "orders": "الطلبات",
+   "tickets": "التذاكر",
+   "addProduct": "اضافة منتج",
+   "addProducts": "اضافة منتجات",
+   "addCategory": "اضافة فئة",
+   "addCategories": "اضافة فئات",
+   "addOrder": "اضافة طلب",
+   "addOrders": "اضافة طلبات",
+   "addTicket": "اضافة تذكرة",
+   "addTickets": "اضافة تذاكر",
+   "viewProduct": "عرض المنتج",
+   "viewProducts": "عرض المنتجات",
+   "viewCategory": "عرض الفئة",
+   "viewCategories": "عرض الفئات",
+   "viewOrder": "عرض الطلب",
+   "viewOrders": "عرض الطلبات",
+   "viewTicket": "عرض التذكرة",
+   "viewTickets": "عرض التذاكر"
+   
+}

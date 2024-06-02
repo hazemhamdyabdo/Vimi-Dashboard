@@ -71,7 +71,7 @@
         </v-card-text>
         <v-card-actions class="pa-0">
           <v-sheet color="#733EE4" class="w-100 rounded-lg mt-10 pa-2">
-            <router-link to="/dashboard/listing">
+            <router-link :to="{ name: 'dashboard' }">
               <v-btn elevated class="w-100" color="#fff">Login</v-btn>
             </router-link>
           </v-sheet>

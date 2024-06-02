@@ -10,7 +10,7 @@ export default [
       {
         name: 'Products',
         icon: 'products',
-        path: { name: 'listing' },
+        path: { name: 'products' },
       },
       {
         name: 'Categories',

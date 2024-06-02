@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    GDatePicker: typeof import('./src/components/GDatePicker.vue')['default']
     ListingHeader: typeof import('./src/components/listing/listingHeader.vue')['default']
     ListingItems: typeof import('./src/components/listing/listingItems.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
