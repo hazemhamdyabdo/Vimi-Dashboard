@@ -1,10 +1,12 @@
 <template>
   <div classs="d-flex w-100">
     <v-data-table
-      v-model="selected"
+      v-model="selectedItems"
+      @input="selectItems($event)"
       class="listin-table"
       :headers="headers"
       :items="items"
+      item-value="SKU"
       show-select
       :items-per-page="8"
       hide-default-footer
@@ -110,7 +112,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Brain Health',
     Type: 'Simple',
@@ -119,7 +121,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#764820',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Heart & Metabolism',
     Type: 'Variables',
@@ -128,7 +130,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459820',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Vitamins & Minerals',
     Type: 'Bundle',
@@ -137,7 +139,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#7645982',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Gut Health',
     Type: 'Variables',
@@ -147,7 +149,7 @@ const items = [
   },
 
   {
-    SKU: '#76459849',
+    SKU: '#764520',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Vitamins & Minerals',
     Type: 'Simple',
@@ -156,7 +158,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459819',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Heart & Metabolism',
     Type: 'Variables',
@@ -165,7 +167,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459818',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Gut Health',
     Type: 'Bundle',
@@ -174,7 +176,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459817',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -183,7 +185,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459815',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Variables',
@@ -192,7 +194,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459816',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Bundle',
@@ -201,7 +203,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459814',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -210,7 +212,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459813',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -219,7 +221,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459812',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Variables',
@@ -228,7 +230,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459811',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -262,6 +264,14 @@ const headers = [
   { title: 'Visability', key: 'Visability', align: 'left', sortable: true },
   { key: 'actions', align: 'center', sortable: false },
 ];
+
+const emit = defineEmits(['emitSelectedItems']);
+
+let selectedItems = ref([]);
+
+const selectItems = () => {
+  emit('emitSelectedItems', selectedItems.value);
+};
 </script>
 
 <style>

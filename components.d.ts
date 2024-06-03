@@ -17,5 +17,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     StarRating: typeof import('./src/components/StarRating.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
+    TableFilters: typeof import('./src/components/tableFilters.vue')['default']
   }
 }

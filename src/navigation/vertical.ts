@@ -15,7 +15,7 @@ export default [
       {
         name: 'Categories',
         icon: 'categories',
-        // path: { name: "categories" },
+        path: { name: 'categories' },
       },
       {
         name: 'Orders',

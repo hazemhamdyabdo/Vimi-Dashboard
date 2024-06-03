@@ -2,11 +2,11 @@
   <div class="px-12 w-100">
     <listingHeader
       v-if="!selectedItems.length"
-      addAction="Add Product"
-      placeholder="Search , ID , SKU , Product name"
-      pathName="add-product"
+      addAction="Add Category"
+      placeholder="Search , ID , Category name"
+      pathName="add-category"
     />
-    <tableFilters v-else :filters="productsFilter" />
+    <tableFilters v-else :filters="categoriesFilter" />
     <listingItems @emitSelectedItems="selectedItems = $event" class="my-6" />
     <div class="d-flex justify-space-between w-100">
       <p class="my-auto text-9089B2">View 8 from 2000</p>
@@ -17,8 +17,7 @@
 
 <script lang="ts" setup>
 import listingHeader from '@/components/listing/listingHeader.vue';
-import productsFilter from '@/constants/categoriesFilter';
-
+import categoriesFilter from '@/constants/categoriesFilter';
 const page = 1;
 const pageCount = 4;
 const selectedItems = ref([]);

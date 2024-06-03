@@ -43,8 +43,23 @@ const router = createRouter({
           meta: {
             title: 'View Product',
           },
-
-        }
+        },
+        {
+          path: 'categories',
+          name: 'categories',
+          component: () => import('@/pages/categories/List.vue'),
+          meta: {
+            title: 'categories',
+          },
+        },
+        {
+          path: 'add-category',
+          name: 'add-category',
+          component: () => import('@/pages/categories/Add.vue'),
+          meta: {
+            title: 'Add Category',
+          },
+        },
       ],
     },
   ],
