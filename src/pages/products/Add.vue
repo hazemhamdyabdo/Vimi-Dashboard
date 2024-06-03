@@ -253,7 +253,15 @@ const isMenuOpen = ref(false);
               class="card card-Warehouse"
               style="margin-bottom: 1rem; margin-top: 1rem"
             >
-              <h3 class="card-title">Reviews</h3>
+              <ReviewRating
+                title="Reviews"
+                deleteIcon
+                name="John Doe"
+                date="25 oct 2022"
+                description="hi i am description here"
+                v-for="i in 3"
+              />
+              <!-- <h3 class="card-title">Reviews</h3>
               <section
                 style="
                   display: flex;
@@ -302,7 +310,7 @@ const isMenuOpen = ref(false);
                     color="#afaacb"
                   />
                 </div>
-              </section>
+              </section> -->
             </VCard>
           </VCol>
         </VCol>
@@ -469,7 +477,6 @@ const isMenuOpen = ref(false);
         </VCol>
       </VRow>
     </VContainer>
-    <VContainer> </VContainer>
   </section>
   <div class="add-products-actions" style="display: flex; justify-content: end">
     <VBtn class="" style="margin-right: 1rem" variant="text">Cancel</VBtn>

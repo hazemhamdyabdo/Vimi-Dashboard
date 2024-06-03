@@ -1,3 +1,4 @@
+Vv
 <script setup lang="ts">
 const productDetails = [
   {
@@ -35,6 +36,32 @@ const productDetails = [
   {
     title: "Sub-category",
     value: "Vitamins ",
+  },
+];
+const productRatings = [
+  {
+    stars: 10,
+    percentage: 100,
+  },
+  {
+    stars: 8,
+    percentage: 80,
+  },
+  {
+    stars: 6,
+    percentage: 60,
+  },
+  {
+    stars: 4,
+    percentage: 40,
+  },
+  {
+    stars: 2,
+    percentage: 20,
+  },
+  {
+    stars: 0,
+    percentage: 0,
   },
 ];
 </script>
@@ -236,7 +263,7 @@ const productDetails = [
             </VCard>
           </VCol>
           <VCol cols="8">
-            <VCard class="card" style="border: 1px solid #e8e7ef">
+            <VCard class="card" style="border: 1px solid #e8e7ef; height: 100%">
               <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem">
                 <SvgIcon icon="Description" color="#7066a2" />
                 <h4 style="color: #9089b2">
@@ -248,19 +275,89 @@ const productDetails = [
                 </h4>
               </div>
               <h4 style="color: #21094a">General info :</h4>
-              <p style="color: #9089b2; margin-top: 0.5rem; font-size: 14px">
+              <p
+                style="color: #9089b2; margin: 0.5rem 0 2rem 0; font-size: 14px"
+              >
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                 Asperiores dolore eaque, voluptates odio laboriosam voluptatum
                 laudantium cupiditate veniam animi in, mollitia corporis dolores
                 libero accusamus nihil aspernatur optio! Accusamus, quo?
               </p>
               <h4 style="color: #21094a">Suggested use :</h4>
-              <p style="color: #9089b2; margin-top: 0.5rem; font-size: 14px">
+              <p
+                style="color: #9089b2; margin: 0.5rem 0 2rem 0; font-size: 14px"
+              >
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                 Asperiores dolore eaque, voluptates odio laboriosam voluptatum
                 laudantium cupiditate veniam animi in, mollitia corporis dolores
                 libero accusamus nihil aspernatur optio! Accusamus, quo?
               </p>
+            </VCard>
+          </VCol>
+          <VCol cols="12">
+            <VCard
+              class="card"
+              style="border: 1px solid #e8e7ef; background: #faf9fe"
+            >
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem">
+                <SvgIcon icon="star" color="#7066a2" />
+                <h4 style="color: #7066a2">Rating</h4>
+              </div>
+              <VRow>
+                <VCol cols="3">
+                  <VCard class="card" style="border: 1px solid #e8e7ef">
+                    <div class="d-flex align-items-center">
+                      <VIcon
+                        icon="mdi-star"
+                        style="color: #ffa800"
+                        size="24"
+                        v-for="i in 4"
+                      />
+                      <VIcon
+                        icon="mdi-star-outline"
+                        style="color: #ffa800"
+                        size="24"
+                      />
+                      <p
+                        style="
+                          color: #21094a;
+                          margin-left: 0.5rem;
+                          font-size: 18px;
+                        "
+                      >
+                        4.4 out of 5
+                      </p>
+                    </div>
+                    <h4
+                      style="color: #21094a; font-size: 18px; margin-top: 1rem"
+                    >
+                      60 global ratings
+                    </h4>
+                    <div style="margin-top: 1rem">
+                      <RatingBar
+                        v-for="rating in productRatings"
+                        :key="rating.stars"
+                        style="margin-bottom: 0.5rem"
+                        :stars="rating.stars"
+                        :percentage="rating.percentage"
+                      />
+                    </div>
+                  </VCard>
+                </VCol>
+                <VCol cols="9">
+                  <VCard
+                    class="card"
+                    style="border: 1px solid #e8e7ef; background: #faf9fe"
+                  >
+                    <ReviewRating
+                      :description="'hi i am description here'"
+                      :name="'John Doe'"
+                      :date="'2021-01-01'"
+                      v-for="i in 3"
+                    />
+                  </VCard>
+                </VCol>
+              </VRow>
             </VCard>
           </VCol>
         </VRow>
