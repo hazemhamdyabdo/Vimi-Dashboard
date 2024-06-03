@@ -71,44 +71,37 @@ const isMenuOpen = ref(false);
                     "
                   ></VTextField>
                 </VCol>
-                <VCol cols="12">
+                <VCol cols="12" style="position: relative">
                   <h4 class="card-info-title">General info</h4>
-                  <VTextarea
-                    label=""
+                  <Editor
+                    theme="snow"
+                    toolbar="essentials"
                     placeholder="Write info"
-                    variant="outlined"
-                    rows="4"
-                    class="card-info-input"
-                    type="text-area"
-                    bg-color="#faf9fe"
                     style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
+                      border: 1px solid #e8e7ef;
+                      border-radius: 8px;
+                      background: #faf9fe;
+                      height: 150px;
+                      margin-bottom: 0rem;
                     "
-                  ></VTextarea>
+                  />
                 </VCol>
-                <VCol cols="12" class="mt-16">
+                <VCol cols="12" style="position: relative">
                   <h4 class="card-info-title">Suggested use</h4>
-                  <VTextarea
-                    label=""
+                  <Editor
+                    theme="snow"
+                    toolbar="essentials"
                     placeholder="Write suggested use"
-                    variant="outlined"
-                    rows="4"
-                    class="card-info-input"
-                    type="text-area"
-                    bg-color="#faf9fe"
                     style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
+                      border: 1px solid #e8e7ef;
+                      border-radius: 8px;
+                      background: #faf9fe;
+                      height: 150px;
                     "
                   />
                 </VCol>
               </VRow>
-              <VRow disable-gutters style="gap: 1rem; margin-top: 6rem">
+              <VRow disable-gutters style="gap: 1rem">
                 <VCol>
                   <h4 class="card-info-title">Category</h4>
                   <v-select
@@ -254,6 +247,64 @@ const isMenuOpen = ref(false);
               </VRow>
             </VCard>
           </VCol>
+          <!-- in case edit show -->
+          <VCol>
+            <VCard
+              class="card card-Warehouse"
+              style="margin-bottom: 1rem; margin-top: 1rem"
+            >
+              <h3 class="card-title">Reviews</h3>
+              <section
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  gap: 2rem;
+                  align-items: center;
+                  margin-bottom: 1.5rem;
+                  border-bottom: 1px solid #e8e7ef;
+                "
+                v-for="i in 3"
+              >
+                <div class="d-flex" style="gap: 0.7rem">
+                  <div>
+                    <img
+                      src="../../assets/avatar.png"
+                      style="border-radius: 50%"
+                    />
+                  </div>
+                  <div style="white-space: nowrap">
+                    <h5>John Doe</h5>
+                    <p style="color: #afaacb; font-size: 12px">25 oct 2022</p>
+                  </div>
+                </div>
+                <div>
+                  <div class="d-flex align-items-center">
+                    <VIcon
+                      icon="mdi-star"
+                      style="color: #ffa800"
+                      size="24"
+                      v-for="i in 4"
+                    />
+                    <VIcon
+                      icon="mdi-star-outline"
+                      style="color: #ffa800"
+                      size="24"
+                    />
+                  </div>
+                  <p style="color: #afaacb; font-size: 12px">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  </p>
+                </div>
+                <div>
+                  <VIcon
+                    icon="mdi-trash-can-outline"
+                    size="24"
+                    color="#afaacb"
+                  />
+                </div>
+              </section>
+            </VCard>
+          </VCol>
         </VCol>
         <VCol cols="4" class="pt-5">
           <VCard class="card card-type" style="margin-bottom: 2rem">
@@ -336,7 +387,7 @@ const isMenuOpen = ref(false);
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title mb-8">Expiry date</h3>
-            <GDatePicker label="Expiry date" />
+            <GDatePicker label="Expiry date" bg-color="#faf9fe" />
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title">Brand</h3>
@@ -536,5 +587,17 @@ const isMenuOpen = ref(false);
 .v-field__outline__end {
   border-radius: 12px !important;
   border: 1px solid #e8e7ef !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: none;
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.6rem;
+  width: 100%;
+  z-index: 1;
+}
+.ql-container.ql-snow {
+  color: #7066a2;
 }
 </style>
