@@ -1,16 +1,18 @@
 <script setup lang="ts">
-const props = withDefaults(
+withDefaults(
   defineProps<{
     deleteIcon?: boolean;
     description: string;
     name: string;
-    date: string | date;
+    date: string | Date;
     title?: string;
     imgSrc?: string;
+    numberOfRecords?: number;
   }>(),
   {
     deleteIcon: false,
     imgSrc: "../assets/avatar.png",
+    numberOfRecords: 1,
   }
 );
 </script>
@@ -20,37 +22,42 @@ const props = withDefaults(
     <section
       style="
         display: flex;
-        justify-content: space-between;
         gap: 2rem;
         align-items: center;
         margin-bottom: 1.5rem;
         border-bottom: 1px solid #e8e7ef;
       "
+      v-for="i in numberOfRecords"
     >
-      <div class="d-flex" style="gap: 0.7rem">
+      <section style="display: flex; gap: 4rem">
+        <div class="d-flex" style="gap: 0.7rem">
+          <div>
+            <img src="../assets/avatar.png" style="border-radius: 50%" />
+          </div>
+          <div style="white-space: nowrap">
+            <h5>{{ name }}</h5>
+            <p style="color: #afaacb; font-size: 12px">{{ date }}</p>
+          </div>
+        </div>
         <div>
-          <img src="../assets/avatar.png" style="border-radius: 50%" />
+          <div class="d-flex align-items-center">
+            <VIcon
+              icon="mdi-star"
+              style="color: #ffa800"
+              size="24"
+              v-for="i in 4"
+            />
+            <VIcon icon="mdi-star-outline" style="color: #ffa800" size="24" />
+          </div>
+          <p style="color: #afaacb; font-size: 12px">
+            {{ description }}
+          </p>
         </div>
-        <div style="white-space: nowrap">
-          <h5>{{ name }}</h5>
-          <p style="color: #afaacb; font-size: 12px">{{ date }}</p>
-        </div>
-      </div>
-      <div>
-        <div class="d-flex align-items-center">
-          <VIcon
-            icon="mdi-star"
-            style="color: #ffa800"
-            size="24"
-            v-for="i in 4"
-          />
-          <VIcon icon="mdi-star-outline" style="color: #ffa800" size="24" />
-        </div>
-        <p style="color: #afaacb; font-size: 12px">
-          {{ description }}
-        </p>
-      </div>
-      <div v-if="deleteIcon">
+      </section>
+      <div
+        v-if="deleteIcon"
+        style="cursor: pointer; margin-left: auto; padding-right: 0.5rem"
+      >
         <VIcon icon="mdi-trash-can-outline" size="24" color="#afaacb" />
       </div>
     </section>

@@ -15,7 +15,6 @@ declare module 'vue' {
     ReviewRating: typeof import('./src/components/ReviewRating.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StarRating: typeof import('./src/components/StarRating.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     TableFilters: typeof import('./src/components/tableFilters.vue')['default']
   }
