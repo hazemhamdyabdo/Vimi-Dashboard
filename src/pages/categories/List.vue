@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import listingHeader from '@/components/listing/listingHeader.vue';
 import categoriesFilter from '@/constants/categoriesFilter';
-const page = 1;
+let page = 1;
 const pageCount = 4;
 const selectedItems = ref([]);
 </script>
