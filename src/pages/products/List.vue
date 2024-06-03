@@ -19,7 +19,7 @@
 import listingHeader from '@/components/listing/listingHeader.vue';
 import productsFilter from '@/constants/categoriesFilter';
 
-const page = 1;
+let page = 1;
 const pageCount = 4;
 const selectedItems = ref([]);
 </script>
