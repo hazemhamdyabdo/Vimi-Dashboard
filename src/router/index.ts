@@ -36,6 +36,15 @@ const router = createRouter({
             title: 'Add Product',
           },
         },
+        {
+          path: 'view-product',
+          name: 'view-product',
+          component: () => import('@/pages/products/View.vue'),
+          meta: {
+            title: 'View Product',
+          },
+
+        }
       ],
     },
   ],
