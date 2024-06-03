@@ -7,6 +7,7 @@
         :placeholder="label"
         variant="outlined"
         append-inner-icon="mdi-calendar"
+        bg-color="#faf9fe"
         v-bind="props"
         density="compact"
         hide-details
