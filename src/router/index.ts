@@ -67,7 +67,15 @@ const router = createRouter({
           meta: {
             title: 'Orders',
           },
-        }
+        },
+        {
+          path: 'view-category',
+          name: 'view-category',
+          component: () => import('@/pages/categories/View.vue'),
+          meta: {
+            title: 'View Category',
+          },
+        },
       ],
     },
   ],

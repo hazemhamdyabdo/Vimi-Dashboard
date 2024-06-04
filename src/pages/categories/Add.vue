@@ -66,15 +66,45 @@
                 </VCol>
 
                 <VCol cols="12">
-                  <VTextarea
-                    label=""
-                    placeholder="Write suggested use"
-                    variant="outlined"
-                    rows="4"
-                    type="text-area"
-                    bg-color="#faf9fe"
-                    style="color: #afaacb"
-                  />
+                  <VCard flat class="products-card px-4 py-4">
+                    <VCol class="d-flex justify-space-between pa-0">
+                      <div class="d-flex justify-between">
+                        <p class="me-2 title-product">Vitamins</p>
+                        <p class="number-products">(50 Product)</p>
+                      </div>
+                      <div>
+                        <VIcon
+                          class="me-2"
+                          icon="mdi-pencil-outline"
+                          color="#AFAACB"
+                        ></VIcon>
+                        <VIcon
+                          class="me-2"
+                          icon="mdi-trash-can-outline"
+                          color="#AFAACB"
+                        ></VIcon>
+                      </div>
+                    </VCol>
+                    <v-divider class="my-2"></v-divider>
+                    <VCol class="d-flex justify-space-between pa-0">
+                      <div class="d-flex justify-between">
+                        <p class="me-2 title-product">Vitamins</p>
+                        <p class="number-products">(50 Product)</p>
+                      </div>
+                      <div>
+                        <VIcon
+                          class="me-2"
+                          icon="mdi-pencil-outline"
+                          color="#AFAACB"
+                        ></VIcon>
+                        <VIcon
+                          class="me-2"
+                          icon="mdi-trash-can-outline"
+                          color="#AFAACB"
+                        ></VIcon>
+                      </div>
+                    </VCol>
+                  </VCard>
                 </VCol>
               </VRow>
             </VCard>
@@ -102,7 +132,10 @@
                     "
                   >
                     <img src="@/icons/upload.svg" style="cursor: pointer" />
-                    <p class="card-file-text">Upload Image</p>
+                    <img v-if="false" src="@/assets/multivitamin.png" />
+                    <p class="card-file-text text-decoration-underline">
+                      Upload Image
+                    </p>
                     <div class="text-center">
                       <p class="card-file-subtitle my-1">
                         Max image 5MB jpg, png, jpeg
@@ -133,15 +166,21 @@
                 </VBtn>
               </VCol>
               <VCol cols="12">
-                <VTextarea
-                  label=""
-                  placeholder="Write suggested use"
-                  variant="outlined"
-                  rows="4"
-                  type="text-area"
-                  bg-color="#faf9fe"
-                  style="color: #afaacb"
-                />
+                <VCard flat class="d-flex products-card px-4 py-4 flex-wrap">
+                  <div
+                    v-for="i in 5"
+                    :key="i"
+                    class="tag d-flex justify-space-between me-2 mt-1"
+                  >
+                    <VIcon
+                      class="my-auto me-1"
+                      icon="mdi-close"
+                      color="#fff"
+                      size="15"
+                    ></VIcon>
+                    <p>Tag {{ i }}</p>
+                  </div>
+                </VCard>
               </VCol>
             </VRow>
           </VCard>
@@ -256,7 +295,7 @@ const isMenuOpen = ref(false);
 .card-file-text {
   color: #733ee4;
   font-family: Roboto;
-  font-size: 12px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
@@ -264,7 +303,9 @@ const isMenuOpen = ref(false);
 .card-file-subtitle {
   color: #9089b2;
   font-size: 12px;
+  font-style: normal;
   font-weight: 400;
+  line-height: 150%;
 }
 .card-info-title {
   color: #afaacb;
@@ -295,5 +336,32 @@ const isMenuOpen = ref(false);
 }
 .ql-container.ql-snow {
   color: #7066a2;
+}
+.title-product {
+  color: #21094a;
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+}
+.number-products {
+  color: #733ee4;
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 21px */
+}
+.products-card {
+  border-radius: 8px;
+  border: 1px solid #e8e7ef;
+  background: #fff;
+}
+.tag {
+  border-radius: 4px;
+  background: #7066a2;
+  padding: 3px 8px;
+  color: #fff;
 }
 </style>
