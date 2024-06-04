@@ -1,7 +1,13 @@
 <template>
   <div class="px-12 w-100">
-    <listingHeader />
-    <listingItems class="my-6" />
+    <listingHeader
+      v-if="!selectedItems.length"
+      addAction="Add Category"
+      placeholder="Search , ID , Category name"
+      pathName="add-category"
+    />
+    <tableFilters v-else :filters="categoriesFilter" />
+    <listingItems @emitSelectedItems="selectedItems = $event" class="my-6" />
     <div class="d-flex justify-space-between w-100">
       <p class="my-auto text-9089B2">View 8 from 2000</p>
       <v-pagination class="pagination" v-model="page" :length="pageCount" />
@@ -10,9 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-import listingHeader from "@/components/listing/listingHeader.vue";
-const page = 1;
+import listingHeader from '@/components/listing/listingHeader.vue';
+import categoriesFilter from '@/constants/categoriesFilter';
+let page = 1;
 const pageCount = 4;
+const selectedItems = ref([]);
 </script>
 
 <style>

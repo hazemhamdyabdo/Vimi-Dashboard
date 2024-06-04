@@ -10,17 +10,17 @@ export default [
       {
         name: 'Products',
         icon: 'products',
-        path: { name: 'listing' },
+        path: { name: 'products' },
       },
       {
         name: 'Categories',
         icon: 'categories',
-        // path: { name: "categories" },
+        path: { name: 'categories' },
       },
       {
         name: 'Orders',
         icon: 'orders',
-        // path: { name: "orders" },
+        path: { name: "orders" },
       },
       {
         name: 'Tickets',

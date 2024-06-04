@@ -1,13 +1,268 @@
+<script setup>
+const items = [
+  {
+    SKU: '#76459849',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Vitamins & Minerals',
+    Type: 'Variables',
+    Qty: '185',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Brain Health',
+    Type: 'Simple',
+    Qty: '10',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#764820',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Heart & Metabolism',
+    Type: 'Variables',
+    Qty: '110',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459820',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Vitamins & Minerals',
+    Type: 'Bundle',
+    Qty: '5',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#7645982',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Gut Health',
+    Type: 'Variables',
+    Qty: '144',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+
+  {
+    SKU: '#764520',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Vitamins & Minerals',
+    Type: 'Simple',
+    Qty: '6',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459819',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Heart & Metabolism',
+    Type: 'Variables',
+    Qty: '210',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459818',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Gut Health',
+    Type: 'Bundle',
+    Qty: '9',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459817',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '199',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459815',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Variables',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459816',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Bundle',
+    Qty: '400',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459814',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459813',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459812',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Variables',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  {
+    SKU: '#76459811',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
+  },
+  // ... more items
+];
+
+const headers = [
+  {
+    key: 'exclusive',
+    sortable: false,
+    removable: false,
+    align: 'center',
+  },
+  { title: 'SKU', key: 'SKU', align: 'left', sortable: false },
+  {
+    title: 'Product',
+    key: 'Product',
+    align: 'left',
+    sortable: true,
+    width: 250,
+  },
+  { title: 'Category', key: 'Category', ralign: 'center', sortable: true },
+  { title: 'Type', key: 'Type', align: 'left', sortable: false },
+  { title: 'Qty', key: 'Qty', align: 'left', sortable: false },
+  { title: 'Price', key: 'Price', align: 'left', sortable: true },
+  { title: 'Visability', key: 'Visability', align: 'left', sortable: true },
+  { key: 'actions', align: 'center', sortable: false },
+];
+
+const orderStatus = ref([
+  { nameAr: 'قيد الانتظار', nameEn: 'Pending' },
+  {
+    nameAr: 'تم التسليم',
+    nameEn: 'Delivered',
+  },
+  {
+    nameAr: 'تم الشحن',
+    nameEn: 'Shipped',
+  },
+  {
+    nameAr: 'تم الاسترجاع',
+    nameEn: 'Returned',
+  },
+  {
+    nameAr: 'ملغي',
+    nameEn: 'Cancelled',
+  },
+  {
+    nameAr: 'في الانتظار',
+    nameEn: 'In progress',
+  },
+  {
+    nameAr: 'في انتظار الاسترجاع',
+    nameEn: 'Return in progress',
+  },
+  {
+    nameAr: 'مرفوض',
+    nameEn: 'Rejected',
+  },
+]);
+const getStyleStatus = (status) => {
+  const styles = {
+    Pending: {
+      color: '#E2B000',
+      background: '#e2b0001a',
+    },
+    Delivered: {
+      color: '#27ae60',
+      background: '#27ae601a',
+    },
+    Shipped: {
+      color: '#733EE4',
+      background: '#733ee41a',
+    },
+    Returned: {
+      color: '#21094A',
+      background: '#21094a1a',
+    },
+    Cancelled: {
+      color: '#EB5757',
+      background: '#eb57571a',
+    },
+    'In progress': {
+      color: '#F2994A',
+      background: '#f2994a1a',
+    },
+    'Return in progress': {
+      color: '#21094A',
+      background: '#21094a1a',
+    },
+    Rejected: {
+      color: '#EB5757',
+      background: '#eb57571a',
+    },
+  };
+
+  return styles[status];
+};
+
+const props = defineProps(['headers', 'items', 'itemValue']);
+const emit = defineEmits(['emitSelectedItems']);
+//TODO: for discussion l8r how to make it dynamic
+const headerLocal = computed(() => props.headers ?? headers);
+const itemsLocal = computed(() => props.items ?? items);
+let selectedItems = ref([]);
+
+const selectItems = () => {
+  emit('emitSelectedItems', selectedItems.value);
+};
+
+const router = useRouter();
+
+const handleClick = (items) => {
+  router.push({ name: 'view-category' });
+};
+</script>
+
 <template>
   <div classs="d-flex w-100">
     <v-data-table
-      v-model="selected"
+      v-model="selectedItems"
       class="listin-table"
-      :headers="headers"
-      :items="items"
+      :headers="headerLocal"
+      :items="itemsLocal"
+      :item-value="itemValue ?? 'SKU'"
       show-select
       :items-per-page="8"
       hide-default-footer
+      @input="selectItems($event)"
+      @click:row="handleClick(items)"
     >
       <!-- <template v-slot:header="{ props: { headers } }">
         <thead>
@@ -68,10 +323,19 @@
       </template>
 
       <template v-slot:item.Product="{ item }">
-        <div class="d-flex">
+        <div class="d-flex align-center">
           <img src="@/assets/svgs/product.svg" alt="product" />
           <p class="product text-subtitle-1 ml-2">
             {{ item.Product }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.Customer="{ item }">
+        <div class="d-flex align-center">
+          <img src="@/assets/test-avatar.png" alt="avatar" />
+          <p class="product text-subtitle-1 ml-2">
+            {{ item.Customer }}
           </p>
         </div>
       </template>
@@ -81,6 +345,53 @@
           <p class="SKU text-subtitle-1">
             {{ item.SKU }}
           </p>
+        </div>
+      </template>
+
+      <template v-slot:item.orderNumber="{ item }">
+        <div class="d-flex justify-center">
+          <p class="SKU text-subtitle-1">
+            {{ item.orderNumber }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.orderDate="{ item }">
+        <div class="d-flex justify-center">
+          <p class="SKU text-subtitle-1">
+            {{ item.orderDate }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.Payment="{ item }">
+        <div class="d-flex justify-center align-center" style="gap: 0.5rem">
+          <SvgIcon :icon="item.paymentMethod" />
+          <p class="SKU text-subtitle-1">
+            {{ item.Payment }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.Status="{ item }">
+        <div class="d-flex justify-center">
+          <VSelect
+            :items="orderStatus"
+            item-title="nameEn"
+            item-value="nameEn"
+            v-model="item.Status"
+            density="compact"
+            class="pa-0 w-100 pl-2 pb-1"
+            variant="plain"
+            hide-details
+            style="
+              max-width: 150px;
+              font-size: 12px;
+              padding: 0.2rem 0;
+              border-radius: 8px;
+            "
+            :style="`background-color: ${getStyleStatus(item.Status)?.background}; color: ${getStyleStatus(item.Status)?.color}`"
+          />
         </div>
       </template>
 
@@ -110,7 +421,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Brain Health',
     Type: 'Simple',
@@ -119,7 +430,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#764820',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Heart & Metabolism',
     Type: 'Variables',
@@ -128,7 +439,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459820',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Vitamins & Minerals',
     Type: 'Bundle',
@@ -137,7 +448,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#7645982',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Gut Health',
     Type: 'Variables',
@@ -147,7 +458,7 @@ const items = [
   },
 
   {
-    SKU: '#76459849',
+    SKU: '#764520',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Vitamins & Minerals',
     Type: 'Simple',
@@ -156,7 +467,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459819',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Heart & Metabolism',
     Type: 'Variables',
@@ -165,7 +476,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459818',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Gut Health',
     Type: 'Bundle',
@@ -174,7 +485,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459817',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -183,7 +494,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459815',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Variables',
@@ -192,7 +503,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459816',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Bundle',
@@ -201,7 +512,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459814',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -210,7 +521,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459813',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -219,7 +530,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459812',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Variables',
@@ -228,7 +539,7 @@ const items = [
     Visability: 'Published',
   },
   {
-    SKU: '#76459849',
+    SKU: '#76459811',
     Product: 'Lorem ipsum dolor sit ame consectetur.',
     Category: 'Herbivore',
     Type: 'Simple',
@@ -262,8 +573,21 @@ const headers = [
   { title: 'Visability', key: 'Visability', align: 'left', sortable: true },
   { key: 'actions', align: 'center', sortable: false },
 ];
-</script>
 
+const emit = defineEmits(['emitSelectedItems']);
+
+let selectedItems = ref([]);
+
+const selectItems = () => {
+  emit('emitSelectedItems', selectedItems.value);
+};
+
+const router = useRouter();
+
+const handleClick = (items) => {
+  router.push({ name: 'view-category' });
+};
+</script>
 <style>
 .green--tag {
   color: #27ae60;

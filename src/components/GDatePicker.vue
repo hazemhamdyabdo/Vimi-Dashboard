@@ -5,12 +5,14 @@
         :model-value="formattedDate"
         readonly
         :placeholder="label"
-        variant="outlined"
+        :variant="border ? 'plain' : 'outlined'"
         append-inner-icon="mdi-calendar"
-        v-bind="props"
+        :bg-color="bgColor"
+        v-bind="{ ...props, ...$attrs }"
         density="compact"
         hide-details
         class="text-field"
+        :class="applyStyle"
         height="40px"
       ></v-text-field>
     </template>
@@ -32,6 +34,14 @@ export default {
     modelValue: {
       type: Date,
       default: "",
+    },
+    bgColor: {
+      type: String,
+      default: "#faf9fe",
+    },
+    border: {
+      type: Boolean,
+      default: false,
     },
     label: {
       type: String,
@@ -58,6 +68,9 @@ export default {
       return this.selectedDate
         ? this.selectedDate?.toLocaleDateString("en-CA")
         : "";
+    },
+    applyStyle() {
+      return this.border ? "border-sm rounded-lg px-4 py-1 bg-white" : "";
     },
   },
   watch: {
