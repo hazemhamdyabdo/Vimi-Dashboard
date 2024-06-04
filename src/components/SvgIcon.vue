@@ -19,7 +19,6 @@ export default {
     const response = await fetch(`/src/icons/${this.icon}.svg`);
     // fetch(`src/icons/${this.icon}.svg`);
     this.svgContent = await response.text();
-    console.log(this.icon);
   },
 };
 </script>
