@@ -15,7 +15,11 @@
           {{ filter.icon }}
         </v-icon>
         <span v-else-if="+index !== filters.length - 1" class="my-auto me-2">
-          <v-checkbox class="shrink" density="" hide-details></v-checkbox>
+          <v-checkbox
+            class="shrink"
+            density="compact"
+            hide-details
+          ></v-checkbox>
         </span>
         <p class="my-auto text-subtitle-2">
           {{ filter.label }}

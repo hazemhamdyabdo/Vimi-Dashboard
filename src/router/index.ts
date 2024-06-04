@@ -60,6 +60,14 @@ const router = createRouter({
             title: 'Add Category',
           },
         },
+        {
+          path: 'orders',
+          name: 'orders',
+          component: () => import('@/pages/orders/List.vue'),
+          meta: {
+            title: 'Orders',
+          },
+        }
       ],
     },
   ],
