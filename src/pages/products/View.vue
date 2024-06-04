@@ -2,40 +2,40 @@ Vv
 <script setup lang="ts">
 const productDetails = [
   {
-    title: "SKU",
-    value: "#43856345",
+    title: 'SKU',
+    value: '#43856345',
   },
   {
-    title: "Published date",
-    value: "21/3/2024",
+    title: 'Published date',
+    value: '21/3/2024',
   },
   {
-    title: "Stock quantity",
-    value: "2034",
+    title: 'Stock quantity',
+    value: '2034',
   },
   {
-    title: "Weight",
-    value: "250gm",
+    title: 'Weight',
+    value: '250gm',
   },
   {
-    title: "Dimensions",
-    value: "12W 25H 32D",
+    title: 'Dimensions',
+    value: '12W 25H 32D',
   },
   {
-    title: "Expiration date",
-    value: "25 sep. 2024",
+    title: 'Expiration date',
+    value: '25 sep. 2024',
   },
   {
-    title: "Type",
-    value: "Variable",
+    title: 'Type',
+    value: 'Variable',
   },
   {
-    title: "Category",
-    value: "Vitamins & Minerals",
+    title: 'Category',
+    value: 'Vitamins & Minerals',
   },
   {
-    title: "Sub-category",
-    value: "Vitamins ",
+    title: 'Sub-category',
+    value: 'Vitamins ',
   },
 ];
 const productRatings = [

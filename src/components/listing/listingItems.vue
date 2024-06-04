@@ -2,7 +2,6 @@
   <div classs="d-flex w-100">
     <v-data-table
       v-model="selectedItems"
-      @input="selectItems($event)"
       class="listin-table"
       :headers="headers"
       :items="items"
@@ -10,6 +9,8 @@
       show-select
       :items-per-page="8"
       hide-default-footer
+      @input="selectItems($event)"
+      @click:row="handleClick(items)"
     >
       <!-- <template v-slot:header="{ props: { headers } }">
         <thead>
@@ -271,6 +272,12 @@ let selectedItems = ref([]);
 
 const selectItems = () => {
   emit('emitSelectedItems', selectedItems.value);
+};
+
+const router = useRouter();
+
+const handleClick = (items) => {
+  router.push({ name: 'view-category' });
 };
 </script>
 
