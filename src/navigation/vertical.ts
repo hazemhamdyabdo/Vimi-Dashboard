@@ -20,7 +20,7 @@ export default [
       {
         name: 'Orders',
         icon: 'orders',
-        // path: { name: "orders" },
+        path: { name: "orders" },
       },
       {
         name: 'Tickets',

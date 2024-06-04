@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BasePagination: typeof import('./src/components/BasePagination.vue')['default']
     GDatePicker: typeof import('./src/components/GDatePicker.vue')['default']
     ListingHeader: typeof import('./src/components/listing/listingHeader.vue')['default']
     ListingItems: typeof import('./src/components/listing/listingItems.vue')['default']
@@ -15,7 +16,6 @@ declare module 'vue' {
     ReviewRating: typeof import('./src/components/ReviewRating.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StarRating: typeof import('./src/components/StarRating.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     TableFilters: typeof import('./src/components/tableFilters.vue')['default']
   }

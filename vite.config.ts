@@ -20,6 +20,8 @@ export default defineConfig({
         'src/components',
         './components/**',
         './composables/**',
+        './constants',
+        './constants/**',
       ],
     }),
     Components({
@@ -28,6 +30,8 @@ export default defineConfig({
         './src/components',
         './components/**',
         './composables/**',
+        './constants',
+        './constants/**',
       ],
     })
 
