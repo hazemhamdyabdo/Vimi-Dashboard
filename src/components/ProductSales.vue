@@ -11,7 +11,7 @@ defineProps({
     style="
       background: #faf9fe;
       width: fit-content;
-      padding: 1rem 3rem 1rem 1rem;
+      padding: 1rem;
       margin-top: 1rem;
       border: 1px solid #e8e7ef;
     "

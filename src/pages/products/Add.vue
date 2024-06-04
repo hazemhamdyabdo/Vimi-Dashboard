@@ -27,7 +27,7 @@ const isMenuOpen = ref(false);
                     "
                   >
                     <img src="@/icons/upload.svg" style="cursor: pointer" />
-                    <p class="card-file-text">Upload Image</p>
+                    <p class="card-file-text underline">Upload Image</p>
                   </div>
                 </VCard>
               </VCard>
