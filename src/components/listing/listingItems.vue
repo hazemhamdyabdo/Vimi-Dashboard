@@ -242,11 +242,18 @@ let selectedItems = ref([]);
 const selectItems = () => {
   emit("emitSelectedItems", selectedItems.value);
 };
+
+const router = useRouter();
+
+const handleClick = (items) => {
+  router.push({ name: "view-category" });
+};
 </script>
 
 <template>
   <div classs="d-flex w-100">
     <v-data-table
+      v-bind="$attrs"
       v-model="selectedItems"
       class="listin-table"
       :headers="headerLocal"
@@ -403,185 +410,6 @@ const selectItems = () => {
   </div>
 </template>
 
-<script setup>
-const items = [
-  {
-    SKU: '#76459849',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Vitamins & Minerals',
-    Type: 'Variables',
-    Qty: '185',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Brain Health',
-    Type: 'Simple',
-    Qty: '10',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#764820',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Heart & Metabolism',
-    Type: 'Variables',
-    Qty: '110',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459820',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Vitamins & Minerals',
-    Type: 'Bundle',
-    Qty: '5',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#7645982',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Gut Health',
-    Type: 'Variables',
-    Qty: '144',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-
-  {
-    SKU: '#764520',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Vitamins & Minerals',
-    Type: 'Simple',
-    Qty: '6',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459819',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Heart & Metabolism',
-    Type: 'Variables',
-    Qty: '210',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459818',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Gut Health',
-    Type: 'Bundle',
-    Qty: '9',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459817',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '199',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459815',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Variables',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459816',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Bundle',
-    Qty: '400',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459814',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459813',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459812',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Variables',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  {
-    SKU: '#76459811',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
-  },
-  // ... more items
-];
-
-const headers = [
-  {
-    align: 'start',
-    key: 'exclusive',
-    sortable: false,
-    removable: false,
-    align: 'center',
-  },
-  { title: 'SKU', key: 'SKU', align: 'left', sortable: false },
-  {
-    title: 'Product',
-    key: 'Product',
-    align: 'left',
-    sortable: true,
-    width: 250,
-  },
-  { title: 'Category', key: 'Category', ralign: 'center', sortable: true },
-  { title: 'Type', key: 'Type', align: 'left', sortable: false },
-  { title: 'Qty', key: 'Qty', align: 'left', sortable: false },
-  { title: 'Price', key: 'Price', align: 'left', sortable: true },
-  { title: 'Visability', key: 'Visability', align: 'left', sortable: true },
-  { key: 'actions', align: 'center', sortable: false },
-];
-
-const emit = defineEmits(['emitSelectedItems']);
-
-let selectedItems = ref([]);
-
-const selectItems = () => {
-  emit('emitSelectedItems', selectedItems.value);
-};
-
-const router = useRouter();
-
-const handleClick = (items) => {
-  router.push({ name: 'view-category' });
-};
-</script>
 <style>
 .green--tag {
   color: #27ae60;

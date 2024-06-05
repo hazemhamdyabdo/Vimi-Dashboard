@@ -20,7 +20,7 @@ export default [
       {
         name: 'Orders',
         icon: 'orders',
-        path: { name: "orders" },
+        path: { name: 'orders' },
       },
       {
         name: 'Tickets',
@@ -55,7 +55,8 @@ export default [
       {
         name: 'Log out',
         icon: 'logout',
-        // path: { name: "logout" },
+        action: 'logout',
+        // path: { name: 'logout' },
       },
     ],
   },
