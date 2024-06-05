@@ -94,7 +94,10 @@
                 hide-details
                 single-line
                 v-model="state.email"
-                :error-messages="v$.email.$errors.map((e) => e.$message)"
+                :error-messages="
+                  v$.email.$errors.map((e) => e.$message).join(', ')
+                "
+                :disabled="loadingBtn"
                 @blur="v$.email.$touch"
                 @input="v$.email.$touch"
               >
@@ -144,7 +147,10 @@
                 hide-details
                 single-line
                 v-model="state.password"
-                :error-messages="v$.password.$errors.map((e) => e.$message)"
+                :error-messages="
+                  v$.password.$errors.map((e) => e.$message).join(', ')
+                "
+                :disabled="loadingBtn"
                 @blur="v$.password.$touch"
                 @input="v$.password.$touch"
               >
@@ -165,13 +171,14 @@
             </v-card>
           </v-card-text>
           <v-card-actions class="pa-0">
-            <v-sheet color="#733EE4" class="w-100 rounded-lg mt-10 pa-2">
+            <v-sheet color="#733EE4" class="w-100 rounded-lg mt-10">
               <v-btn
                 @click="handleLogion"
                 elevated
                 :loading="loadingBtn"
                 class="w-100"
                 color="#fff"
+                height="48"
               >
                 Login
               </v-btn>
@@ -194,12 +201,12 @@ import { useUserStore } from '@/stores/user.state.js';
 // Pinia Store
 const userStore = useUserStore();
 
-const initialState = {
+let initialState = {
   email: '',
   password: '',
 };
 
-const state: any = reactive({
+let state: any = reactive({
   ...initialState,
 });
 

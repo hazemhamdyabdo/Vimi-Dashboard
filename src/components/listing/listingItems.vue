@@ -242,12 +242,6 @@ let selectedItems = ref([]);
 const selectItems = () => {
   emit('emitSelectedItems', selectedItems.value);
 };
-
-const router = useRouter();
-
-const handleClick = (items) => {
-  router.push({ name: 'view-category' });
-};
 </script>
 
 <template>
@@ -262,7 +256,6 @@ const handleClick = (items) => {
       :items-per-page="8"
       hide-default-footer
       @input="selectItems($event)"
-      @click:row="handleClick(items)"
     >
       <!-- <template v-slot:header="{ props: { headers } }">
         <thead>
