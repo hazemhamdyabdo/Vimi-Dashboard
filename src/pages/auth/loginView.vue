@@ -2,31 +2,93 @@
   <v-container style="height: 100vh" class="d-flex">
     <v-layout class="my-auto d-block">
       <v-flex class="text-center">
-        <p>
-          <span class="text-h4 font-weight-bold text-21094A">VI</span>
-          <span class="text-h4 font-weight-light text-733ee4">MI</span>
-        </p>
-        <p>
-          <span class="text-7066A2 text-h6 d-flex justify-center mt-2">
-            <p class="me-3">We are happy to see you.</p>
-            <img class="my-auto" src="@/assets/svgs/Bitmap.svg" />
-          </span>
-        </p>
+        <div class="d-flex justify-center">
+          <p
+            class="text-h4 font-weight-bold text-21094A"
+            style="
+              color: #21094a;
+              font-family: 'Montagu Slab';
+              font-size: 40px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 48px;
+            "
+          >
+            VI
+          </p>
+          <p
+            class="text-h4 font-weight-light text-733ee4"
+            style="
+              color: #733ee4;
+              font-family: 'Montagu Slab';
+              font-size: 40px;
+              font-style: normal;
+              font-weight: 300;
+              line-height: 48px;
+            "
+          >
+            MI
+          </p>
+        </div>
+        <span class="text-7066A2 text-h6 d-flex justify-center">
+          <p
+            class="me-1"
+            style="
+              font-family: Roboto;
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%;
+            "
+          >
+            We are happy to see you.
+          </p>
+          <img src="@/assets/svgs/Bitmap.png" />
+        </span>
       </v-flex>
       <form>
         <v-card
-          class="pa-12 elevation-2 mx-auto my-6 rounded-lg"
+          class="pa-12 mx-auto my-6"
           width="33.75rem"
+          style="
+            border-radius: 16px;
+            background: var(--White, #fff);
+            box-shadow: 0px 4px 24px 0px rgba(35, 0, 110, 0.04);
+          "
         >
           <v-card-text class="pa-0">
-            <p class="mb-2">Email</p>
+            <p
+              class="mb-2"
+              style="
+                color: #21094a;
+                font-family: Roboto;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 150%;
+              "
+            >
+              Email
+            </p>
             <v-card
               flat
-              bg-color="#fff"
               class="mx-auto border-sm rounded-lg mb-4 d-flex"
               height="48"
+              style="
+                border-radius: 8px;
+                border: 1px solid #e8e7ef;
+                background: #faf9fe;
+              "
             >
               <v-text-field
+                style="
+                  color: #9089b2;
+                  font-family: Roboto;
+                  font-size: 16px;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: 150%; /* 24px */
+                "
                 class="my-auto px-4 pb-1 my-auto"
                 variant="plain"
                 density="compact"
@@ -45,12 +107,28 @@
                 </template>
               </v-text-field>
             </v-card>
-            <p class="mb-2">password</p>
+            <p
+              class="mb-2"
+              style="
+                color: #21094a;
+                font-family: Roboto;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 150%;
+              "
+            >
+              password
+            </p>
             <v-card
               flat
-              bg-color="#fff"
               class="mx-auto border-sm rounded-lg d-flex"
               height="48"
+              style="
+                border-radius: 8px;
+                border: 1px solid #e8e7ef;
+                background: #faf9fe;
+              "
             >
               <v-text-field
                 class="my-auto px-4 pb-1 my-auto"
@@ -97,6 +175,7 @@
 import { reactive } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { email, required } from '@vuelidate/validators';
+import login from '@/apis/login.ts';
 
 const initialState = {
   email: '',
@@ -120,7 +199,11 @@ function clear() {
 }
 
 const handleLogion = async () => {
-  const isVaid = await v$.value.$validate();
+  const isValid = await v$.value.$validate();
+  if (isValid) {
+    login({ email: state.email, password: state.password });
+    clear();
+  }
 };
 
 let showPass = ref(false);
@@ -135,8 +218,5 @@ let showPass = ref(false);
 }
 .text-7066A2 {
   color: #7066a2;
-}
-* {
-  font-family: Montagu Slab;
 }
 </style>
