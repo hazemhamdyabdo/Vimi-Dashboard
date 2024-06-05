@@ -82,7 +82,6 @@
             >
               <v-text-field
                 style="
-                  color: #9089b2;
                   font-family: Roboto;
                   font-size: 16px;
                   font-style: normal;
@@ -131,6 +130,13 @@
               "
             >
               <v-text-field
+                style="
+                  font-family: Roboto;
+                  font-size: 16px;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: 150%; /* 24px */
+                "
                 class="my-auto px-4 pb-1 my-auto"
                 variant="plain"
                 :type="showPass ? 'text' : 'password'"
@@ -160,7 +166,13 @@
           </v-card-text>
           <v-card-actions class="pa-0">
             <v-sheet color="#733EE4" class="w-100 rounded-lg mt-10 pa-2">
-              <v-btn @click="handleLogion" elevated class="w-100" color="#fff">
+              <v-btn
+                @click="handleLogion"
+                elevated
+                :loading="loadingBtn"
+                class="w-100"
+                color="#fff"
+              >
                 Login
               </v-btn>
             </v-sheet>
@@ -176,6 +188,11 @@ import { reactive } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { email, required } from '@vuelidate/validators';
 import login from '@/apis/login.ts';
+import getUserData from '@/apis/user.ts';
+import { useUserStore } from '@/stores/user.state.js';
+
+// Pinia Store
+const userStore = useUserStore();
 
 const initialState = {
   email: '',
@@ -198,12 +215,34 @@ function clear() {
   }
 }
 
+let loadingBtn = ref(false);
+const router = useRouter();
+
 const handleLogion = async () => {
   const isValid = await v$.value.$validate();
   if (isValid) {
-    login({ email: state.email, password: state.password });
-    clear();
+    loadingBtn.value = true;
+    try {
+      const { data } = await login({
+        email: state.email,
+        password: state.password,
+      });
+      const { accessToken, refreshToken } = data;
+      localStorage.setItem('accessToken', JSON.stringify(accessToken));
+      localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
+      fetchUserData(accessToken, refreshToken);
+    } catch {}
   }
+};
+
+const fetchUserData = async (accessToken: String, refreshToken: String) => {
+  try {
+    const { data } = await getUserData();
+    userStore.updateUser({ ...data, accessToken, refreshToken });
+    clear();
+    loadingBtn.value = false;
+    router.push({ name: 'products' });
+  } catch {}
 };
 
 let showPass = ref(false);
