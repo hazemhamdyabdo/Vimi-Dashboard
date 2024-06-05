@@ -15,7 +15,7 @@ app.use(createPinia());
 app.component('Editor', QuillEditor);
 app.use(router).use(vuetify).use(i18n);
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const userStore = useUserStore();
   if (to.name !== 'login' && !userStore.isLoggedIn) next({ name: 'login' });
   else if (to.name === 'login' && userStore.isLoggedIn) {
