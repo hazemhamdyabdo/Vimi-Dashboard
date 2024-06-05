@@ -152,7 +152,7 @@ const ordersFilter = [
   {
     id: 5,
     label: 'Archive Order',
-    icon: 'mdi-tag-outline',
+    icon: 'mdi-bookmark-outline',
   },
 
   {

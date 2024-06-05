@@ -69,6 +69,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'view-order',
+          name: 'view-order',
+          component: () => import('@/pages/orders/View.vue'),
+          meta: {
+            title: 'Order Details',
+          },
+        },
+        {
           path: 'view-category',
           name: 'view-category',
           component: () => import('@/pages/categories/View.vue'),
