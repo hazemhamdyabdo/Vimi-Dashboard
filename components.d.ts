@@ -7,8 +7,12 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddIcon: typeof import('./src/components/svgs/AddIcon.vue')['default']
     BasePagination: typeof import('./src/components/BasePagination.vue')['default']
+    DeleteIcon: typeof import('./src/components/svgs/DeleteIcon.vue')['default']
+    EditIcon: typeof import('./src/components/svgs/EditIcon.vue')['default']
     GDatePicker: typeof import('./src/components/GDatePicker.vue')['default']
+    GlobalPopup: typeof import('./src/components/GlobalPopup.vue')['default']
     ListingHeader: typeof import('./src/components/listing/listingHeader.vue')['default']
     ListingItems: typeof import('./src/components/listing/listingItems.vue')['default']
     ProductSales: typeof import('./src/components/ProductSales.vue')['default']

@@ -60,6 +60,7 @@
                     class="card-info-btn"
                     color="#21094a"
                     variant="outlined"
+                    @click="openAddModal"
                   >
                     <VIcon icon="mdi-plus" color="#733EE4"></VIcon>
                   </VBtn>
@@ -221,7 +222,23 @@
 </template>
 
 <script setup lang="ts">
-const isMenuOpen = ref(false);
+import { usePopUpStore } from '@/stores/popup.state.ts';
+
+const popupStore = usePopUpStore();
+
+const openAddModal = () => {
+  popupStore.togglePopupState({
+    state: true,
+    options: {
+      title: 'Add Sub-Category',
+      text: '',
+      buttonTitle: 'Add',
+      buttonColor: '#733EE4',
+      icon: 'AddIcon',
+      sheetColor: '#733ee41a',
+    },
+  });
+};
 </script>
 
 <style scoped>

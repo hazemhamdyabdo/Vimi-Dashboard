@@ -23,6 +23,11 @@ export default [
         path: { name: 'orders' },
       },
       {
+        name: 'Customers',
+        icon: 'customers',
+        // path: { name: "users" },
+      },
+      {
         name: 'Tickets',
         icon: 'tickets',
         // path: { name: "tickets" },
@@ -36,11 +41,6 @@ export default [
         name: 'Notifications',
         icon: 'notifications-nav',
         // path: { name: "notifications" },
-      },
-      {
-        name: 'Users',
-        icon: 'users',
-        // path: { name: "users" },
       },
     ],
   },
