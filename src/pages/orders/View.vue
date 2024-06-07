@@ -59,7 +59,7 @@ const orderSummary = {
 <template>
   <section class="add-products px-6">
     <VContainer>
-      <VRow disable-gutters style="height: 100%">
+      <VRow disable-gutters>
         <VCol cols="12">
           <VCard
             class="card"

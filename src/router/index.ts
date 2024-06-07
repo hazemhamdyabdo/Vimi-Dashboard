@@ -84,6 +84,14 @@ const router = createRouter({
             title: 'View Category',
           },
         },
+        {
+          path: 'view-customer',
+          name: 'view-customer',
+          component: () => import('@/pages/customers/View.vue'),
+          meta: {
+            title: 'View Customer',
+          },
+        }
       ],
     },
   ],
