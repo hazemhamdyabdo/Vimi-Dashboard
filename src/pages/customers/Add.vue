@@ -3,6 +3,8 @@ const dropdownOptions = {
   showDialCodeInSelection: true,
   showFlags: true,
 };
+const showPass = ref(false);
+const showConfirmPass = ref(false);
 </script>
 <template>
   <section class="px-6">
@@ -89,10 +91,10 @@ const dropdownOptions = {
                   <h4 class="card-info-title">Password</h4>
                   <VTextField
                     label=""
-                    type="password"
                     density="compact"
                     placeholder="Enter Password"
                     variant="outlined"
+                    :type="showPass ? 'text' : 'password'"
                     class="card-info-input"
                     bg-color="#faf9fe"
                     style="
@@ -103,7 +105,11 @@ const dropdownOptions = {
                     "
                   >
                     <template v-slot:append-inner>
-                      <img class="cursor-pointer" src="@/assets/svgs/eye.svg" />
+                      <img
+                        class="cursor-pointer"
+                        src="@/assets/svgs/eye.svg"
+                        @click="showPass = !showPass"
+                      />
                     </template>
                   </VTextField>
                 </VCol>
@@ -111,7 +117,7 @@ const dropdownOptions = {
                   <h4 class="card-info-title">Confirm Password</h4>
                   <VTextField
                     label=""
-                    type="password"
+                    :type="showConfirmPass ? 'text' : 'password'"
                     density="compact"
                     placeholder="Enter Password"
                     variant="outlined"
@@ -125,7 +131,11 @@ const dropdownOptions = {
                     "
                   >
                     <template v-slot:append-inner>
-                      <img class="cursor-pointer" src="@/assets/svgs/eye.svg" />
+                      <img
+                        class="cursor-pointer"
+                        src="@/assets/svgs/eye.svg"
+                        @click="showConfirmPass = !showConfirmPass"
+                      />
                     </template>
                   </VTextField>
                 </VCol>
