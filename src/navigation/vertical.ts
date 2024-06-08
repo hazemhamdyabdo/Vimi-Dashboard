@@ -25,7 +25,7 @@ export default [
       {
         name: 'Customers',
         icon: 'customers',
-        // path: { name: "users" },
+        path: { name: 'customers' },
       },
       {
         name: 'Tickets',

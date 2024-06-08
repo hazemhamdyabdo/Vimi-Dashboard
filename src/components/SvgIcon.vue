@@ -7,7 +7,7 @@ export default {
     },
     classes: {
       type: String,
-      default: "svg-container flex items-center justify-center",
+      default: 'svg-container flex items-center justify-center',
     },
   },
   data() {

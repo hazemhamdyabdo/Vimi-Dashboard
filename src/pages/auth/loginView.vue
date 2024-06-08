@@ -4,7 +4,7 @@
       <v-flex class="text-center">
         <div class="d-flex justify-center">
           <p
-            class="text-h4 font-weight-bold text-21094A"
+            class="font-weight-bold text-21094A"
             style="
               color: #21094a;
               font-family: 'Montagu Slab';
@@ -17,7 +17,7 @@
             VI
           </p>
           <p
-            class="text-h4 font-weight-light text-733ee4"
+            class="font-weight-light text-733ee4"
             style="
               color: #733ee4;
               font-family: 'Montagu Slab';
@@ -56,6 +56,7 @@
             box-shadow: 0px 4px 24px 0px rgba(35, 0, 110, 0.04);
           "
         >
+          <p v-if="errorMsg.length">{{ errorMsg }}</p>
           <v-card-text class="pa-0">
             <p
               class="mb-2"
@@ -176,7 +177,7 @@
                 @click="handleLogion"
                 elevated
                 :loading="loadingBtn"
-                class="w-100"
+                class="w-100 text-capitalize"
                 color="#fff"
                 height="48"
               >
@@ -225,9 +226,11 @@ function clear() {
 let loadingBtn = ref(false);
 const router = useRouter();
 
+let errorMsg = ref('');
 const handleLogion = async () => {
   const isValid = await v$.value.$validate();
   if (isValid) {
+    errorMsg.value = '';
     loadingBtn.value = true;
     try {
       const { data } = await login({
@@ -238,7 +241,10 @@ const handleLogion = async () => {
       localStorage.setItem('accessToken', JSON.stringify(accessToken));
       localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
       fetchUserData(accessToken, refreshToken);
-    } catch {}
+    } catch (e) {
+      errorMsg.value = 'Please check your credentials and try again';
+      loadingBtn.value = false;
+    }
   }
 };
 

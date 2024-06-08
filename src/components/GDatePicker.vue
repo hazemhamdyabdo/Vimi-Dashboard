@@ -1,22 +1,39 @@
 <template>
   <v-menu v-model="isMenuOpen" :close-on-content-click="false">
     <template v-slot:activator="{ props }">
-      <v-text-field
-        :model-value="formattedDate"
-        readonly
-        :placeholder="label"
-        :variant="border ? 'plain' : 'outlined'"
-        append-inner-icon="mdi-calendar"
-        :bg-color="bgColor"
-        v-bind="{ ...props, ...$attrs }"
-        density="compact"
-        hide-details
-        class="text-field"
-        :class="applyStyle"
-        height="40px"
-      ></v-text-field>
+      <v-card
+        flat
+        class="border-sm rounded-lg mb-4 d-flex ml-4"
+        height="48"
+        width="15.5rem"
+        style="border-radius: 8px; border: 1px solid #e8e7ef; background: #fff"
+      >
+        <v-text-field
+          style="
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 150%;
+          "
+          class="my-auto px-4 pb-1 my-auto"
+          variant="plain"
+          :placeholder="label"
+          density="compact"
+          hide-details
+          single-line
+          readonly
+          :model-value="formattedDate"
+          v-bind="{ ...props, ...$attrs }"
+        >
+          <template v-slot:append-inner>
+            <calenderIcon color="#733EE4" width="20" height="20" />
+          </template>
+        </v-text-field>
+      </v-card>
     </template>
     <v-date-picker
+      class="mt-2"
       v-model="selectedDate"
       hide-actions
       title=""
@@ -33,11 +50,11 @@ export default {
   props: {
     modelValue: {
       type: Date,
-      default: "",
+      default: '',
     },
     bgColor: {
       type: String,
-      default: "#faf9fe",
+      default: '#faf9fe',
     },
     border: {
       type: Boolean,
@@ -45,18 +62,18 @@ export default {
     },
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     color: {
       type: String,
-      default: "",
+      default: '',
     },
     min: {
       type: Date,
-      default: "",
+      default: '',
     },
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   data() {
     return {
       isMenuOpen: false,
@@ -66,17 +83,17 @@ export default {
   computed: {
     formattedDate() {
       return this.selectedDate
-        ? this.selectedDate?.toLocaleDateString("en-CA")
-        : "";
+        ? this.selectedDate?.toLocaleDateString('en-CA')
+        : '';
     },
     applyStyle() {
-      return this.border ? "border-sm rounded-lg px-4 py-1 bg-white" : "";
+      return this.border ? 'border-sm rounded-lg px-4 py-1 bg-white' : '';
     },
   },
   watch: {
     selectedDate(newVal) {
       const newDate = newVal;
-      this.$emit("update:modelValue", newDate);
+      this.$emit('update:modelValue', newDate);
     },
     modelValue(newVale) {
       this.selectedDate = newVale ? new Date(newVale) : new Date();

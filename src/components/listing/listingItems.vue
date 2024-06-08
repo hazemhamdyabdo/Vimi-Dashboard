@@ -207,6 +207,10 @@ const getStyleStatus = (status) => {
       color: "#27ae60",
       background: "#27ae601a",
     },
+    Active: {
+      color: '#27ae60',
+      background: '#27ae601a',
+    },
     Shipped: {
       color: "#733EE4",
       background: "#733ee41a",
@@ -214,6 +218,10 @@ const getStyleStatus = (status) => {
     Returned: {
       color: "#21094A",
       background: "#21094a1a",
+    },
+    Blocked: {
+      color: '#EB5757',
+      background: '#eb57571a',
     },
     Cancelled: {
       color: "#EB5757",
@@ -274,7 +282,7 @@ const openDeleteModal = () => {
       :items="itemsLocal"
       :item-value="itemValue ?? 'SKU'"
       show-select
-      :items-per-page="8"
+      :items-per-page="10"
       hide-default-footer
       @input="selectItems($event)"
     >
@@ -406,6 +414,23 @@ const openDeleteModal = () => {
             "
             :style="`background-color: ${getStyleStatus(item.Status)?.background}; color: ${getStyleStatus(item.Status)?.color}`"
           />
+        </div>
+      </template>
+
+      <template v-slot:item.status="{ item }">
+        <div class="d-flex">
+          <p
+            class="px-2 py-1 text-subtitle-1 mx-auto"
+            style="
+              max-width: 150px;
+              font-size: 12px;
+              padding: 0.2rem 0;
+              border-radius: 8px;
+            "
+            :style="`background-color: ${getStyleStatus(item.status)?.background}; color: ${getStyleStatus(item.status)?.color}`"
+          >
+            {{ item.status }}
+          </p>
         </div>
       </template>
 

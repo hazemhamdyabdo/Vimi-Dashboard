@@ -61,6 +61,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'view-category',
+          name: 'view-category',
+          component: () => import('@/pages/categories/View.vue'),
+          meta: {
+            title: 'View Category',
+          },
+        },
+        {
           path: 'orders',
           name: 'orders',
           component: () => import('@/pages/orders/List.vue'),
@@ -77,11 +85,27 @@ const router = createRouter({
           },
         },
         {
-          path: 'view-category',
-          name: 'view-category',
-          component: () => import('@/pages/categories/View.vue'),
+          path: 'customers',
+          name: 'customers',
+          component: () => import('@/pages/customers/List.vue'),
           meta: {
-            title: 'View Category',
+            title: 'Customers',
+          },
+        },
+        {
+          path: 'add-customer',
+          name: 'add-customer',
+          component: () => import('@/pages/customers/Add.vue'),
+          meta: {
+            title: 'Add Customer',
+          },
+        },
+        {
+          path: 'view-customer',
+          name: 'view-customer',
+          component: () => import('@/pages/customers/View.vue'),
+          meta: {
+            title: 'View Customer',
           },
         },
         {
