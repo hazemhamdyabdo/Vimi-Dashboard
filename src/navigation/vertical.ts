@@ -56,7 +56,6 @@ export default [
         name: 'Log out',
         icon: 'logout',
         action: 'logout',
-        // path: { name: 'logout' },
       },
     ],
   },
