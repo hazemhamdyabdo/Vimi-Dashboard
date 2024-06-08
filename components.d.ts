@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddIcon: typeof import('./src/components/svgs/AddIcon.vue')['default']
     BasePagination: typeof import('./src/components/BasePagination.vue')['default']
+    CalenderIcon: typeof import('./src/components/svgs/CalenderIcon.vue')['default']
     DeleteIcon: typeof import('./src/components/svgs/DeleteIcon.vue')['default']
     EditIcon: typeof import('./src/components/svgs/EditIcon.vue')['default']
     GDatePicker: typeof import('./src/components/GDatePicker.vue')['default']

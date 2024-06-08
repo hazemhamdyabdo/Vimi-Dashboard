@@ -226,11 +226,9 @@ const showConfirmPass = ref(false);
   padding: 1rem 1rem;
   box-shadow: none;
 }
-
 .add-products-actions {
   padding: 1rem 2rem 2rem 2rem;
 }
-
 .card-file-input {
   width: 96px;
   opacity: 0;
@@ -239,7 +237,6 @@ const showConfirmPass = ref(false);
   z-index: 2;
   cursor: pointer;
 }
-
 .card-file-subtitle {
   color: #9089b2;
   font-size: 12px;
@@ -247,7 +244,6 @@ const showConfirmPass = ref(false);
   font-weight: 400;
   line-height: 150%;
 }
-
 .card-info-title {
   color: #afaacb;
   font-size: 14px;
@@ -264,7 +260,6 @@ const showConfirmPass = ref(false);
   font-weight: 400;
   line-height: 150%;
 }
-
 .card-file-ui {
   border-radius: 6px;
   height: 276px;
@@ -281,7 +276,6 @@ const showConfirmPass = ref(false);
   border-radius: 12px !important;
   border: 1px solid #e8e7ef !important;
 }
-
 .ql-toolbar.ql-snow {
   border: none;
   position: absolute;

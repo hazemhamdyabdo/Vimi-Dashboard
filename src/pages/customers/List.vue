@@ -2,12 +2,18 @@
   <div class="px-12 w-100">
     <listingHeader
       v-if="!selectedItems.length"
-      addAction="Add Category"
-      placeholder="Search , ID , Category name"
-      pathName="add-category"
+      addAction="Add Customer"
+      placeholder="Search for customer"
+      pathName="add-customer"
     />
-    <tableFilters v-else :filters="categoriesFilter" />
-    <listingItems @emitSelectedItems="selectedItems = $event" class="my-6" />
+    <tableFilters v-else :filters="customerFilters" />
+    <listingItems
+      @emitSelectedItems="selectedItems = $event"
+      class="my-6"
+      :headers="headers"
+      :items="items"
+      :itemValue="'orderNumber'"
+    />
     <div class="d-flex justify-space-between w-100">
       <p class="my-auto text-9089B2">View 8 from 2000</p>
       <v-pagination class="pagination" v-model="page" :length="pageCount" />
@@ -16,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import categoriesFilter from '@/constants/categoriesFilter';
+import { headers, items, customerFilters } from '@/constants/customerFilters';
 
 let page = 1;
 const pageCount = 4;

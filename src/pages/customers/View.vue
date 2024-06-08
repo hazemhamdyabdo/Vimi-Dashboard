@@ -1,94 +1,92 @@
 <script setup lang="ts">
 const headers = [
   {
-    title: "Order ID",
-    key: "orderNumber",
+    title: 'Order ID',
+    key: 'orderNumber',
     sortable: false,
   },
   {
-    title: "Order Date",
-    key: "orderDate",
+    title: 'Order Date',
+    key: 'orderDate',
     sortable: false,
   },
   {
-    title: "Status",
-    key: "status",
+    title: 'Status',
+    key: 'status',
     sortable: false,
-    align: "center",
+    align: 'center',
   },
   {
-    title: "Items NO.",
-    key: "items",
+    title: 'Items NO.',
+    key: 'items',
     sortable: false,
-    align: "center",
+    align: 'center',
   },
   {
-    title: "Amount",
-    key: "amount",
+    title: 'Amount',
+    key: 'amount',
     sortable: false,
-    align: "center",
+    align: 'center',
   },
 ];
 const items = [
   {
-    orderNumber: "#434856345",
-    orderDate: "21/2/2024",
-    status: "Delivered",
-    items: "2",
-    amount: "KD 40",
+    orderNumber: '#434856345',
+    orderDate: '21/2/2024',
+    status: 'Delivered',
+    items: '2',
+    amount: 'KD 40',
   },
   {
-    orderNumber: "#4138546345",
-    orderDate: "21/3/2024",
-    status: "In progress",
-    items: "2",
-    amount: "KD 60",
+    orderNumber: '#4138546345',
+    orderDate: '21/3/2024',
+    status: 'In progress',
+    items: '2',
+    amount: 'KD 60',
   },
   {
-    orderNumber: "#13856345",
-    orderDate: "21/4/2024",
-    status: "cancelled",
-    items: "2",
-    amount: "KD 105",
+    orderNumber: '#13856345',
+    orderDate: '21/4/2024',
+    status: 'cancelled',
+    items: '2',
+    amount: 'KD 105',
   },
 ];
-
 const getStyleStatus = (status: string) => {
   const styles = {
     Pending: {
-      color: "#E2B000",
-      background: "#e2b0001a",
+      color: '#E2B000',
+      background: '#e2b0001a',
     },
     Delivered: {
-      color: "#27ae60",
-      background: "#27ae601a",
+      color: '#27ae60',
+      background: '#27ae601a',
     },
     Shipped: {
-      color: "#733EE4",
-      background: "#733ee41a",
+      color: '#733EE4',
+      background: '#733ee41a',
     },
     Returned: {
-      color: "#21094A",
-      background: "#21094a1a",
+      color: '#21094A',
+      background: '#21094a1a',
     },
     cancelled: {
-      color: "#EB5757",
-      background: "#eb57571a",
+      color: '#EB5757',
+      background: '#eb57571a',
     },
-    "In progress": {
-      color: "#F2994A",
-      background: "#f2994a1a",
+    'In progress': {
+      color: '#F2994A',
+      background: '#f2994a1a',
     },
-    "Return in progress": {
-      color: "#21094A",
-      background: "#21094a1a",
+    'Return in progress': {
+      color: '#21094A',
+      background: '#21094a1a',
     },
     Rejected: {
-      color: "#EB5757",
-      background: "#eb57571a",
+      color: '#EB5757',
+      background: '#eb57571a',
     },
   };
-
   return styles[status];
 };
 </script>
@@ -261,7 +259,6 @@ const getStyleStatus = (status: string) => {
     </VContainer>
   </section>
 </template>
-
 <style scoped>
 .card {
   border-radius: 12px;
@@ -277,7 +274,6 @@ const getStyleStatus = (status: string) => {
   line-height: 150%;
   margin-bottom: 0.7rem;
 }
-
 :global(.listen-table thead tr) {
   background-color: #faf9fe;
   color: #21094a;
@@ -286,7 +282,6 @@ const getStyleStatus = (status: string) => {
   border-radius: 12px;
   border-bottom: none;
 }
-
 :global(.v-table .v-table__wrapper > table > thead > tr > th) {
   border-bottom: 2px solid #7066a2;
   margin-bottom: 5rem;

@@ -7,7 +7,7 @@ withDefaults(
     labelDate?: string;
   }>(),
   {
-    pathName: "",
+    pathName: '',
   }
 );
 </script>
@@ -45,16 +45,9 @@ withDefaults(
         </template>
       </v-text-field>
     </v-card>
-    <GDatePicker
-      v-if="labelDate"
-      :label="labelDate"
-      bgColor="#fff"
-      border
-      width="18rem"
-      class="ml-4"
-    />
     <v-spacer />
-    <div v-if="pathName" class="flex my-auto">
+    <GDatePicker v-if="labelDate" :label="labelDate" />
+    <div v-else-if="pathName" class="flex my-auto">
       <router-link :to="{ name: pathName }">
         <v-btn flat color="#733EE4" class="rounded-lg" height="48">
           <v-icon size="20"> mdi-plus </v-icon>
