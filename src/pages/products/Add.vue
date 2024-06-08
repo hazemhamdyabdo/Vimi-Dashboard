@@ -52,7 +52,7 @@ const isMenuOpen = ref(false);
                       font-style: normal;
                       font-weight: 400;
                     "
-                  ></VTextField>
+                  />
                 </VCol>
                 <VCol cols="12">
                   <h4 class="card-info-title">Short description</h4>
