@@ -1,5 +1,65 @@
 <script setup lang="ts">
+import type { Product } from "./type";
+import { getCategories } from "@/apis/_categories";
+import { getBrands } from "@/apis/_brands";
+import { addProduct } from "@/apis/products";
+import { productType } from "@/enums";
+
 const isMenuOpen = ref(false);
+const newProduct: Product = ref({});
+const allCategories: any = ref([]);
+const allBrands: any = ref([]);
+const newTag: string = ref("");
+const tagsToAdd = ref([]);
+const suggestedUse = ref(null);
+const generalInfo = ref(null);
+
+const addTags = (nwTag: any) => {
+  tagsToAdd.value.push(nwTag);
+  newTag.value = "";
+};
+
+const removeTag = (nwTag: any) => {
+  tagsToAdd.value = tagsToAdd.value.filter((tag: any) => tag !== nwTag);
+};
+
+const subCategories: any = computed(() => {
+  return allCategories.value.filter(
+    (category: { uuid: string }) =>
+      // @ts-ignore
+      category.uuid === newProduct.value.categoryUuid
+  )?.[0]?.subCategories;
+});
+const getAdditionalData = async () => {
+  try {
+    const {
+      data: { data },
+    } = await getCategories();
+    allCategories.value = data.result;
+    const {
+      data: { data: brands },
+    } = await getBrands();
+    allBrands.value = brands.result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sendNewProduct = async () => {
+  try {
+    newProduct.value.SuggestedUse_En = suggestedUse.value.getText();
+    newProduct.value.GeneralInfo_En = generalInfo.value.getText();
+    newProduct.value.Tags = tagsToAdd.value;
+    console.log(newProduct.value);
+    // const data = await addProduct(newProduct.value);
+    // console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+onMounted(async () => {
+  await getAdditionalData();
+});
 </script>
 <template>
   <section class="add-products px-6">
@@ -44,6 +104,7 @@ const isMenuOpen = ref(false);
                     density="compact"
                     placeholder="Enter product name"
                     variant="outlined"
+                    v-model="newProduct.DisplayName_En"
                     class="card-info-input"
                     bg-color="#faf9fe"
                     style="
@@ -59,6 +120,7 @@ const isMenuOpen = ref(false);
                   <VTextField
                     label=""
                     density="compact"
+                    v-model="newProduct.Description_En"
                     placeholder="Enter short description"
                     variant="outlined"
                     class="card-info-input"
@@ -76,6 +138,7 @@ const isMenuOpen = ref(false);
                   <Editor
                     theme="snow"
                     toolbar="essentials"
+                    ref="generalInfo"
                     placeholder="Write info"
                     style="
                       border: 1px solid #e8e7ef;
@@ -91,6 +154,7 @@ const isMenuOpen = ref(false);
                   <Editor
                     theme="snow"
                     toolbar="essentials"
+                    ref="suggestedUse"
                     placeholder="Write suggested use"
                     style="
                       border: 1px solid #e8e7ef;
@@ -110,15 +174,11 @@ const isMenuOpen = ref(false);
                     variant="outlined"
                     bg-color="#faf9fe"
                     placeholder="Choose category"
+                    v-model="newProduct.categoryUuid"
                     class="card-info-list"
-                    :items="[
-                      'California',
-                      'Colorado',
-                      'Florida',
-                      'Georgia',
-                      'Texas',
-                      'Wyoming',
-                    ]"
+                    :items="allCategories"
+                    item-value="uuid"
+                    item-title="displayName_En"
                   ></v-select>
                 </VCol>
                 <VCol>
@@ -128,16 +188,12 @@ const isMenuOpen = ref(false);
                     density="compact"
                     variant="outlined"
                     bg-color="#faf9fe"
+                    v-model="newProduct.SubCategoryUuid"
                     placeholder="Choose sub category"
                     class="card-info-list"
-                    :items="[
-                      'California',
-                      'Colorado',
-                      'Florida',
-                      'Georgia',
-                      'Texas',
-                      'Wyoming',
-                    ]"
+                    :items="subCategories"
+                    item-value="uuid"
+                    item-title="displayName"
                   ></v-select>
                 </VCol>
               </VRow>
@@ -156,6 +212,7 @@ const isMenuOpen = ref(false);
                     label=""
                     placeholder="Enter SKU"
                     density="compact"
+                    v-model="newProduct.Sku"
                     variant="outlined"
                     bg-color="#faf9fe"
                     style="
@@ -173,6 +230,8 @@ const isMenuOpen = ref(false);
                     density="compact"
                     placeholder="Enter quantity"
                     variant="outlined"
+                    type="number"
+                    v-model="newProduct.StockQuantity"
                     bg-color="#faf9fe"
                     style="
                       color: #afaacb;
@@ -199,6 +258,7 @@ const isMenuOpen = ref(false);
                     placeholder="Enter price"
                     density="compact"
                     variant="outlined"
+                    v-model="newProduct.Price"
                     type="number"
                     suffix="KD"
                     bg-color="#faf9fe"
@@ -216,6 +276,7 @@ const isMenuOpen = ref(false);
                     label=""
                     suffix="KD"
                     type="number"
+                    v-model="newProduct.SalePrice"
                     density="compact"
                     placeholder="Enter price"
                     variant="outlined"
@@ -248,7 +309,7 @@ const isMenuOpen = ref(false);
             </VCard>
           </VCol>
           <!-- in case edit show -->
-          <VCol>
+          <VCol v-if="!$route.meta.title === 'Add Product'">
             <VCard
               class="card card-Warehouse"
               style="margin-bottom: 1rem; margin-top: 1rem"
@@ -272,49 +333,55 @@ const isMenuOpen = ref(false);
                 label=""
                 density="compact"
                 variant="outlined"
+                v-model="newProduct.Type"
                 bg-color="#faf9fe"
                 placeholder="Choose type"
                 style="margin-left: -0.5rem; width: 106%"
-                :items="[
-                  'California',
-                  'Colorado',
-                  'Florida',
-                  'Georgia',
-                  'Texas',
-                  'Wyoming',
-                ]"
+                :items="productType"
               ></v-select>
             </v-col>
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
-            <h3 class="card-title mb-8">Tags</h3>
+            <h3 class="card-title mb-6">Tags</h3>
             <VRow>
-              <VCol cols="10">
+              <VCol class="d-flex">
                 <VTextField
                   label=""
                   density="compact"
                   placeholder="Write tag"
                   variant="outlined"
+                  v-model="newTag"
                   bg-color="#faf9fe"
                   style="color: #afaacb; font-size: 14px"
+                  class="pr-2"
+                  hide-details
                 />
-              </VCol>
-              <VCol cols="2">
-                <VBtn class="card-info-btn" color="#21094a" variant="outlined">
+                <VBtn
+                  class="card-info-btn"
+                  color="#21094a"
+                  variant="outlined"
+                  @click="addTags(newTag)"
+                >
                   <VIcon icon="mdi-plus" color="#21094a"></VIcon>
                 </VBtn>
               </VCol>
-
               <VCol cols="12">
-                <VTextarea
-                  label=""
-                  placeholder="Write suggested use"
-                  variant="outlined"
-                  rows="4"
-                  type="text-area"
-                  bg-color="#faf9fe"
-                  style="color: #afaacb"
-                />
+                <VCard flat class="d-flex products-card px-4 py-4 flex-wrap">
+                  <div
+                    v-for="i in tagsToAdd"
+                    :key="i"
+                    class="tag d-flex justify-space-between me-2 mt-1"
+                    @click="removeTag(i)"
+                  >
+                    <VIcon
+                      class="my-auto me-1 cursor-pointer"
+                      icon="mdi-close"
+                      color="#fff"
+                      size="15"
+                    ></VIcon>
+                    <p>{{ i }}</p>
+                  </div>
+                </VCard>
               </VCol>
             </VRow>
           </VCard>
@@ -328,16 +395,20 @@ const isMenuOpen = ref(false);
                 background: rgba(115, 62, 228, 0.05);
               "
             >
-              <v-radio-group inline hide-details>
+              <v-radio-group
+                v-model="newProduct.Visibility"
+                inline
+                hide-details
+              >
                 <v-radio
                   label="Published"
-                  value="published"
+                  value="Published"
                   color="primary"
                   style="margin-right: 6rem"
                 ></v-radio>
                 <v-radio
                   label="Hidden"
-                  value="hidden"
+                  value="Hidden"
                   color="primary"
                 ></v-radio>
               </v-radio-group>
@@ -345,7 +416,11 @@ const isMenuOpen = ref(false);
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title mb-8">Expiry date</h3>
-            <GDatePicker label="Expiry date" bg-color="#faf9fe" />
+            <GDatePicker
+              label="Expiry date"
+              bg-color="#faf9fe"
+              v-model="newProduct.ExpireDate"
+            />
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title">Brand</h3>
@@ -357,14 +432,10 @@ const isMenuOpen = ref(false);
                 bg-color="#faf9fe"
                 placeholder="Choose brand"
                 style="margin-left: -0.5rem"
-                :items="[
-                  'California',
-                  'Colorado',
-                  'Florida',
-                  'Georgia',
-                  'Texas',
-                  'Wyoming',
-                ]"
+                :items="allBrands"
+                v-model="newProduct.BrandUuid"
+                item-value="uuid"
+                item-title="displayName_En"
               ></v-select>
             </v-col>
           </VCard>
@@ -380,6 +451,7 @@ const isMenuOpen = ref(false);
                 placeholder="Enter weight"
                 variant="outlined"
                 bg-color="#faf9fe"
+                v-model="newProduct.Weight"
                 style="
                   color: #afaacb;
                   font-size: 14px;
@@ -398,6 +470,7 @@ const isMenuOpen = ref(false);
                   density="compact"
                   variant="outlined"
                   bg-color="#faf9fe"
+                  v-model="newProduct.Width"
                 />
               </v-col>
 
@@ -409,6 +482,7 @@ const isMenuOpen = ref(false);
                   density="compact"
                   variant="outlined"
                   bg-color="#faf9fe"
+                  v-model="newProduct.Height"
                 />
               </v-col>
 
@@ -420,6 +494,7 @@ const isMenuOpen = ref(false);
                   density="compact"
                   variant="outlined"
                   bg-color="#faf9fe"
+                  v-model="newProduct.Depth"
                 />
               </v-col>
             </v-row>
@@ -435,6 +510,7 @@ const isMenuOpen = ref(false);
       style="margin-right: 1rem"
       variant="elevated"
       color="#733ee4"
+      @click="sendNewProduct"
     >
       <VIcon class="card-info-btn-icon" icon="mdi-plus" />
       Add Product
@@ -487,7 +563,12 @@ const isMenuOpen = ref(false);
 .card-tags {
   padding: 1rem;
 }
-
+.tag {
+  border-radius: 4px;
+  background: #7066a2;
+  padding: 3px 8px;
+  color: #fff;
+}
 .card-file {
   height: 128px;
   border-radius: 8px;
