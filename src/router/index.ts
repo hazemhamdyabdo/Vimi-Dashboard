@@ -91,6 +91,14 @@ const router = createRouter({
           meta: {
             title: 'View Customer',
           },
+        },
+        {
+          path: "add-customers",
+          name: "add-customers",
+          component: () => import('@/pages/customers/Add.vue'),
+          meta: {
+            title: 'Add Customer',
+          },
         }
       ],
     },
