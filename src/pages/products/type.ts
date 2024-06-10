@@ -1,4 +1,5 @@
 interface Product {
+  [x: string]: any;
   DisplayName_En: string;
   DisplayName_Ar: string;
   Sku: string;

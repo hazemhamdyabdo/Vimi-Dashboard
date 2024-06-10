@@ -3,7 +3,9 @@ import router from '@/router';
 const axiosIns = axios.create({
   baseURL: 'https://techify-001-site1.htempurl.com/api/v1/',
   // timeout: 2000,
-  headers: { 'x-api-key': 'x5b9j8p2qRz3vdK1st7yf4ul6wa0ezcv' },
+  headers: {
+    'x-api-key': 'x5b9j8p2qRz3vdK1st7yf4ul6wa0ezcv',
+  },
 });
 
 axiosIns.interceptors.request.use((config) => {
