@@ -61,7 +61,7 @@ const router = createRouter({
           },
         },
         {
-          path: 'view-category',
+          path: 'view-category/:id',
           name: 'view-category',
           component: () => import('@/pages/categories/View.vue'),
           meta: {
@@ -117,13 +117,13 @@ const router = createRouter({
           },
         },
         {
-          path: "add-customers",
-          name: "add-customers",
+          path: 'add-customers',
+          name: 'add-customers',
           component: () => import('@/pages/customers/Add.vue'),
           meta: {
             title: 'Add Customer',
           },
-        }
+        },
       ],
     },
   ],

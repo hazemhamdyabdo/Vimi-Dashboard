@@ -1,5 +1,5 @@
 <template>
-  <v-dialog persistent v-model="popupStore.popupModalGetter">
+  <v-dialog persistent v-model="localModalState">
     <v-card
       style="border-radius: 16px; background: #fff"
       class="px-6 pt-2 pb-10 mx-auto"
@@ -11,7 +11,12 @@
         style="background-color: transparent"
         class="cursor-pointer d-flex justify-end pa-0 mt-4"
       >
-        <v-icon size="24" color="#9089B2" @click="setPopupState">
+        <v-icon
+          size="24"
+          color="#9089B2"
+          @click="closeModal"
+          :disabled="isDeletionInProgress"
+        >
           mdi-close
         </v-icon>
       </v-card-title>
@@ -19,27 +24,27 @@
         <v-sheet
           height="64px"
           width="64px"
-          :color="popupStore.popupModalOptionsGetter.sheetColor"
+          :color="options.sheetColor"
           class="rounded-lg d-flex mx-auto"
           style="border-radius: 16px"
         >
           <!-- <component
-            :is="popupStore.popupModalOptionsGetter.icon"
+            :is="options.icon"
             class="mx-auto my-auto"
             :color="'#EB5757'"
           /> -->
           <DeleteIcon
-            v-if="popupStore.popupModalOptionsGetter.icon === 'deleteIcon'"
+            v-if="options.icon === 'deleteIcon'"
             class="mx-auto my-auto"
             :color="'#EB5757'"
           />
           <EditIcon
-            v-if="popupStore.popupModalOptionsGetter.icon === 'editIcon'"
+            v-if="options.icon === 'editIcon'"
             class="mx-auto my-auto"
             :color="'#EB5757'"
           />
           <AddIcon
-            v-if="popupStore.popupModalOptionsGetter.icon === 'AddIcon'"
+            v-if="options.icon === 'AddIcon'"
             class="mx-auto my-auto"
             :color="'#733EE4'"
           />
@@ -56,7 +61,7 @@
             line-height: 150%;
           "
         >
-          {{ popupStore.popupModalOptionsGetter.title }}
+          {{ options.title }}
         </p>
         <p
           class="mt-2"
@@ -70,16 +75,9 @@
             line-height: 150%;
           "
         >
-          {{ popupStore.popupModalOptionsGetter.text }}
+          {{ options.text }}
         </p>
-        <div
-          class="mt-6"
-          v-if="
-            avaliableActions.includes(
-              popupStore.popupModalOptionsGetter.buttonTitle
-            )
-          "
-        >
+        <div class="mt-6" v-if="options.input">
           <p
             style="
               color: #afaacb;
@@ -134,7 +132,8 @@
             background: #fff;
             color: #21094a;
           "
-          @click="setPopupState"
+          :disabled="isDeletionInProgress"
+          @click="closeModal"
         >
           <span class="tf"> Cancel </span>
         </v-btn>
@@ -142,11 +141,13 @@
           class="mx-2 mt-0"
           min-width="10.375rem"
           min-height="48"
-          :style="`border-radius: 8px; background: ${popupStore.popupModalOptionsGetter.buttonColor}; color: #fff`"
-          @click="setPopupState"
+          :style="`border-radius: 8px; background: ${options.buttonColor}; color: #fff`"
+          :loading="isDeletionInProgress"
+          :disabled="isDeletionInProgress"
+          @click="deleteItem"
         >
           <span class="tf">
-            {{ popupStore.popupModalOptionsGetter.buttonTitle }}
+            {{ options.buttonTitle }}
           </span>
         </v-btn>
         <v-spacer />
@@ -156,14 +157,43 @@
 </template>
 
 <script setup lang="ts">
-import { usePopUpStore } from '@/stores/popup.state.ts';
+const props = defineProps({
+  modalState: {
+    default: false,
+    required: true,
+  },
+  options: {
+    default: {
+      sheetColor: '#733EE4',
+      icon: 'AddIcon',
+      title: 'Title',
+      text: 'Text',
+      buttonColor: '#733EE4',
+      buttonTitle: 'Button',
+      input: false,
+    },
+    required: true,
+  },
+  isDeletionInProgress: {
+    default: false,
+    required: false,
+  },
+});
 
-const popupStore: any = usePopUpStore();
+let localModalState = computed({
+  get() {
+    return props.modalState;
+  },
+  set(value) {
+    emit('updateState', value);
+  },
+});
+const emit = defineEmits(['closeModal', 'updateState', 'deleteItem']);
+const closeModal = () => {
+  emit('closeModal', {});
+};
 
-const avaliableActions = ['Add', 'Edit'];
-const setPopupState = () => {
-  popupStore.togglePopupState({
-    state: false,
-  });
+const deleteItem = () => {
+  emit('deleteItem');
 };
 </script>
