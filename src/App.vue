@@ -1,7 +1,6 @@
 <template>
   <v-app style="background: #faf9fe">
     <RouterView />
-    <GlobalPopup />
   </v-app>
 </template>
 

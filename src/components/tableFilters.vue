@@ -10,7 +10,7 @@
       :key="filter.id"
       class="d-flex justify-between my-auto"
     >
-      <div class="d-flex">
+      <div class="d-flex cursor-pointer" @click="handleEmitActions(filter)">
         <v-icon v-if="filter.icon" size="15" class="my-auto me-2">
           {{ filter.icon }}
         </v-icon>
@@ -19,7 +19,8 @@
             class="shrink"
             density="compact"
             hide-details
-          ></v-checkbox>
+            v-model="selectAll"
+          />
         </span>
         <p class="my-auto text-subtitle-2">
           {{ filter.label }}
@@ -31,12 +32,65 @@
 </template>
 
 <script lang="ts" setup>
-defineProps({
+const props = defineProps({
   filters: {
     type: Object,
     required: true,
   },
+  triggerCheckAll: {
+    type: Boolean,
+    default: null,
+  },
 });
+
+const emit = defineEmits([
+  'Delete',
+  'CancelSellection',
+  'SelectAll',
+  'viewDetails',
+]);
+
+const DeleteEmits: any = computed(() => {
+  return {
+    options: {
+      title: 'Delete Selected Products',
+      text: 'Are you sure you want to delete all of the selected Products ?',
+      buttonTitle: 'Yes, Delete',
+      buttonColor: '#EB5757',
+      icon: 'deleteIcon',
+      sheetColor: '#eb57571a',
+    },
+  };
+});
+
+const selectAll = ref(false);
+
+watch(
+  () => props.triggerCheckAll,
+  (val) => {
+    selectAll.value = val;
+  },
+  { immediate: true }
+);
+
+const handleEmitActions = (filter: any) => {
+  switch (filter.label) {
+    case 'Delete':
+      emit('Delete', DeleteEmits.value);
+      break;
+    case 'Cancel Sellection':
+      emit('CancelSellection');
+      break;
+    case 'Select All':
+      emit('SelectAll', selectAll.value);
+      break;
+    case 'View Details':
+      emit('viewDetails');
+      break;
+    default:
+      break;
+  }
+};
 </script>
 
 <style scoped>

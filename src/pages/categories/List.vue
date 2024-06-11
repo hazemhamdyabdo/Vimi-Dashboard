@@ -6,21 +6,186 @@
       placeholder="Search , ID , Category name"
       pathName="add-category"
     />
-    <tableFilters v-else :filters="categoriesFilter" />
-    <listingItems @emitSelectedItems="selectedItems = $event" class="my-6" />
-    <div class="d-flex justify-space-between w-100">
-      <p class="my-auto text-9089B2">View 8 from 2000</p>
-      <v-pagination class="pagination" v-model="page" :length="pageCount" />
+    <tableFilters
+      v-else
+      :filters="categoriesFilter"
+      :triggerCheckAll="triggerCheckAll"
+      @Delete="toggleDeleteModal"
+      @CancelSellection="resetSelectedItems"
+      @SelectAll="SelectAll"
+    />
+    <listingItems
+      ref="table"
+      @emitSelectedItems="selectedItems = $event"
+      @openDeleteModal="toggleDeleteModal"
+      class="my-6"
+      :items="tableItems"
+      :headers="headers"
+      :itemValue="'uuid'"
+      :isPageLoading="isPageLoading"
+      :triggerResetSelectedItems="triggerResetSelectedItems"
+      :triggerSelectAll="triggerSelectAll"
+    />
+    <div class="w-100">
+      <p class="my-auto text-9089B2">
+        View
+        {{ tableItems.length }} from {{ totalCount }}
+      </p>
+      <v-pagination
+        v-model="page"
+        :length="pagesCount"
+        @change="getNextCategoriesPage"
+      />
     </div>
+    <GlobalPopup
+      :options="modalOptions"
+      :modalState="modalState"
+      :isDeletionInProgress="isDeletionInProgress"
+      @closeModal="toggleDeleteModal"
+      @deleteItem="deleteMultiple"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import categoriesFilter from '@/constants/categoriesFilter';
+import { getCtegories, deleteCtegories } from '@/apis/categories.ts';
 
-let page = 1;
-const pageCount = 4;
-const selectedItems = ref([]);
+let page = ref(1);
+let isPageLoading = ref(false);
+let isDeletionInProgress = ref(false);
+
+const selectedItems: Ref<string[]> = ref([]);
+let categories = ref([]);
+let totalCount = ref(0);
+
+let pagesCount = computed(() => {
+  return !totalCount.value || !categories.value.length
+    ? 0
+    : Math.ceil(totalCount.value / 10);
+});
+
+const modalOptions = ref({});
+
+let modalState = ref(false);
+let table: any = ref(null);
+
+let triggerResetSelectedItems = ref(false);
+let triggerSelectAll = ref(false);
+
+const getNextCategoriesPage = () => {
+  page.value += 1;
+};
+const resetSelectedItems = () => {
+  selectedItems.value = [];
+  triggerResetSelectedItems.value = !triggerResetSelectedItems.value;
+};
+
+const SelectAll = (selectAll: boolean) => {
+  triggerSelectAll.value = !selectAll;
+};
+
+watch(
+  () => selectedItems.value,
+  (val) => {
+    if (val.length === 10) {
+      return setCheckAll(true);
+    }
+    return setCheckAll(false);
+  }
+);
+
+const triggerCheckAll = ref(false);
+const setCheckAll = (val: boolean) => {
+  triggerCheckAll.value = val;
+};
+
+// let deletedItemId = ref('');
+
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
+  modalOptions.value = options;
+  modalState.value = !!Object.keys(options).length;
+  uuid.length && selectedItems.value.push(uuid);
+};
+
+// const deleteItem = async () => {
+//   isDeletionInProgress.value = true;
+//   try {
+//     await deleteCtegories(deletedItemId.value);
+//   } catch {
+//   } finally {
+//     toggleDeleteModal();
+//     isDeletionInProgress.value = false;
+//     setCategories();
+//   }
+// };
+
+const deleteMultiple = async () => {
+  isDeletionInProgress.value = true;
+  try {
+    await selectedItems.value.map(async (item) => {
+      try {
+        await deleteCtegories(item);
+      } finally {
+        isDeletionInProgress.value = false;
+      }
+    });
+  } catch {
+  } finally {
+    setTimeout(() => {
+      toggleDeleteModal({});
+      setCategories();
+    });
+  }
+};
+
+const setCategories = async () => {
+  isPageLoading.value = true;
+  try {
+    const { data } = await getCtegories();
+    categories.value = data.data.result ?? [];
+    totalCount.value = data.data.totalCount;
+    isPageLoading.value = false;
+  } catch {
+  } finally {
+    resetSelectedItems();
+  }
+};
+
+const tableItems = computed(() => {
+  return categories.value.slice(10 * page.value - 10, 10 * page.value);
+});
+const headers = [
+  {
+    title: 'ID',
+    key: 'uuid',
+    sortable: false,
+    align: 'left',
+  },
+  { title: 'Category', key: 'displayName_En', align: 'left', sortable: true },
+  {
+    title: 'Sub-Cate. No.',
+    key: 'subCategoryCount',
+    align: 'center',
+    sortable: false,
+  },
+  {
+    title: 'Items QTY',
+    key: 'productCount',
+    align: 'center',
+    sortable: false,
+  },
+  {
+    title: 'Published date',
+    key: 'dateCreated',
+    align: 'left',
+    sortable: false,
+  },
+  { title: 'Visibility', key: 'visibility', align: 'center', sortable: true },
+  { key: 'actions', align: 'center', sortable: false },
+];
+
+setCategories();
 </script>
 
 <style>
