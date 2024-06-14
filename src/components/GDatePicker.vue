@@ -89,7 +89,6 @@ export default {
   watch: {
     selectedDate(newVal) {
       const newDate = newVal?.toLocaleDateString("en-CA");
-      console.log(newDate);
       this.$emit("update:modelValue", newDate);
     },
     modelValue(newVale) {

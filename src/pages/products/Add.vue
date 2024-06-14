@@ -2,10 +2,8 @@
 import type { Product } from "./type";
 import { getCategories } from "@/apis/_categories";
 import { getBrands } from "@/apis/_brands";
-import { addProduct } from "@/apis/products";
 import { productType } from "@/enums";
-import axios from "axios";
-
+import { getFormData, sendFormData } from "@/composables/SendFormRequest";
 const newProduct: Product = ref({
   Discounts: {},
 });
@@ -65,35 +63,6 @@ const getAdditionalData = async () => {
   }
 };
 
-const isObject = (value: object) => value?.constructor === Object;
-
-const getFormData = (_data: object): FormData => {
-  const data = new FormData();
-
-  const append = (value: any, key = "", initial = true) => {
-    if (isObject(value) || Array.isArray(value)) {
-      Object.entries(value as object).forEach(([_key, _value]) => {
-        const __key = initial
-          ? _key
-          : key +
-            (isObject(value)
-              ? [`${_key}`]
-              : Array.isArray(value)
-                ? "[]"
-                : _key);
-
-        append(_value, __key, false);
-      });
-    } else {
-      data.append(key, [undefined, null].includes(value) ? "" : value);
-    }
-  };
-
-  append(_data);
-
-  return data;
-};
-
 const setDiscouount = (dateFrom: string, dateTo: string) => {
   newProduct.value.discounts.DateFrom = dateFrom;
   newProduct.value.discounts.DateTo = dateTo;
@@ -126,13 +95,7 @@ const uploadProduct = async () => {
   });
 
   try {
-    axios.post("https://techify-001-site1.htempurl.com/api/v1/products", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`,
-        "x-api-key": "x5b9j8p2qRz3vdK1st7yf4ul6wa0ezcv",
-      },
-    });
+    sendFormData("products", form);
   } catch (error) {
     console.log(error);
   }
