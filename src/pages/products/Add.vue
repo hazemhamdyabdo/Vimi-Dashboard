@@ -7,6 +7,7 @@ import { getFormData, sendFormData } from "@/composables/SendFormRequest";
 const newProduct: Product = ref({
   Discounts: {},
 });
+const showToast = ref(false);
 const allCategories: any = ref([]);
 const imgSrcs = ref([]);
 const selectedFiles = ref([]);
@@ -96,6 +97,7 @@ const uploadProduct = async () => {
 
   try {
     sendFormData("products", form);
+    showToast.value = true;
   } catch (error) {
     console.log(error);
   }
@@ -106,6 +108,7 @@ onMounted(async () => {
 </script>
 <template>
   <section class="add-products px-6">
+    <BaseNotifications :notification="showToast" />
     <VContainer>
       <VRow>
         <VCol cols="12">
@@ -345,7 +348,7 @@ onMounted(async () => {
                     class="card-info-list"
                     :items="allCategories"
                     item-value="uuid"
-                    item-title="displayName_En"
+                    item-title="uuid"
                   ></v-select>
                 </VCol>
                 <VCol>

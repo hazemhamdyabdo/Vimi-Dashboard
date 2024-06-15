@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddIcon: typeof import('./src/components/svgs/AddIcon.vue')['default']
+    BaseNotifications: typeof import('./src/components/BaseNotifications.vue')['default']
     BasePagination: typeof import('./src/components/BasePagination.vue')['default']
     CalenderIcon: typeof import('./src/components/svgs/CalenderIcon.vue')['default']
     DataTableLoader: typeof import('./src/components/dataTableLoader.vue')['default']
