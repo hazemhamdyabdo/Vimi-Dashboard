@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Product } from "./type";
-import { getCategories } from "@/apis/_categories";
+import { getCtegories } from "@/apis/categories";
 import { getBrands } from "@/apis/_brands";
 import { productType } from "@/enums";
 import { getFormData, sendFormData } from "@/composables/SendFormRequest";
@@ -52,7 +52,7 @@ const getAdditionalData = async () => {
   try {
     const {
       data: { data },
-    } = await getCategories();
+    } = await getCtegories();
     allCategories.value = data.result;
     const {
       data: { data: brands },
