@@ -3,19 +3,15 @@
     <template v-slot:activator="{ props }">
       <v-card
         flat
-        class="border-sm rounded-lg mb-4 d-flex ml-4"
+        class="rounded-lg mb-4 d-flex"
         height="48"
-        width="15.5rem"
-        style="border-radius: 8px; border: 1px solid #e8e7ef; background: #fff"
+        style="
+          border-radius: 8px;
+          border: 1px solid #e8e7ef;
+          background: #faf9fe;
+        "
       >
         <v-text-field
-          style="
-            font-family: Roboto;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 150%;
-          "
           class="my-auto px-4 pb-1 my-auto"
           variant="plain"
           :placeholder="label"
@@ -50,11 +46,11 @@ export default {
   props: {
     modelValue: {
       type: Date,
-      default: '',
+      default: "",
     },
     bgColor: {
       type: String,
-      default: '#faf9fe',
+      default: "#faf9fe",
     },
     border: {
       type: Boolean,
@@ -62,18 +58,18 @@ export default {
     },
     label: {
       type: String,
-      default: '',
+      default: "",
     },
     color: {
       type: String,
-      default: '',
+      default: "",
     },
     min: {
       type: Date,
-      default: '',
+      default: "",
     },
   },
-  emits: ['update:modelValue'],
+  emits: ["update:modelValue"],
   data() {
     return {
       isMenuOpen: false,
@@ -83,20 +79,20 @@ export default {
   computed: {
     formattedDate() {
       return this.selectedDate
-        ? this.selectedDate?.toLocaleDateString('en-CA')
-        : '';
+        ? this.selectedDate?.toLocaleDateString("en-CA")
+        : "";
     },
     applyStyle() {
-      return this.border ? 'border-sm rounded-lg px-4 py-1 bg-white' : '';
+      return this.border ? "border-sm rounded-lg px-4 py-1 bg-white" : "";
     },
   },
   watch: {
     selectedDate(newVal) {
-      const newDate = newVal;
-      this.$emit('update:modelValue', newDate);
+      const newDate = newVal?.toLocaleDateString("en-CA");
+      this.$emit("update:modelValue", newDate);
     },
     modelValue(newVale) {
-      this.selectedDate = newVale ? new Date(newVale) : new Date();
+      // this.selectedDate = newVale ? new Date(newVale) : new Date();
     },
   },
 };
