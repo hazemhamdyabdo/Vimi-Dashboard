@@ -27,6 +27,20 @@ interface Product {
   StockQuantity: number;
   categoryUuid: string;
 }
-export {
-  Product
+
+type Visibility = "Published" | "Unpublished";
+
+interface Brand {
+  uuid: string;
+  dateCreated: string; // or Date if you plan to use Date objects
+  displayName_En: string;
+  displayName_Ar: string;
+  visibility: Visibility;
+  photoPath: string;
 }
+
+export {
+  Product,
+  Brand
+}
+

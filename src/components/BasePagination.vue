@@ -3,7 +3,9 @@
     <p class="my-auto text-9089B2">
       <slot name="label" />
     </p>
-    <slot class="pagination" name="pagination" />
+    <div class="pagination">
+      <slot name="paginations" />
+    </div>
   </div>
 </template>
 
