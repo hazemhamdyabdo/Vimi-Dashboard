@@ -83,8 +83,6 @@ async function fetchProduct() {
       data: { data },
     } = await showProduct(route.params.id as string);
     product.value = data;
-    console.log(product.value);
-
     isPageLoading.value = false;
   } catch {}
 }
@@ -106,7 +104,6 @@ onMounted(async () => {
   await fetchProduct();
   await getBrandDetails();
   await getCategoryNameForProduct();
-  console.log(category.value);
 });
 </script>
 
@@ -174,6 +171,12 @@ onMounted(async () => {
                   width: fit-content;
                   height: fit-content;
                   cursor: pointer;
+                "
+                @click="
+                  $router.push({
+                    name: 'edit-product',
+                    params: { id: product.uuid },
+                  })
                 "
               >
                 <VIcon

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { Product } from "./type";
 import { getCtegories } from "@/apis/categories";
+import { showProduct } from "@/apis/products";
 import { getBrands } from "@/apis/_brands";
 import { productType } from "@/enums";
 import { getFormData, sendFormData } from "@/composables/SendFormRequest";
-const newProduct: Product = ref({
+const newProduct = ref({
   Discounts: {},
-});
+}) as unknown as Product;
 const showToast = ref(false);
 const allCategories: any = ref([]);
 const imgSrcs = ref([]);
@@ -22,11 +23,14 @@ const isScheduledOpen = ref(false);
 const dateFrom = ref("");
 const dateTo = ref();
 
+const isEditing = computed(() => {
+  return !!newProduct.value.uuid;
+});
 const handleFileChange = async (event: any) => {
   const files = event.target.files;
   const newFiles = Array.from(files);
   selectedFiles.value.push(...newFiles);
-  const newImgSrcs = newFiles.map((file) =>
+  const newImgSrcs = newFiles.map((file: any) =>
     (window.URL ? URL : webkitURL).createObjectURL(file)
   );
   imgSrcs.value.push(...newImgSrcs);
@@ -64,35 +68,28 @@ const getAdditionalData = async () => {
   }
 };
 
-const setDiscouount = (dateFrom: string, dateTo: string) => {
+const setDiscount = (dateFrom: string, dateTo: string) => {
   newProduct.value.discounts.DateFrom = dateFrom;
   newProduct.value.discounts.DateTo = dateTo;
 };
 
 const uploadProduct = async () => {
   // @ts-ignore
-  newProduct.value.SuggestedUse_En = suggestedUse?.value
-    .getText()
-    .replace(/\n/g, " ");
-  // @ts-ignore
-  newProduct.value.GeneralInfo_Ar = generalInfo_Ar?.value
-    .getText()
-    .replace(/\n/g, " ");
+  newProduct.value.suggestedUse_En = suggestedUse?.value.getText();
 
   // @ts-ignore
-  newProduct.value.SuggestedUse_Ar = suggestedUse_Ar?.value
-    .getText()
-    .replace(/\n/g, " ");
+  newProduct.value.generalInfo_Ar = generalInfo_Ar?.value.getText();
 
   // @ts-ignore
-  newProduct.value.GeneralInfo_En = generalInfo?.value
-    .getText()
-    .replace(/\n/g, " ");
+  newProduct.value.suggestedUse_Ar = suggestedUse_Ar?.value.getText();
+
+  // @ts-ignore
+  newProduct.value.generalInfo_En = generalInfo?.value.getText();
 
   const form = getFormData({
     ...newProduct.value,
-    Tags: tagsToAdd.value,
-    ImageFiles: selectedFiles.value,
+    tags: tagsToAdd.value,
+    imageFiles: selectedFiles.value,
   });
 
   try {
@@ -102,8 +99,40 @@ const uploadProduct = async () => {
     console.log(error);
   }
 };
+// check if there are any route params get the response and set it to newProduct
+const route = useRoute();
+const setProductData = async () => {
+  if (isEditing) {
+    try {
+      const {
+        data: { data },
+      } = await showProduct(route.params.id as string);
+      newProduct.value = data;
+
+      // @ts-ignore
+      suggestedUse.value.setText(newProduct.value.suggestedUse_En);
+      // @ts-ignore
+      suggestedUse_Ar.value.setText(newProduct.value.suggestedUse_Ar);
+      // @ts-ignore
+      generalInfo.value.setText(newProduct.value.generalInfo_En);
+      // @ts-ignore
+      generalInfo_Ar.value.setText(newProduct.value.generalInfo_Ar);
+      // ! expire date not show in case edit
+      newProduct.value.expireDate = newProduct.value.dateExpiry;
+      tagsToAdd.value = newProduct.value.tags;
+      imgSrcs.value = newProduct.value.images?.map(
+        (image: { imagePath: string }) => image.imagePath
+      );
+
+      console.log();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
 onMounted(async () => {
   await getAdditionalData();
+  await setProductData();
 });
 </script>
 <template>
@@ -145,7 +174,11 @@ onMounted(async () => {
                 :style="`margin-left: ${index === 0 ? '8rem' : '0'}; margin-top: 1rem`"
               >
                 <img
-                  :src="src"
+                  :src="
+                    isEditing
+                      ? `https://techify-001-site1.htempurl.com${src}`
+                      : src
+                  "
                   alt="Selected Image"
                   style="max-width: 100px; height: inherit"
                 />
@@ -178,7 +211,7 @@ onMounted(async () => {
                       density="compact"
                       placeholder="Enter product name"
                       variant="outlined"
-                      v-model="newProduct.DisplayName_En"
+                      v-model="newProduct.displayName_En"
                       class="card-info-input"
                       bg-color="#faf9fe"
                       style="
@@ -194,7 +227,7 @@ onMounted(async () => {
                     <VTextField
                       label=""
                       density="compact"
-                      v-model="newProduct.Description_En"
+                      v-model="newProduct.description_En"
                       placeholder="Enter short description"
                       variant="outlined"
                       class="card-info-input"
@@ -252,7 +285,7 @@ onMounted(async () => {
                       density="compact"
                       placeholder="أدخل إسم المنتج"
                       variant="outlined"
-                      v-model="newProduct.DisplayName_Ar"
+                      v-model="newProduct.displayName_Ar"
                       class="card-info-input"
                       dir="rtl"
                       bg-color="#faf9fe"
@@ -269,7 +302,7 @@ onMounted(async () => {
                     <VTextField
                       label=""
                       density="compact"
-                      v-model="newProduct.Description_Ar"
+                      v-model="newProduct.description_Ar"
                       placeholder="أدخل الإسم القصير للمنتج"
                       variant="outlined"
                       class="card-info-input"
@@ -358,7 +391,7 @@ onMounted(async () => {
                     density="compact"
                     variant="outlined"
                     bg-color="#faf9fe"
-                    v-model="newProduct.SubCategoryUuid"
+                    v-model="newProduct.subCategoryUuid"
                     placeholder="Choose sub category"
                     class="card-info-list"
                     :items="subCategories"
@@ -382,7 +415,7 @@ onMounted(async () => {
                     label=""
                     placeholder="Enter SKU"
                     density="compact"
-                    v-model="newProduct.Sku"
+                    v-model="newProduct.sku"
                     variant="outlined"
                     bg-color="#faf9fe"
                     style="
@@ -401,7 +434,7 @@ onMounted(async () => {
                     placeholder="Enter quantity"
                     variant="outlined"
                     type="number"
-                    v-model="newProduct.StockQuantity"
+                    v-model="newProduct.stockQuantity"
                     bg-color="#faf9fe"
                     style="
                       color: #afaacb;
@@ -428,7 +461,7 @@ onMounted(async () => {
                     placeholder="Enter weight"
                     variant="outlined"
                     bg-color="#faf9fe"
-                    v-model="newProduct.Weight"
+                    v-model="newProduct.weight"
                     style="
                       color: #afaacb;
                       font-size: 14px;
@@ -449,7 +482,7 @@ onMounted(async () => {
                         density="compact"
                         variant="outlined"
                         bg-color="#faf9fe"
-                        v-model="newProduct.Width"
+                        v-model="newProduct.width"
                       />
                     </v-col>
 
@@ -461,7 +494,7 @@ onMounted(async () => {
                         density="compact"
                         variant="outlined"
                         bg-color="#faf9fe"
-                        v-model="newProduct.Height"
+                        v-model="newProduct.height"
                       />
                     </v-col>
 
@@ -473,7 +506,7 @@ onMounted(async () => {
                         density="compact"
                         variant="outlined"
                         bg-color="#faf9fe"
-                        v-model="newProduct.Depth"
+                        v-model="newProduct.depth"
                       />
                     </v-col>
                   </VRow>
@@ -496,7 +529,7 @@ onMounted(async () => {
                     placeholder="Enter price"
                     density="compact"
                     variant="outlined"
-                    v-model="newProduct.Price"
+                    v-model="newProduct.price"
                     type="number"
                     suffix="KD"
                     bg-color="#faf9fe"
@@ -514,7 +547,7 @@ onMounted(async () => {
                     label=""
                     suffix="KD"
                     type="number"
-                    v-model="newProduct.SalePrice"
+                    v-model="newProduct.salePrice"
                     density="compact"
                     placeholder="Enter price"
                     variant="outlined"
@@ -527,23 +560,6 @@ onMounted(async () => {
                     "
                   />
                 </v-col>
-
-                <!-- <VMenu v-model="isMenuOpen" :close-on-content-click="false">
-                  <template v-slot:activator="{ props }">
-                    <span
-                      style="color: #733ee4; cursor: pointer"
-                      class="pa-4"
-                      v-bind="props"
-                    >
-                      Schedule discount
-                    </span>
-                  </template>
-                  <VDatePicker
-                    @input="isMenuOpen = false"
-                    label=""
-                    density="compact"
-                  />
-                </VMenu> -->
               </VRow>
               <span
                 style="color: #733ee4; cursor: pointer"
@@ -593,7 +609,7 @@ onMounted(async () => {
                         color: #733ee4;
                       "
                       variant="elevated"
-                      @click="setDiscouount(dateFrom, dateTo)"
+                      @click="setDiscount(dateFrom, dateTo)"
                     >
                       <VIcon
                         icon="mdi-plus"
@@ -608,7 +624,7 @@ onMounted(async () => {
             </VCard>
           </VCol>
           <!-- in case edit show -->
-          <VCol v-if="!$route.meta.title === 'Add Product'">
+          <VCol v-if="$route.meta.title !== 'Add Product'">
             <VCard
               class="card card-Warehouse"
               style="margin-bottom: 1rem; margin-top: 1rem"
@@ -632,7 +648,7 @@ onMounted(async () => {
                 label=""
                 density="compact"
                 variant="outlined"
-                v-model="newProduct.Type"
+                v-model="newProduct.type"
                 bg-color="#faf9fe"
                 placeholder="Choose type"
                 style="margin-left: -0.5rem; width: 106%"
@@ -695,7 +711,7 @@ onMounted(async () => {
               "
             >
               <v-radio-group
-                v-model="newProduct.Visibility"
+                v-model="newProduct.visibility"
                 inline
                 hide-details
               >
@@ -718,7 +734,7 @@ onMounted(async () => {
             <GDatePicker
               label="Expiry date"
               bg-color="#faf9fe"
-              v-model="newProduct.ExpireDate"
+              v-model="newProduct.expireDate"
             />
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
@@ -732,7 +748,7 @@ onMounted(async () => {
                 placeholder="Choose brand"
                 style="margin-left: -0.5rem"
                 :items="allBrands"
-                v-model="newProduct.BrandUuid"
+                v-model="newProduct.brandUuid"
                 item-value="uuid"
                 item-title="displayName_En"
               ></v-select>
