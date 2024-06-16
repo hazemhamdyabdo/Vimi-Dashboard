@@ -518,6 +518,7 @@ const openDeleteModal = ({ uuid }) => {
             :color="'#AFAACB'"
             :width="20"
             :height="20"
+            @click.stop="$emit('edit', item.uuid)"
           />
           <deleteIcon
             class="mx-auto my-auto cursor-pointer"

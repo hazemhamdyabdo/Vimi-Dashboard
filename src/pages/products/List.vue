@@ -136,10 +136,14 @@ onMounted(async () => {
       @SelectAll="SelectAll"
       @CancelSellection="resetSelectedItems"
       @Delete="toggleDeleteModal"
+      @edit="
+        $router.push({ name: 'edit-product', params: { id: selectedItems[0] } })
+      "
     />
     <listingItems
       @emitSelectedItems="selectedItems = $event"
       @openDeleteModal="toggleDeleteModal"
+      @edit="$router.push({ name: 'edit-product', params: { id: $event } })"
       :triggerSelectAll="triggerSelectAll"
       :routeDir="'product'"
       :itemValue="'uuid'"
