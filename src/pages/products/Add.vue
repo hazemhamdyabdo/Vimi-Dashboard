@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import type { Product } from "./type";
 import { getCtegories } from "@/apis/categories";
-import { showProduct } from "@/apis/products";
 import { getBrands } from "@/apis/_brands";
 import { productType } from "@/enums";
 import { getFormData, sendFormData } from "@/composables/SendFormRequest";
+import { useEditProductData } from "@/composables/UseEditProductData";
+
 const newProduct = ref({
   discounts: {},
 }) as unknown as Product;
 
-const selectedAction = ref(null) as string;
+const selectedAction: Ref<string> = ref("");
 const showToast = ref(false);
-const oldQuantity = ref(0);
+// const oldQuantity = ref(0);
 const allCategories: any = ref([]);
 const imgSrcs = ref([]);
 const selectedFiles = ref([]);
@@ -27,9 +28,16 @@ const dateFrom = ref("");
 const dateTo = ref();
 const isThereSelectedDates = ref(false);
 
-const isEditing = computed(() => {
-  return !!newProduct.value.uuid;
+const { isEditing, oldQuantity, setProductData } = useEditProductData();
+
+const subCategories: any = computed(() => {
+  return allCategories.value.filter(
+    (category: { uuid: string }) =>
+      // @ts-ignore
+      category.uuid === newProduct.value.categoryUuid
+  )?.[0]?.subCategories;
 });
+
 const handleFileChange = async (event: any) => {
   const files = event.target.files;
   const newFiles = Array.from(files);
@@ -56,22 +64,15 @@ const deleteDiscount = () => {
   dateTo.value = "";
   isScheduledOpen.value = false;
 };
-const subCategories: any = computed(() => {
-  return allCategories.value.filter(
-    (category: { uuid: string }) =>
-      // @ts-ignore
-      category.uuid === newProduct.value.categoryUuid
-  )?.[0]?.subCategories;
-});
 
 const addQuantity = (quantity: number) => {
   newProduct.value.stockQuantity += +quantity;
-  selectedAction.value = null;
+  selectedAction!.value = "";
 };
 
 const reduceQuantity = (quantity: number) => {
   newProduct.value.stockQuantity -= +quantity;
-  selectedAction.value = null;
+  selectedAction.value = "";
 };
 const getAdditionalData = async () => {
   try {
@@ -120,41 +121,18 @@ const uploadProduct = async () => {
     console.log(error);
   }
 };
-// check if there are any route params get the response and set it to newProduct
-const route = useRoute();
-const setProductData = async () => {
-  if (isEditing) {
-    try {
-      const {
-        data: { data },
-      } = await showProduct(route.params.id as string);
-      newProduct.value = data;
-      oldQuantity.value = newProduct.value.stockQuantity;
 
-      // @ts-ignore
-      suggestedUse.value.setText(newProduct.value.suggestedUse_En);
-      // @ts-ignore
-      suggestedUse_Ar.value.setText(newProduct.value.suggestedUse_Ar);
-      // @ts-ignore
-      generalInfo.value.setText(newProduct.value.generalInfo_En);
-      // @ts-ignore
-      generalInfo_Ar.value.setText(newProduct.value.generalInfo_Ar);
-      // ! expire date not show in case edit
-      newProduct.value.expireDate = newProduct.value.dateExpiry;
-      tagsToAdd.value = newProduct.value.tags;
-      imgSrcs.value = newProduct.value.images?.map(
-        (image: { imagePath: string }) => image.imagePath
-      );
-
-      console.log();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-};
 onMounted(async () => {
   await getAdditionalData();
-  await setProductData();
+  await setProductData(
+    newProduct,
+    tagsToAdd,
+    imgSrcs,
+    suggestedUse,
+    suggestedUse_Ar,
+    generalInfo,
+    generalInfo_Ar
+  );
 });
 </script>
 <template>
@@ -468,7 +446,7 @@ onMounted(async () => {
                   ></VTextField>
                 </v-col>
                 <VCol
-                  v-if="isEditing && selectedAction === null"
+                  v-if="isEditing && selectedAction === ''"
                   cols="12"
                   style="
                     display: flex;
@@ -520,7 +498,7 @@ onMounted(async () => {
                     :icon="'plus'"
                     :actionText="'Add'"
                     @confirm="addQuantity"
-                    @cancel="selectedAction == null"
+                    @cancel="selectedAction = ''"
                   />
 
                   <ControlQuantity
@@ -528,9 +506,8 @@ onMounted(async () => {
                     :icon="'minus'"
                     :actionText="'Reduce'"
                     @confirm="reduceQuantity"
-                    @cancel="selectedAction == null"
+                    @cancel="selectedAction = ''"
                   />
-                  <!-- @confirm="addQuantity" -->
                 </VCol>
               </VRow>
             </VCard>
