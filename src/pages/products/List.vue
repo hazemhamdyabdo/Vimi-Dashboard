@@ -4,36 +4,32 @@ import { headers } from "@/constants/products";
 import { getProducts, deleteProduct } from "@/apis/products";
 import { getCtegories } from "@/apis/categories";
 
-let page = ref(1);
-let isPageLoading = ref(false);
-let isDeletionInProgress = ref(false);
-let totalCount = ref(0);
-const modalOptions = ref({});
 const selectedItems = ref([]);
-const allProducts = ref([]);
-const allCategories: any = ref([]);
-let modalState = ref(false);
-let triggerSelectAll = ref(false);
-const triggerCheckAll = ref(false);
-let triggerResetSelectedItems = ref(false);
-const setCheckAll = (val: boolean) => {
-  triggerCheckAll.value = val;
-};
-const toggleDeleteModal = ({ uuid = "", options = {} }) => {
-  modalOptions.value = options;
-  modalState.value = !!Object.keys(options).length;
-  uuid.length && selectedItems.value.push(uuid);
-};
-
-const SelectAll = (selectAll: boolean) => {
-  triggerSelectAll.value = !selectAll;
-};
 
 const resetSelectedItems = () => {
   selectedItems.value = [];
   triggerResetSelectedItems.value = !triggerResetSelectedItems.value;
 };
 
+const modalOptions = ref({});
+const modalState = ref(false);
+const toggleDeleteModal = ({ uuid = "", options = {} }) => {
+  modalOptions.value = options;
+  modalState.value = !!Object.keys(options).length;
+  uuid.length && selectedItems.value.push(uuid);
+};
+
+const triggerSelectAll = ref(false);
+const triggerCheckAll = ref(false);
+const triggerResetSelectedItems = ref(false);
+const setCheckAll = (val: boolean) => {
+  triggerCheckAll.value = val;
+};
+const SelectAll = (selectAll: boolean) => {
+  triggerSelectAll.value = !selectAll;
+};
+
+const isDeletionInProgress = ref(false);
 const deleteMultiple = async () => {
   isDeletionInProgress.value = true;
   try {
@@ -53,23 +49,18 @@ const deleteMultiple = async () => {
   }
 };
 
-watch(
-  () => selectedItems.value,
-  (val) => {
-    if (val.length === 10) {
-      return setCheckAll(true);
-    }
-    return setCheckAll(false);
-  }
-);
+const allProducts = ref([]);
+const allCategories: any = ref([]);
 
-let pagesCount = computed(() => {
-  return !totalCount.value || !allProducts.value.length
-    ? 0
-    : Math.ceil(totalCount.value / 10);
-});
-const getNextProductsPage = () => {
-  page.value += 1;
+const getAllCategories = async () => {
+  try {
+    const {
+      data: { data },
+    } = await getCtegories();
+    allCategories.value = data.result;
+  } catch (error) {
+    console.log(error);
+  }
 };
 const getCategoryNameForProduct = () => {
   // add category name to products based on category id
@@ -85,16 +76,9 @@ const getCategoryNameForProduct = () => {
   );
 };
 
-const getAllCategories = async () => {
-  try {
-    const {
-      data: { data },
-    } = await getCtegories();
-    allCategories.value = data.result;
-  } catch (error) {
-    console.log(error);
-  }
-};
+let totalCount = ref(0);
+const isPageLoading = ref(false);
+
 async function fetchProducts() {
   isPageLoading.value = true;
   try {
@@ -111,10 +95,29 @@ async function fetchProducts() {
     resetSelectedItems();
   }
 }
+const pagesCount = computed(() => {
+  return !totalCount.value || !allProducts.value.length
+    ? 0
+    : Math.ceil(totalCount.value / 10);
+});
 
+const page = ref(1);
 const tableItems = computed(() => {
   return allProducts.value.slice(10 * page.value - 10, 10 * page.value);
 });
+const getNextProductsPage = () => {
+  page.value += 1;
+};
+
+watch(
+  () => selectedItems.value,
+  (val) => {
+    if (val.length === 10) {
+      return setCheckAll(true);
+    }
+    return setCheckAll(false);
+  }
+);
 onMounted(async () => {
   await getAllCategories();
   fetchProducts();
