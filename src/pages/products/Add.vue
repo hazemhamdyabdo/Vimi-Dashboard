@@ -8,7 +8,10 @@ import { getFormData, sendFormData } from "@/composables/SendFormRequest";
 const newProduct = ref({
   Discounts: {},
 }) as unknown as Product;
+
+const selectedAction = ref(null) as string;
 const showToast = ref(false);
+const oldQuantity = ref(0);
 const allCategories: any = ref([]);
 const imgSrcs = ref([]);
 const selectedFiles = ref([]);
@@ -53,6 +56,16 @@ const subCategories: any = computed(() => {
       category.uuid === newProduct.value.categoryUuid
   )?.[0]?.subCategories;
 });
+
+const addQuantity = (quantity: number) => {
+  newProduct.value.stockQuantity += +quantity;
+  selectedAction.value = null;
+};
+
+const reduceQuantity = (quantity: number) => {
+  newProduct.value.stockQuantity -= +quantity;
+  selectedAction.value = null;
+};
 const getAdditionalData = async () => {
   try {
     const {
@@ -108,6 +121,7 @@ const setProductData = async () => {
         data: { data },
       } = await showProduct(route.params.id as string);
       newProduct.value = data;
+      oldQuantity.value = newProduct.value.stockQuantity;
 
       // @ts-ignore
       suggestedUse.value.setText(newProduct.value.suggestedUse_En);
@@ -434,6 +448,7 @@ onMounted(async () => {
                     placeholder="Enter quantity"
                     variant="outlined"
                     type="number"
+                    :disabled="isEditing"
                     v-model="newProduct.stockQuantity"
                     bg-color="#faf9fe"
                     style="
@@ -444,6 +459,70 @@ onMounted(async () => {
                     "
                   ></VTextField>
                 </v-col>
+                <VCol
+                  v-if="isEditing && selectedAction === null"
+                  cols="12"
+                  style="
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+                    justify-content: space-between;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 1rem">
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                      "
+                      @click="selectedAction = 'add'"
+                    >
+                      <SvgIcon icon="add" />
+                      <span style="color: #733ee4" class="pa-2">
+                        Add quantity
+                      </span>
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                      "
+                      @click="selectedAction = 'reduce'"
+                    >
+                      <SvgIcon icon="minus" />
+                      <span style="color: #733ee4" class="pa-2">
+                        Reduce quantity
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    style="cursor: pointer"
+                    @click="newProduct.stockQuantity = oldQuantity"
+                  >
+                    <SvgIcon icon="undo" />
+                    <span style="color: #eb5757" class="px-2">Revert</span>
+                  </div>
+                </VCol>
+                <VCol cols="12" v-if="isEditing">
+                  <ControlQuantity
+                    v-if="selectedAction == 'add'"
+                    :icon="'plus'"
+                    :actionText="'Add'"
+                    @confirm="addQuantity"
+                    @cancel="selectedAction == null"
+                  />
+
+                  <ControlQuantity
+                    v-if="selectedAction == 'reduce'"
+                    :icon="'minus'"
+                    :actionText="'Reduce'"
+                    @confirm="reduceQuantity"
+                    @cancel="selectedAction == null"
+                  />
+                  <!-- @confirm="addQuantity" -->
+                </VCol>
               </VRow>
             </VCard>
           </VCol>

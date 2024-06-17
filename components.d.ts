@@ -11,6 +11,8 @@ declare module 'vue' {
     BaseNotifications: typeof import('./src/components/BaseNotifications.vue')['default']
     BasePagination: typeof import('./src/components/BasePagination.vue')['default']
     CalenderIcon: typeof import('./src/components/svgs/CalenderIcon.vue')['default']
+    ControalQuantity: typeof import('./src/components/products/ControalQuantity.vue')['default']
+    ControlQuantity: typeof import('./src/components/products/ControlQuantity.vue')['default']
     DataTableLoader: typeof import('./src/components/dataTableLoader.vue')['default']
     DeleteIcon: typeof import('./src/components/svgs/DeleteIcon.vue')['default']
     EditIcon: typeof import('./src/components/svgs/EditIcon.vue')['default']
