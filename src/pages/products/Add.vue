@@ -3,32 +3,45 @@ import type { Product } from "./type";
 import { getCtegories } from "@/apis/categories";
 import { getBrands } from "@/apis/_brands";
 import { productType } from "@/enums";
-import { getFormData, sendFormData } from "@/composables/SendFormRequest";
-import { useEditProductData } from "@/composables/UseEditProductData";
+import {
+  getFormData,
+  sendFormData,
+} from "@/composables/products/SendFormRequest";
+import { useEditProductData } from "@/composables/products/UseEditProductData";
+import { useProductQuantity } from "@/composables/products/UseProductQuantity";
+import { useProductDiscount } from "@/composables/products/UseProductDiscount";
+import { useEditor } from "@/composables/products/UseEditor";
 
 const newProduct = ref({
   discounts: {},
 }) as unknown as Product;
 
-const selectedAction: Ref<string> = ref("");
 const showToast = ref(false);
-// const oldQuantity = ref(0);
 const allCategories: any = ref([]);
 const imgSrcs = ref([]);
 const selectedFiles = ref([]);
 const allBrands: any = ref([]);
 const newTag = ref("");
 const tagsToAdd = ref([]);
-const suggestedUse = ref(null);
-const suggestedUse_Ar = ref(null);
-const generalInfo = ref(null);
-const generalInfo_Ar = ref(null);
-const isScheduledOpen = ref(false);
-const dateFrom = ref("");
-const dateTo = ref();
-const isThereSelectedDates = ref(false);
 
+const { addQuantity, reduceQuantity, selectedAction } =
+  useProductQuantity(newProduct);
 const { isEditing, oldQuantity, setProductData } = useEditProductData();
+const {
+  dateFrom,
+  dateTo,
+  isThereSelectedDates,
+  deleteDiscount,
+  setDiscount,
+  isScheduledOpen,
+} = useProductDiscount(newProduct);
+const {
+  generalInfo,
+  generalInfo_Ar,
+  suggestedUse,
+  suggestedUse_Ar,
+  setEditorValue,
+} = useEditor(newProduct);
 
 const subCategories: any = computed(() => {
   return allCategories.value.filter(
@@ -57,23 +70,7 @@ const addTags = (nwTag: any) => {
 const removeTag = (nwTag: any) => {
   tagsToAdd.value = tagsToAdd.value.filter((tag: any) => tag !== nwTag);
 };
-const deleteDiscount = () => {
-  newProduct.value.discounts = null;
-  isThereSelectedDates.value = false;
-  dateFrom.value = "";
-  dateTo.value = "";
-  isScheduledOpen.value = false;
-};
 
-const addQuantity = (quantity: number) => {
-  newProduct.value.stockQuantity += +quantity;
-  selectedAction!.value = "";
-};
-
-const reduceQuantity = (quantity: number) => {
-  newProduct.value.stockQuantity -= +quantity;
-  selectedAction.value = "";
-};
 const getAdditionalData = async () => {
   try {
     const {
@@ -89,25 +86,8 @@ const getAdditionalData = async () => {
   }
 };
 
-const setDiscount = (dateFrom: string, dateTo: string) => {
-  newProduct.value.discounts.DateFrom = dateFrom;
-  newProduct.value.discounts.DateTo = dateTo;
-  isThereSelectedDates.value = true;
-};
-
-const uploadProduct = async () => {
-  // @ts-ignore
-  newProduct.value.suggestedUse_En = suggestedUse?.value.getText();
-
-  // @ts-ignore
-  newProduct.value.generalInfo_Ar = generalInfo_Ar?.value.getText();
-
-  // @ts-ignore
-  newProduct.value.suggestedUse_Ar = suggestedUse_Ar?.value.getText();
-
-  // @ts-ignore
-  newProduct.value.generalInfo_En = generalInfo?.value.getText();
-
+const uploadProduct = async (): Promise<void> => {
+  setEditorValue();
   const form = getFormData({
     ...newProduct.value,
     tags: tagsToAdd.value,

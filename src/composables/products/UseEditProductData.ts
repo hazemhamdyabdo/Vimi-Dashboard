@@ -1,6 +1,6 @@
 import { showProduct } from "@/apis/products";
 import type { Product } from "@/pages/products/type";
-export const useSetProductData = () => {
+export const useEditProductData = () => {
   const route = useRoute();
   const oldQuantity = ref(0);
   const isEditing = computed(() => !!route.params.id);
@@ -30,7 +30,7 @@ export const useSetProductData = () => {
 
 
       } catch (error) {
-        console.log(error);
+        throw error
       }
     }
 

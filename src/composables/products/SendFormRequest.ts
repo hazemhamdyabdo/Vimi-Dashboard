@@ -29,9 +29,7 @@ export const getFormData = (_data: object): FormData => {
   return data;
 };
 
-
 export const sendFormData = function (path: string, form: FormData) {
-
   try {
     axios.post(`https://techify-001-site1.htempurl.com/api/v1/${path}`, form, {
       headers: {
