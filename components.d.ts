@@ -20,6 +20,7 @@ declare module 'vue' {
     GlobalPopup: typeof import('./src/components/GlobalPopup.vue')['default']
     ListingHeader: typeof import('./src/components/listing/listingHeader.vue')['default']
     ListingItems: typeof import('./src/components/listing/listingItems.vue')['default']
+    PriceDiscount: typeof import('./src/components/products/PriceDiscount.vue')['default']
     ProductSales: typeof import('./src/components/ProductSales.vue')['default']
     RatingBar: typeof import('./src/components/RatingBar.vue')['default']
     ReviewRating: typeof import('./src/components/ReviewRating.vue')['default']

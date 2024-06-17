@@ -6,7 +6,7 @@ import { getBrands } from "@/apis/_brands";
 import { productType } from "@/enums";
 import { getFormData, sendFormData } from "@/composables/SendFormRequest";
 const newProduct = ref({
-  Discounts: {},
+  discounts: {},
 }) as unknown as Product;
 
 const selectedAction = ref(null) as string;
@@ -25,6 +25,7 @@ const generalInfo_Ar = ref(null);
 const isScheduledOpen = ref(false);
 const dateFrom = ref("");
 const dateTo = ref();
+const isThereSelectedDates = ref(false);
 
 const isEditing = computed(() => {
   return !!newProduct.value.uuid;
@@ -48,7 +49,13 @@ const addTags = (nwTag: any) => {
 const removeTag = (nwTag: any) => {
   tagsToAdd.value = tagsToAdd.value.filter((tag: any) => tag !== nwTag);
 };
-
+const deleteDiscount = () => {
+  newProduct.value.discounts = null;
+  isThereSelectedDates.value = false;
+  dateFrom.value = "";
+  dateTo.value = "";
+  isScheduledOpen.value = false;
+};
 const subCategories: any = computed(() => {
   return allCategories.value.filter(
     (category: { uuid: string }) =>
@@ -84,6 +91,7 @@ const getAdditionalData = async () => {
 const setDiscount = (dateFrom: string, dateTo: string) => {
   newProduct.value.discounts.DateFrom = dateFrom;
   newProduct.value.discounts.DateTo = dateTo;
+  isThereSelectedDates.value = true;
 };
 
 const uploadProduct = async () => {
@@ -592,7 +600,6 @@ onMounted(async () => {
                   </VRow>
                 </VCol>
               </VRow>
-              <!-- </v-row> -->
             </VCard>
           </VCol>
           <VCol>
@@ -613,12 +620,7 @@ onMounted(async () => {
                     type="number"
                     suffix="KD"
                     bg-color="#faf9fe"
-                    style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
-                    "
+                    style="color: #afaacb; font-size: 14px; font-weight: 400"
                   />
                 </v-col>
                 <v-col cols="6">
@@ -632,12 +634,7 @@ onMounted(async () => {
                     placeholder="Enter price"
                     variant="outlined"
                     bg-color="#faf9fe"
-                    style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
-                    "
+                    style="color: #afaacb; font-size: 14px; font-weight: 400"
                   />
                 </v-col>
               </VRow>
@@ -651,12 +648,12 @@ onMounted(async () => {
               </span>
 
               <VCard
-                v-if="isScheduledOpen"
                 flat
                 class="d-flex products-card px-4 py-4 flex-wrap"
                 style="background: #faf9fe"
+                v-if="isScheduledOpen"
               >
-                <VRow>
+                <VRow v-if="!isThereSelectedDates">
                   <VCol>
                     <h4 class="card-info-title">From</h4>
                     <GDatePicker
@@ -680,7 +677,9 @@ onMounted(async () => {
                       padding: 1rem 0 0;
                     "
                   >
-                    <VBtn variant="text"> Cancel </VBtn>
+                    <VBtn variant="text" @click="isScheduledOpen = false">
+                      Cancel
+                    </VBtn>
                     <VBtn
                       style="
                         box-shadow: none;
@@ -700,6 +699,13 @@ onMounted(async () => {
                     </VBtn>
                   </VCol>
                 </VRow>
+                <PriceDiscount
+                  v-if="isThereSelectedDates"
+                  :dateFrom="dateFrom"
+                  :dateTo="dateTo"
+                  @edit="isThereSelectedDates = false"
+                  @delete="deleteDiscount"
+                />
               </VCard>
             </VCard>
           </VCol>
