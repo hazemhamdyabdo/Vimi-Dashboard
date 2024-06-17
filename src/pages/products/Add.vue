@@ -500,6 +500,7 @@ onMounted(async () => {
                   <div
                     style="cursor: pointer"
                     @click="newProduct.stockQuantity = oldQuantity"
+                    v-if="oldQuantity !== newProduct.stockQuantity"
                   >
                     <SvgIcon icon="undo" />
                     <span style="color: #eb5757" class="px-2">Revert</span>
