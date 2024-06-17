@@ -51,7 +51,6 @@ const deleteMultiple = async () => {
 
 const allProducts = ref([]);
 const allCategories: any = ref([]);
-
 const getAllCategories = async () => {
   try {
     const {
