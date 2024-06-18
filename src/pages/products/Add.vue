@@ -1,31 +1,61 @@
 <script setup lang="ts">
 import type { Product } from "./type";
-import { getCategories } from "@/apis/_categories";
+import { getCtegories } from "@/apis/categories";
 import { getBrands } from "@/apis/_brands";
 import { productType } from "@/enums";
-import { getFormData, sendFormData } from "@/composables/SendFormRequest";
-const newProduct: Product = ref({
-  Discounts: {},
-});
+import {
+  getFormData,
+  sendFormData,
+} from "@/composables/products/SendFormRequest";
+import { useEditProductData } from "@/composables/products/UseEditProductData";
+import { useProductQuantity } from "@/composables/products/UseProductQuantity";
+import { useProductDiscount } from "@/composables/products/UseProductDiscount";
+import { useEditor } from "@/composables/products/UseEditor";
+
+const newProduct = ref({
+  discounts: {},
+}) as unknown as Product;
+
+const showToast = ref(false);
 const allCategories: any = ref([]);
 const imgSrcs = ref([]);
 const selectedFiles = ref([]);
 const allBrands: any = ref([]);
 const newTag = ref("");
 const tagsToAdd = ref([]);
-const suggestedUse = ref(null);
-const suggestedUse_Ar = ref(null);
-const generalInfo = ref(null);
-const generalInfo_Ar = ref(null);
-const isScheduledOpen = ref(false);
-const dateFrom = ref("");
-const dateTo = ref();
+
+const { addQuantity, reduceQuantity, selectedAction } =
+  useProductQuantity(newProduct);
+const { isEditing, oldQuantity, setProductData } = useEditProductData();
+const {
+  dateFrom,
+  dateTo,
+  isThereSelectedDates,
+  deleteDiscount,
+  setDiscount,
+  isScheduledOpen,
+} = useProductDiscount(newProduct);
+const {
+  generalInfo,
+  generalInfo_Ar,
+  suggestedUse,
+  suggestedUse_Ar,
+  setEditorValue,
+} = useEditor(newProduct);
+
+const subCategories: any = computed(() => {
+  return allCategories.value.filter(
+    (category: { uuid: string }) =>
+      // @ts-ignore
+      category.uuid === newProduct.value.categoryUuid
+  )?.[0]?.subCategories;
+});
 
 const handleFileChange = async (event: any) => {
   const files = event.target.files;
   const newFiles = Array.from(files);
   selectedFiles.value.push(...newFiles);
-  const newImgSrcs = newFiles.map((file) =>
+  const newImgSrcs = newFiles.map((file: any) =>
     (window.URL ? URL : webkitURL).createObjectURL(file)
   );
   imgSrcs.value.push(...newImgSrcs);
@@ -41,18 +71,11 @@ const removeTag = (nwTag: any) => {
   tagsToAdd.value = tagsToAdd.value.filter((tag: any) => tag !== nwTag);
 };
 
-const subCategories: any = computed(() => {
-  return allCategories.value.filter(
-    (category: { uuid: string }) =>
-      // @ts-ignore
-      category.uuid === newProduct.value.categoryUuid
-  )?.[0]?.subCategories;
-});
 const getAdditionalData = async () => {
   try {
     const {
       data: { data },
-    } = await getCategories();
+    } = await getCtegories();
     allCategories.value = data.result;
     const {
       data: { data: brands },
@@ -63,49 +86,38 @@ const getAdditionalData = async () => {
   }
 };
 
-const setDiscouount = (dateFrom: string, dateTo: string) => {
-  newProduct.value.discounts.DateFrom = dateFrom;
-  newProduct.value.discounts.DateTo = dateTo;
-};
-
-const uploadProduct = async () => {
-  // @ts-ignore
-  newProduct.value.SuggestedUse_En = suggestedUse?.value
-    .getText()
-    .replace(/\n/g, " ");
-  // @ts-ignore
-  newProduct.value.GeneralInfo_Ar = generalInfo_Ar?.value
-    .getText()
-    .replace(/\n/g, " ");
-
-  // @ts-ignore
-  newProduct.value.SuggestedUse_Ar = suggestedUse_Ar?.value
-    .getText()
-    .replace(/\n/g, " ");
-
-  // @ts-ignore
-  newProduct.value.GeneralInfo_En = generalInfo?.value
-    .getText()
-    .replace(/\n/g, " ");
-
+const uploadProduct = async (): Promise<void> => {
+  setEditorValue();
   const form = getFormData({
     ...newProduct.value,
-    Tags: tagsToAdd.value,
-    ImageFiles: selectedFiles.value,
+    tags: tagsToAdd.value,
+    imageFiles: selectedFiles.value,
   });
 
   try {
     sendFormData("products", form);
+    showToast.value = true;
   } catch (error) {
     console.log(error);
   }
 };
+
 onMounted(async () => {
   await getAdditionalData();
+  await setProductData(
+    newProduct,
+    tagsToAdd,
+    imgSrcs,
+    suggestedUse,
+    suggestedUse_Ar,
+    generalInfo,
+    generalInfo_Ar
+  );
 });
 </script>
 <template>
   <section class="add-products px-6">
+    <BaseNotifications :notification="showToast" />
     <VContainer>
       <VRow>
         <VCol cols="12">
@@ -142,7 +154,11 @@ onMounted(async () => {
                 :style="`margin-left: ${index === 0 ? '8rem' : '0'}; margin-top: 1rem`"
               >
                 <img
-                  :src="src"
+                  :src="
+                    isEditing
+                      ? `https://techify-001-site1.htempurl.com${src}`
+                      : src
+                  "
                   alt="Selected Image"
                   style="max-width: 100px; height: inherit"
                 />
@@ -175,7 +191,7 @@ onMounted(async () => {
                       density="compact"
                       placeholder="Enter product name"
                       variant="outlined"
-                      v-model="newProduct.DisplayName_En"
+                      v-model="newProduct.displayName_En"
                       class="card-info-input"
                       bg-color="#faf9fe"
                       style="
@@ -191,7 +207,7 @@ onMounted(async () => {
                     <VTextField
                       label=""
                       density="compact"
-                      v-model="newProduct.Description_En"
+                      v-model="newProduct.description_En"
                       placeholder="Enter short description"
                       variant="outlined"
                       class="card-info-input"
@@ -249,7 +265,7 @@ onMounted(async () => {
                       density="compact"
                       placeholder="أدخل إسم المنتج"
                       variant="outlined"
-                      v-model="newProduct.DisplayName_Ar"
+                      v-model="newProduct.displayName_Ar"
                       class="card-info-input"
                       dir="rtl"
                       bg-color="#faf9fe"
@@ -266,7 +282,7 @@ onMounted(async () => {
                     <VTextField
                       label=""
                       density="compact"
-                      v-model="newProduct.Description_Ar"
+                      v-model="newProduct.description_Ar"
                       placeholder="أدخل الإسم القصير للمنتج"
                       variant="outlined"
                       class="card-info-input"
@@ -345,7 +361,7 @@ onMounted(async () => {
                     class="card-info-list"
                     :items="allCategories"
                     item-value="uuid"
-                    item-title="displayName_En"
+                    item-title="uuid"
                   ></v-select>
                 </VCol>
                 <VCol>
@@ -355,7 +371,7 @@ onMounted(async () => {
                     density="compact"
                     variant="outlined"
                     bg-color="#faf9fe"
-                    v-model="newProduct.SubCategoryUuid"
+                    v-model="newProduct.subCategoryUuid"
                     placeholder="Choose sub category"
                     class="card-info-list"
                     :items="subCategories"
@@ -379,7 +395,7 @@ onMounted(async () => {
                     label=""
                     placeholder="Enter SKU"
                     density="compact"
-                    v-model="newProduct.Sku"
+                    v-model="newProduct.sku"
                     variant="outlined"
                     bg-color="#faf9fe"
                     style="
@@ -398,7 +414,8 @@ onMounted(async () => {
                     placeholder="Enter quantity"
                     variant="outlined"
                     type="number"
-                    v-model="newProduct.StockQuantity"
+                    :disabled="isEditing"
+                    v-model="newProduct.stockQuantity"
                     bg-color="#faf9fe"
                     style="
                       color: #afaacb;
@@ -408,6 +425,70 @@ onMounted(async () => {
                     "
                   ></VTextField>
                 </v-col>
+                <VCol
+                  v-if="isEditing && selectedAction === ''"
+                  cols="12"
+                  style="
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+                    justify-content: space-between;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 1rem">
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                      "
+                      @click="selectedAction = 'add'"
+                    >
+                      <SvgIcon icon="add" />
+                      <span style="color: #733ee4" class="pa-2">
+                        Add quantity
+                      </span>
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                      "
+                      @click="selectedAction = 'reduce'"
+                    >
+                      <SvgIcon icon="minus" />
+                      <span style="color: #733ee4" class="pa-2">
+                        Reduce quantity
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    style="cursor: pointer"
+                    @click="newProduct.stockQuantity = oldQuantity"
+                    v-if="oldQuantity !== newProduct.stockQuantity"
+                  >
+                    <SvgIcon icon="undo" />
+                    <span style="color: #eb5757" class="px-2">Revert</span>
+                  </div>
+                </VCol>
+                <VCol cols="12" v-if="isEditing">
+                  <ControlQuantity
+                    v-if="selectedAction == 'add'"
+                    :icon="'plus'"
+                    :actionText="'Add'"
+                    @confirm="addQuantity"
+                    @cancel="selectedAction = ''"
+                  />
+
+                  <ControlQuantity
+                    v-if="selectedAction == 'reduce'"
+                    :icon="'minus'"
+                    :actionText="'Reduce'"
+                    @confirm="reduceQuantity"
+                    @cancel="selectedAction = ''"
+                  />
+                </VCol>
               </VRow>
             </VCard>
           </VCol>
@@ -425,7 +506,7 @@ onMounted(async () => {
                     placeholder="Enter weight"
                     variant="outlined"
                     bg-color="#faf9fe"
-                    v-model="newProduct.Weight"
+                    v-model="newProduct.weight"
                     style="
                       color: #afaacb;
                       font-size: 14px;
@@ -446,7 +527,7 @@ onMounted(async () => {
                         density="compact"
                         variant="outlined"
                         bg-color="#faf9fe"
-                        v-model="newProduct.Width"
+                        v-model="newProduct.width"
                       />
                     </v-col>
 
@@ -458,7 +539,7 @@ onMounted(async () => {
                         density="compact"
                         variant="outlined"
                         bg-color="#faf9fe"
-                        v-model="newProduct.Height"
+                        v-model="newProduct.height"
                       />
                     </v-col>
 
@@ -470,13 +551,12 @@ onMounted(async () => {
                         density="compact"
                         variant="outlined"
                         bg-color="#faf9fe"
-                        v-model="newProduct.Depth"
+                        v-model="newProduct.depth"
                       />
                     </v-col>
                   </VRow>
                 </VCol>
               </VRow>
-              <!-- </v-row> -->
             </VCard>
           </VCol>
           <VCol>
@@ -493,16 +573,11 @@ onMounted(async () => {
                     placeholder="Enter price"
                     density="compact"
                     variant="outlined"
-                    v-model="newProduct.Price"
+                    v-model="newProduct.price"
                     type="number"
                     suffix="KD"
                     bg-color="#faf9fe"
-                    style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
-                    "
+                    style="color: #afaacb; font-size: 14px; font-weight: 400"
                   />
                 </v-col>
                 <v-col cols="6">
@@ -511,36 +586,14 @@ onMounted(async () => {
                     label=""
                     suffix="KD"
                     type="number"
-                    v-model="newProduct.SalePrice"
+                    v-model="newProduct.salePrice"
                     density="compact"
                     placeholder="Enter price"
                     variant="outlined"
                     bg-color="#faf9fe"
-                    style="
-                      color: #afaacb;
-                      font-size: 14px;
-                      font-style: normal;
-                      font-weight: 400;
-                    "
+                    style="color: #afaacb; font-size: 14px; font-weight: 400"
                   />
                 </v-col>
-
-                <!-- <VMenu v-model="isMenuOpen" :close-on-content-click="false">
-                  <template v-slot:activator="{ props }">
-                    <span
-                      style="color: #733ee4; cursor: pointer"
-                      class="pa-4"
-                      v-bind="props"
-                    >
-                      Schedule discount
-                    </span>
-                  </template>
-                  <VDatePicker
-                    @input="isMenuOpen = false"
-                    label=""
-                    density="compact"
-                  />
-                </VMenu> -->
               </VRow>
               <span
                 style="color: #733ee4; cursor: pointer"
@@ -552,12 +605,12 @@ onMounted(async () => {
               </span>
 
               <VCard
-                v-if="isScheduledOpen"
                 flat
                 class="d-flex products-card px-4 py-4 flex-wrap"
                 style="background: #faf9fe"
+                v-if="isScheduledOpen"
               >
-                <VRow>
+                <VRow v-if="!isThereSelectedDates">
                   <VCol>
                     <h4 class="card-info-title">From</h4>
                     <GDatePicker
@@ -581,7 +634,9 @@ onMounted(async () => {
                       padding: 1rem 0 0;
                     "
                   >
-                    <VBtn variant="text"> Cancel </VBtn>
+                    <VBtn variant="text" @click="isScheduledOpen = false">
+                      Cancel
+                    </VBtn>
                     <VBtn
                       style="
                         box-shadow: none;
@@ -590,7 +645,7 @@ onMounted(async () => {
                         color: #733ee4;
                       "
                       variant="elevated"
-                      @click="setDiscouount(dateFrom, dateTo)"
+                      @click="setDiscount(dateFrom, dateTo)"
                     >
                       <VIcon
                         icon="mdi-plus"
@@ -601,11 +656,18 @@ onMounted(async () => {
                     </VBtn>
                   </VCol>
                 </VRow>
+                <PriceDiscount
+                  v-if="isThereSelectedDates"
+                  :dateFrom="dateFrom"
+                  :dateTo="dateTo"
+                  @edit="isThereSelectedDates = false"
+                  @delete="deleteDiscount"
+                />
               </VCard>
             </VCard>
           </VCol>
           <!-- in case edit show -->
-          <VCol v-if="!$route.meta.title === 'Add Product'">
+          <VCol v-if="$route.meta.title !== 'Add Product'">
             <VCard
               class="card card-Warehouse"
               style="margin-bottom: 1rem; margin-top: 1rem"
@@ -629,7 +691,7 @@ onMounted(async () => {
                 label=""
                 density="compact"
                 variant="outlined"
-                v-model="newProduct.Type"
+                v-model="newProduct.type"
                 bg-color="#faf9fe"
                 placeholder="Choose type"
                 style="margin-left: -0.5rem; width: 106%"
@@ -692,7 +754,7 @@ onMounted(async () => {
               "
             >
               <v-radio-group
-                v-model="newProduct.Visibility"
+                v-model="newProduct.visibility"
                 inline
                 hide-details
               >
@@ -715,7 +777,7 @@ onMounted(async () => {
             <GDatePicker
               label="Expiry date"
               bg-color="#faf9fe"
-              v-model="newProduct.ExpireDate"
+              v-model="newProduct.expireDate"
             />
           </VCard>
           <VCard class="card card-tags" style="margin-bottom: 2rem">
@@ -729,7 +791,7 @@ onMounted(async () => {
                 placeholder="Choose brand"
                 style="margin-left: -0.5rem"
                 :items="allBrands"
-                v-model="newProduct.BrandUuid"
+                v-model="newProduct.brandUuid"
                 item-value="uuid"
                 item-title="displayName_En"
               ></v-select>

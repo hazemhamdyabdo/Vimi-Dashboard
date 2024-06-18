@@ -1,43 +1,9 @@
-Vv
 <script setup lang="ts">
-const productDetails = [
-  {
-    title: 'SKU',
-    value: '#43856345',
-  },
-  {
-    title: 'Published date',
-    value: '21/3/2024',
-  },
-  {
-    title: 'Stock quantity',
-    value: '2034',
-  },
-  {
-    title: 'Weight',
-    value: '250gm',
-  },
-  {
-    title: 'Dimensions',
-    value: '12W 25H 32D',
-  },
-  {
-    title: 'Expiration date',
-    value: '25 sep. 2024',
-  },
-  {
-    title: 'Type',
-    value: 'Variable',
-  },
-  {
-    title: 'Category',
-    value: 'Vitamins & Minerals',
-  },
-  {
-    title: 'Sub-category',
-    value: 'Vitamins ',
-  },
-];
+import { showProduct } from "@/apis/products";
+import { getBrand } from "@/apis/_brands";
+import { getCtegory } from "@/apis/categories";
+import type { Product, Brand } from "./type";
+
 const productRatings = [
   {
     stars: 10,
@@ -64,6 +30,81 @@ const productRatings = [
     percentage: 0,
   },
 ];
+const route = useRoute();
+const product = ref({}) as unknown as Ref<Product>;
+const isPageLoading = ref(false);
+const category = ref({}) as unknown as Ref<any>;
+const selectedBrand = ref({}) as unknown as Ref<Brand>;
+const productDetails = computed(() => {
+  return [
+    {
+      title: "SKU",
+      value: product.value.sku,
+    },
+    {
+      title: "Published date",
+      value: new Date(product.value.dateCreated).toLocaleDateString("en-US"),
+    },
+    {
+      title: "Stock quantity",
+      value: product.value.stockQuantity,
+    },
+    {
+      title: "Weight",
+      value: product.value.weight,
+    },
+    {
+      title: "Dimensions",
+      value: `${product.value.width}W ${product.value.height}H ${product.value.depth}D`,
+    },
+    {
+      title: "Expiration date",
+      value: new Date(product.value.dateExpiry).toLocaleDateString("en-US"),
+    },
+    {
+      title: "Type",
+      value: product.value.type,
+    },
+    {
+      title: "Category",
+      value: category.value.displayName_En,
+    },
+    {
+      title: "Sub-category",
+      value: category.value.subCategories?.[0].displayName_En,
+    },
+  ];
+});
+
+async function fetchProduct() {
+  isPageLoading.value = true;
+  try {
+    const {
+      data: { data },
+    } = await showProduct(route.params.id as string);
+    product.value = data;
+    isPageLoading.value = false;
+  } catch {}
+}
+const getCategoryNameForProduct = async () => {
+  try {
+    const {
+      data: { data },
+    } = await getCtegory(product.value.categoryUuid);
+    category.value = data;
+  } catch {}
+};
+const getBrandDetails = async () => {
+  const {
+    data: { data: brand },
+  } = await getBrand(product.value.brandUuid);
+  selectedBrand.value = brand;
+};
+onMounted(async () => {
+  await fetchProduct();
+  await getBrandDetails();
+  await getCategoryNameForProduct();
+});
 </script>
 
 <template>
@@ -79,8 +120,10 @@ const productRatings = [
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 gap: 1rem;
                 padding: 1rem;
+                height: 100%;
               "
             >
               <div
@@ -88,16 +131,26 @@ const productRatings = [
                   padding: 1rem;
                   background: #fff;
                   border-radius: 12px;
-                  width: 100%;
                   display: flex;
                   justify-content: center;
+                  align-items: center;
                 "
               >
-                <img src="@/assets/test-product.png" alt="" />
+                <img
+                  :src="`https://techify-001-site1.htempurl.com${product.images?.[0]?.imagePath}`"
+                  alt=""
+                />
               </div>
-              <div class="card-imgs" style="display: flex; gap: 3rem">
-                <div v-for="i in 4">
-                  <img src="@/assets/test-product.png" width="60px" />
+              <div
+                class="card-imgs"
+                style="display: flex; gap: 3rem"
+                v-if="product.images?.length > 1"
+              >
+                <div v-for="i in product?.images" :key="i.uuid">
+                  <img
+                    :src="`https://techify-001-site1.htempurl.com${i?.imagePath}`"
+                    width="60px"
+                  />
                 </div>
               </div>
             </VCard>
@@ -108,8 +161,7 @@ const productRatings = [
           >
             <div style="display: flex; justify-content: space-between">
               <h3 class="card-title">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
+                {{ product?.displayName_En }}
               </h3>
               <div
                 style="
@@ -119,6 +171,12 @@ const productRatings = [
                   width: fit-content;
                   height: fit-content;
                   cursor: pointer;
+                "
+                @click="
+                  $router.push({
+                    name: 'edit-product',
+                    params: { id: product.uuid },
+                  })
                 "
               >
                 <VIcon
@@ -130,13 +188,7 @@ const productRatings = [
             </div>
             <div style="display: flex; gap: 0.7rem">
               <div>
-                <VIcon
-                  class="card-info-icon"
-                  icon="mdi-star"
-                  color="#ffa800"
-                  v-for="i in 4"
-                />
-                <VIcon icon="mdi-star-outline" color="#ffa800" />
+                <StarRating :rating="4" />
               </div>
               <div>
                 <span style="font-weight: 800"> 4.4 </span>
@@ -146,8 +198,7 @@ const productRatings = [
               </div>
             </div>
             <p style="color: #7066a2; font-size: 14px">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
-              nulla architecto? Enim odit, facere ipsum repellat,
+              {{ product?.description_En }}
             </p>
 
             <div
@@ -159,10 +210,15 @@ const productRatings = [
               "
             >
               <span style="color: #9089b2; font-size: 16px"> Brand: </span>
-              <div>
-                <img src="@/assets/test-logo.png" />
+              <div class="mt-2" style="margin-left: -1rem">
+                <img
+                  width="60px"
+                  :src="`https://techify-001-site1.htempurl.com${selectedBrand?.photoPath}`"
+                />
               </div>
-              <span style="font-size: 18px; font-weight: 700"> Vivid </span>
+              <span style="font-size: 18px; font-weight: 700">
+                {{ selectedBrand?.displayName_En }}
+              </span>
               |
               <span
                 style="
@@ -172,7 +228,7 @@ const productRatings = [
                   border-radius: 8px;
                 "
               >
-                <p style="color: #21094a">Variable</p>
+                <p style="color: #21094a">{{ product?.type }}</p>
               </span>
               |
               <span
@@ -183,10 +239,11 @@ const productRatings = [
                   border-radius: 8px;
                 "
               >
-                <p style="color: #27ae60">Published</p>
+                <p style="color: #27ae60">{{ product?.visibility }}</p>
               </span>
             </div>
             <div style="display: flex; gap: 1rem">
+              <!-- // ! this not integrated yet as no data came form product api -->
               <ProductSales title="Sales" icon="usd-circle" value="20" />
               <ProductSales
                 title="Quantity"
@@ -196,7 +253,10 @@ const productRatings = [
               <ProductSales title="Orders" icon="Orders-icon" value="30" />
               <ProductSales title="Revenue" icon="Price-icon" value="3400" />
             </div>
-            <VCard class="card" style="border: 1px solid #e8e7ef">
+            <VCard
+              class="card"
+              style="border: 1px solid #e8e7ef; margin-top: 1.5rem"
+            >
               <div>
                 <VIcon icon="mdi-tag-outline" color="#7066A2" />
                 <span
@@ -216,6 +276,7 @@ const productRatings = [
                   gap: 0.5rem;
                   margin-top: 0.5rem;
                 "
+                v-if="product.tags?.length"
               >
                 <VCard
                   class="card"
@@ -225,10 +286,11 @@ const productRatings = [
                     padding: 0.3rem 0.7rem;
                     width: fit-content;
                   "
-                  v-for="i in 7"
+                  v-for="(tag, i) in product.tags"
+                  :key="i"
                 >
                   <span style="color: #7066a2; font-size: 14px">
-                    #Tag {{ i }}
+                    {{ tag }}
                   </span>
                 </VCard>
               </div>
@@ -278,19 +340,13 @@ const productRatings = [
               <p
                 style="color: #9089b2; margin: 0.5rem 0 2rem 0; font-size: 14px"
               >
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Asperiores dolore eaque, voluptates odio laboriosam voluptatum
-                laudantium cupiditate veniam animi in, mollitia corporis dolores
-                libero accusamus nihil aspernatur optio! Accusamus, quo?
+                {{ product.generalInfo_En }}
               </p>
               <h4 style="color: #21094a">Suggested use :</h4>
               <p
                 style="color: #9089b2; margin: 0.5rem 0 2rem 0; font-size: 14px"
               >
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Asperiores dolore eaque, voluptates odio laboriosam voluptatum
-                laudantium cupiditate veniam animi in, mollitia corporis dolores
-                libero accusamus nihil aspernatur optio! Accusamus, quo?
+                {{ product.suggestedUse_En }}
               </p>
             </VCard>
           </VCol>
