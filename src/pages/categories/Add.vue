@@ -2,7 +2,7 @@
   <section class="add-products px-6">
     <VContainer>
       <VRow>
-        <VCol cols="8">
+        <VCol cols="6">
           <VCol>
             <VCard class="card card-info">
               <h3 class="card-title">Main information</h3>
@@ -22,6 +22,7 @@
                       font-style: normal;
                       font-weight: 400;
                     "
+                    v-model="newCategory.displayName_En"
                   />
                 </VCol>
                 <VCol cols="12">
@@ -38,116 +39,173 @@
                       font-style: normal;
                       font-weight: 400;
                     "
+                    v-model="newCategory.description_En"
                   />
-                </VCol>
-              </VRow>
-            </VCard>
-          </VCol>
-          <VCol>
-            <VCard class="card card-tags" style="margin-bottom: 2rem">
-              <VRow>
-                <VCol class="d-flex justify-between">
-                  <VTextField
-                    label=""
-                    density="compact"
-                    placeholder="Enter sub-category name"
-                    variant="outlined"
-                    bg-color="#faf9fe"
-                    style="color: #afaacb; font-size: 14px"
-                    class="pe-3"
-                  />
-                  <VBtn
-                    class="card-info-btn"
-                    color="#21094a"
-                    variant="outlined"
-                    @click="openAddModal"
-                  >
-                    <VIcon icon="mdi-plus" color="#733EE4"></VIcon>
-                  </VBtn>
-                </VCol>
-
-                <VCol cols="12">
-                  <VCard flat class="products-card px-4 py-4">
-                    <VCol class="d-flex justify-space-between pa-0">
-                      <div class="d-flex justify-between">
-                        <p class="me-2 title-product">Vitamins</p>
-                        <p class="number-products">(50 Product)</p>
-                      </div>
-                      <div>
-                        <VIcon
-                          class="me-2"
-                          icon="mdi-pencil-outline"
-                          color="#AFAACB"
-                        ></VIcon>
-                        <VIcon
-                          class="me-2"
-                          icon="mdi-trash-can-outline"
-                          color="#AFAACB"
-                        ></VIcon>
-                      </div>
-                    </VCol>
-                    <v-divider class="my-2"></v-divider>
-                    <VCol class="d-flex justify-space-between pa-0">
-                      <div class="d-flex justify-between">
-                        <p class="me-2 title-product">Vitamins</p>
-                        <p class="number-products">(50 Product)</p>
-                      </div>
-                      <div>
-                        <VIcon
-                          class="me-2"
-                          icon="mdi-pencil-outline"
-                          color="#AFAACB"
-                        ></VIcon>
-                        <VIcon
-                          class="me-2"
-                          icon="mdi-trash-can-outline"
-                          color="#AFAACB"
-                        ></VIcon>
-                      </div>
-                    </VCol>
-                  </VCard>
                 </VCol>
               </VRow>
             </VCard>
           </VCol>
         </VCol>
-        <VCol cols="4">
+        <VCol cols="6" style="direction: rtl">
           <VCol>
-            <VCard class="card card-products" style="margin-bottom: 1rem">
-              <h3 class="card-title">Category Images</h3>
-              <VCard flat>
-                <VFileInput
-                  label=""
-                  class="card-file-input"
-                  prepend-icon="mdi-upload-multiple"
-                ></VFileInput>
-                <VCard class="card-file-ui ma-1">
-                  <div
+            <VCard class="card card-info">
+              <h3 class="card-title">المعلومات الأساسية</h3>
+              <VRow disable-gutters style="gap: 1rem">
+                <VCol cols="12">
+                  <h4 class="card-info-title">إسم الفئة</h4>
+                  <VTextField
+                    label=""
+                    density="compact"
+                    placeholder="أدخل إسم الفئة"
+                    variant="outlined"
+                    class="card-info-input"
+                    bg-color="#faf9fe"
+                    dir="rtl"
                     style="
-                      height: inherit;
-                      display: flex;
-                      flex-direction: column;
-                      align-items: center;
-                      gap: 0.7rem;
-                      justify-content: center;
+                      color: #afaacb;
+                      font-size: 14px;
+                      font-style: normal;
+                      font-weight: 400;
                     "
-                  >
-                    <img src="@/icons/upload.svg" style="cursor: pointer" />
-                    <img v-if="false" src="@/assets/multivitamin.png" />
-                    <p class="card-file-text text-decoration-underline">
-                      Upload Image
-                    </p>
-                    <div class="text-center">
-                      <p class="card-file-subtitle my-1">
-                        Max image 5MB jpg, png, jpeg
-                      </p>
-                      <p class="card-file-subtitle">Dimention X*X (Square)</p>
-                    </div>
-                  </div>
-                </VCard>
-              </VCard>
+                    v-model="newCategory.displayName_Ar"
+                  />
+                </VCol>
+                <VCol cols="12">
+                  <h4 class="card-info-title">الوصف</h4>
+                  <v-textarea
+                    label=""
+                    density="compact"
+                    placeholder="أدخل الوصف"
+                    variant="outlined"
+                    bg-color="#faf9fe"
+                    dir="rtl"
+                    style="
+                      color: #afaacb;
+                      font-size: 14px;
+                      font-style: normal;
+                      font-weight: 400;
+                    "
+                    v-model="newCategory.description_Ar"
+                  />
+                </VCol>
+              </VRow>
             </VCard>
           </VCol>
+        </VCol>
+        <VCol>
+          <VCard class="card card-tags" style="margin-bottom: 2rem">
+            <VRow>
+              <VCol class="d-flex justify-between">
+                <VTextField
+                  label=""
+                  density="compact"
+                  placeholder="Enter sub-category name"
+                  variant="outlined"
+                  bg-color="#faf9fe"
+                  style="color: #afaacb; font-size: 14px"
+                  class="pe-3"
+                  v-model="newSubCategoryEn"
+                />
+                <VTextField
+                  label=""
+                  density="compact"
+                  placeholder="أدخل إسم الفئه الفرعيه"
+                  variant="outlined"
+                  bg-color="#faf9fe"
+                  dir="rtl"
+                  style="color: #afaacb; font-size: 14px"
+                  class="pe-3"
+                  v-model="newSubCategoryAr"
+                />
+                <VBtn
+                  class="card-info-btn"
+                  color="#21094a"
+                  variant="outlined"
+                  :disabled="!newSubCategoryEn || !newSubCategoryAr"
+                  @click="addSubCategory()"
+                >
+                  <VIcon icon="mdi-plus" color="#733EE4"></VIcon>
+                </VBtn>
+              </VCol>
+
+              <VCol cols="12" v-if="subCategoriesToAdd.length">
+                <VCard flat class="products-card px-4 py-4">
+                  <VCol
+                    class="d-flex justify-space-between pa-0 mb-3 pb-3"
+                    v-for="subCategory in subCategoriesToAdd"
+                    :key="subCategory.id"
+                    :style="{
+                      borderBottom: '1px solid #E5E5E5',
+                    }"
+                  >
+                    <div class="d-flex justify-between">
+                      <p class="title-product">
+                        {{ subCategory.displayName_En }}
+                      </p>
+                      <p class="mx-2">|</p>
+                      <p class="title-product">
+                        {{ subCategory.displayName_Ar }}
+                      </p>
+                    </div>
+                    <div>
+                      <VIcon
+                        class="me-2"
+                        icon="mdi-pencil-outline"
+                        color="#AFAACB"
+                        @click="editSubCategory(subCategory)"
+                      ></VIcon>
+                      <VIcon
+                        class="me-2"
+                        icon="mdi-trash-can-outline"
+                        color="#AFAACB"
+                        @click="removeSubCategory(subCategory)"
+                      ></VIcon>
+                    </div>
+                  </VCol>
+                </VCard>
+              </VCol>
+            </VRow>
+          </VCard>
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol cols="4">
+          <VCard class="card card-products" style="margin-bottom: 1rem">
+            <h3 class="card-title">Category Images</h3>
+            <VCard flat>
+              <VFileInput
+                label=""
+                class="card-file-input"
+                prepend-icon="mdi-upload-multiple"
+              ></VFileInput>
+              <VCard class="card-file-ui ma-1">
+                <div
+                  style="
+                    height: inherit;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.7rem;
+                    justify-content: center;
+                  "
+                >
+                  <img src="@/icons/upload.svg" style="cursor: pointer" />
+                  <img v-if="false" src="@/assets/multivitamin.png" />
+                  <p class="card-file-text text-decoration-underline">
+                    Upload Image
+                  </p>
+                  <div class="text-center">
+                    <p class="card-file-subtitle my-1">
+                      Max image 5MB jpg, png, jpeg
+                    </p>
+                    <p class="card-file-subtitle">Dimention X*X (Square)</p>
+                  </div>
+                </div>
+              </VCard>
+            </VCard>
+          </VCard>
+        </VCol>
+        <VCol cols="4">
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title mb-6">Tags</h3>
             <VRow>
@@ -161,16 +219,28 @@
                   style="color: #afaacb; font-size: 14px"
                   class="pr-2"
                   hide-details
+                  v-model="newTag"
                 />
-                <VBtn class="card-info-btn" color="#21094a" variant="outlined">
+                <VBtn
+                  class="card-info-btn"
+                  color="#21094a"
+                  variant="outlined"
+                  @click="addTags()"
+                >
                   <VIcon icon="mdi-plus" color="#21094a"></VIcon>
                 </VBtn>
               </VCol>
               <VCol cols="12">
-                <VCard flat class="d-flex products-card px-4 py-4 flex-wrap">
+                <VCard
+                  flat
+                  class="d-flex products-card px-4 py-4 flex-wrap"
+                  :style="{
+                    'min-height': tagsToAdd.length ? 'fit-content' : '10rem',
+                  }"
+                >
                   <div
-                    v-for="i in 5"
-                    :key="i"
+                    v-for="tag in tagsToAdd"
+                    :key="tag?.id ?? tag"
                     class="tag d-flex justify-space-between me-2 mt-1"
                   >
                     <VIcon
@@ -178,13 +248,16 @@
                       icon="mdi-close"
                       color="#fff"
                       size="15"
+                      @click="removeTag(tag)"
                     ></VIcon>
-                    <p>Tag {{ i }}</p>
+                    <p>{{ tag.title ?? tag }}</p>
                   </div>
                 </VCard>
               </VCol>
             </VRow>
           </VCard>
+        </VCol>
+        <VCol cols="4">
           <VCard class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title mb-8">Visibility</h3>
             <div
@@ -195,14 +268,18 @@
                 background: rgba(115, 62, 228, 0.05);
               "
             >
-              <v-radio-group inline hide-details>
+              <v-radio-group
+                v-model="newCategory.visibility"
+                inline
+                hide-details
+              >
                 <v-radio
                   label="Published"
-                  value="published"
+                  value="Published"
                   color="primary"
                   class="me-14"
                 />
-                <v-radio label="Hidden" value="hidden" color="primary" />
+                <v-radio label="Hidden" value="Hidden" color="primary" />
               </v-radio-group>
             </div>
           </VCard>
@@ -222,23 +299,63 @@
 </template>
 
 <script setup lang="ts">
-import { usePopUpStore } from '@/stores/popup.state.ts';
+import type { Category } from './type';
+import { getCtegory } from '@/apis/categories.ts';
 
-const popupStore = usePopUpStore();
+const newCategory: any = ref({}) as unknown as Category;
+let newSubCategoryEn = ref('');
+let newSubCategoryAr = ref('');
+const subCategoriesToAdd: string[] | any = ref([]);
 
-const openAddModal = () => {
-  popupStore.togglePopupState({
-    state: true,
-    options: {
-      title: 'Add Sub-Category',
-      text: '',
-      buttonTitle: 'Add',
-      buttonColor: '#733EE4',
-      icon: 'AddIcon',
-      sheetColor: '#733ee41a',
-    },
+const addSubCategory = () => {
+  subCategoriesToAdd.value.push({
+    id: subCategoriesToAdd.value.length,
+    displayName_En: newSubCategoryEn.value,
+    displayName_Ar: newSubCategoryAr.value,
   });
+  newSubCategoryEn.value = '';
+  newSubCategoryAr.value = '';
 };
+
+const removeSubCategory = (deleteSubCategory: any) => {
+  subCategoriesToAdd.value = subCategoriesToAdd.value.filter(
+    (subCategory: any) => subCategory !== deleteSubCategory
+  );
+};
+
+const editSubCategory = (editedSubCategory: any) => {
+  newSubCategoryEn.value = editedSubCategory.displayName_En;
+  newSubCategoryAr.value = editedSubCategory.displayName_Ar;
+  removeSubCategory(editedSubCategory);
+};
+
+const newTag = ref('');
+const tagsToAdd: string[] | any = ref([]);
+
+const addTags = () => {
+  tagsToAdd.value.push({
+    id: tagsToAdd.value.length,
+    title: newTag.value,
+  });
+  newTag.value = '';
+};
+
+const removeTag = (deletedTag: any) => {
+  tagsToAdd.value = tagsToAdd.value.filter((tag: any) => tag !== deletedTag);
+};
+
+const route = useRoute();
+const setCategoryData = async () => {
+  // isPageLoading.value = true;
+  try {
+    const { data } = await getCtegory(route.params.id as string);
+    newCategory.value = data.data;
+    tagsToAdd.value = data.data.tags;
+    subCategoriesToAdd.value = data.data.subCategories;
+    // isPageLoading.value = false;
+  } catch {}
+};
+setCategoryData();
 </script>
 
 <style scoped>

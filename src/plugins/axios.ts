@@ -35,8 +35,10 @@ axiosIns.interceptors.response.use(
     // If the response has a 401 status code, handle the unauthorized request
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('accessToken');
-      localStorage.removeItem('userData');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
       router.push('/');
+      window.location.reload();
     }
 
     // For other errors, reject the promise and pass the error along

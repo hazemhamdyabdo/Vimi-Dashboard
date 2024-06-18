@@ -142,22 +142,25 @@ setCategoryData();
                 <h3 class="card-title">
                   {{ category.displayName_En }}
                 </h3>
-                <div
+                <v-btn
+                  flat
                   style="
-                    padding: 0.2rem 0.6rem;
+                    padding: 0.5rem;
                     border-radius: 8px;
                     background: #faf9fe;
                     width: fit-content;
                     height: fit-content;
                     cursor: pointer;
                   "
+                  @click="
+                    $router.push({
+                      name: 'edit-category',
+                      params: { id: category.id },
+                    })
+                  "
                 >
-                  <VIcon
-                    class="card-info-icon"
-                    icon="mdi-pencil-outline"
-                    color="#21094a"
-                  />
-                </div>
+                  <editIcon width="24" height="24" />
+                </v-btn>
               </div>
               <p style="color: #7066a2; font-size: 14px">
                 {{ category.description_En }}

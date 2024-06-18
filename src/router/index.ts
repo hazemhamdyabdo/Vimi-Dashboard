@@ -69,6 +69,14 @@ const router = createRouter({
           },
         },
         {
+          path: 'edit-category/:id',
+          name: 'edit-category',
+          component: () => import('@/pages/categories/Add.vue'),
+          meta: {
+            title: 'Edit Category',
+          },
+        },
+        {
           path: 'view-category/:id',
           name: 'view-category',
           component: () => import('@/pages/categories/View.vue'),

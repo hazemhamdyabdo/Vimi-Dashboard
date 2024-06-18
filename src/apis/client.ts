@@ -1,17 +1,17 @@
-import axiosIns from "@/plugins/axios";
+import axiosIns from '@/plugins/axios';
 
 const client: any = axiosIns;
 
 const reqMethods = [
-  "request",
-  "delete",
-  "get",
-  "head",
-  "options",
-  "post",
-  "put",
-  "patch",
-]
+  'request',
+  'delete',
+  'get',
+  'head',
+  'options',
+  'post',
+  'put',
+  'patch',
+];
 
 /**
  * Creates an object containing functions for making HTTP requests using the provided client.
@@ -21,11 +21,10 @@ const reqMethods = [
  */
 const service = reqMethods.reduce((acc: any, method: string) => {
   acc[method] = (url: string, data?: any) => {
-    return client[method](url, data)
-  }
-  return acc
-}, {})
-
+    return client[method](url, data);
+  };
+  return acc;
+}, {});
 
 export const resource = (resourceUrl: string) => ({
   get(param = {}) {
@@ -39,11 +38,11 @@ export const resource = (resourceUrl: string) => ({
   },
   update(id: string, data: any) {
     if (data instanceof FormData) {
-      data.append("_method", "PATCH");
+      data.append('_method', 'PATCH');
     } else {
-      data["_method"] = "PATCH";
+      data['_method'] = 'PATCH';
     }
-    return service.post(`${resourceUrl}/${id}`, data)
+    return service.post(`${resourceUrl}/${id}`, data);
   },
   replace(data: any) {
     return service.put(resourceUrl, data);

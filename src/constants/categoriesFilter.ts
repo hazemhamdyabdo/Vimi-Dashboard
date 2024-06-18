@@ -1,14 +1,14 @@
 export default [
-  {
-    id: 0,
-    label: 'View Details',
-    icon: 'mdi-eye-outline',
-  },
-  {
-    id: 1,
-    label: 'Edit',
-    icon: 'mdi-pencil-outline',
-  },
+  // {
+  //   id: 0,
+  //   label: 'View Details',
+  //   icon: 'mdi-eye-outline',
+  // },
+  // {
+  //   id: 1,
+  //   label: 'Edit',
+  //   icon: 'mdi-pencil-outline',
+  // },
   {
     id: 2,
     label: 'Hide Product',

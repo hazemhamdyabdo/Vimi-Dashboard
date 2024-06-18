@@ -3,8 +3,8 @@ import { resource } from './client.ts';
 const resourceObj = resource('categories');
 
 const {
-  show: getCtegory,
   get: getCtegories,
+  show: getCtegory,
   removeAll: deleteMultipleCtegories,
   remove: deleteCtegories,
 } = resourceObj;
