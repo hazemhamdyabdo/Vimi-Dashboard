@@ -28,6 +28,7 @@ declare module 'vue' {
     StarRating: typeof import('./src/components/StarRating.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     TableFilters: typeof import('./src/components/tableFilters.vue')['default']
+    ViewHeader: typeof import('./src/components/tickets/ViewHeader.vue')['default']
     ViewIcon: typeof import('./src/components/svgs/ViewIcon.vue')['default']
   }
 }
