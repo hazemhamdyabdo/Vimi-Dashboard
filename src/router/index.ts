@@ -125,30 +125,21 @@ const router = createRouter({
           },
         },
         {
-          path: 'view-customer',
-          name: 'view-customer',
-          component: () => import('@/pages/customers/View.vue'),
-          meta: {
-            title: 'View Customer',
-          },
-        },
-        {
-          path: 'add-customers',
-          name: 'add-customers',
-          component: () => import('@/pages/customers/Add.vue'),
-          meta: {
-            title: 'Add Customer',
-          },
-        },
-        {
-          path: 'tickets',
-          name: 'tickets',
+          path: "tickets",
+          name: "tickets",
           component: () => import('@/pages/tickets/List.vue'),
           meta: {
             title: 'Tickets',
           },
         },
         {
+          path: "view-ticket",
+          name: "view-ticket",
+          component: () => import('@/pages/tickets/View.vue'),
+          meta: {
+            title: 'Ticket Details',
+          },
+        },
           path: 'notifications',
           name: 'notifications',
           component: () => import('@/pages/notifications/List.vue'),
