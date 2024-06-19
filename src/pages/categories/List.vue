@@ -32,6 +32,7 @@
         {{ tableItems.length }} from {{ totalCount }}
       </p>
       <v-pagination
+        v-if="pagesCount > 1"
         v-model="page"
         :length="pagesCount"
         @change="getNextCategoriesPage"

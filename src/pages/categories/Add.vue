@@ -4,7 +4,8 @@
       <VRow>
         <VCol cols="6">
           <VCol>
-            <VCard class="card card-info">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCard v-else class="card card-info">
               <h3 class="card-title">Main information</h3>
               <VRow disable-gutters style="gap: 1rem">
                 <VCol cols="12">
@@ -48,7 +49,8 @@
         </VCol>
         <VCol cols="6" style="direction: rtl">
           <VCol>
-            <VCard class="card card-info">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCard v-else class="card card-info">
               <h3 class="card-title">المعلومات الأساسية</h3>
               <VRow disable-gutters style="gap: 1rem">
                 <VCol cols="12">
@@ -93,7 +95,8 @@
           </VCol>
         </VCol>
         <VCol>
-          <VCard class="card card-tags" style="margin-bottom: 2rem">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCard v-else class="card card-tags" style="margin-bottom: 2rem">
             <VRow>
               <VCol class="d-flex justify-between">
                 <VTextField
@@ -170,7 +173,8 @@
       </VRow>
       <VRow>
         <VCol cols="4">
-          <VCard class="card card-products" style="margin-bottom: 1rem">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCard v-else class="card card-products" style="margin-bottom: 1rem">
             <h3 class="card-title">Category Images</h3>
             <VCard flat>
               <VFileInput
@@ -206,7 +210,8 @@
           </VCard>
         </VCol>
         <VCol cols="4">
-          <VCard class="card card-tags" style="margin-bottom: 2rem">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCard v-else class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title mb-6">Tags</h3>
             <VRow>
               <VCol class="d-flex">
@@ -258,7 +263,8 @@
           </VCard>
         </VCol>
         <VCol cols="4">
-          <VCard class="card card-tags" style="margin-bottom: 2rem">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCard v-else class="card card-tags" style="margin-bottom: 2rem">
             <h3 class="card-title mb-8">Visibility</h3>
             <div
               style="
@@ -287,13 +293,23 @@
       </VRow>
     </VContainer>
   </section>
-  <div class="add-products-actions" style="display: flex; justify-content: end">
+  <div
+    v-if="!isPageLoading"
+    class="add-products-actions"
+    style="display: flex; justify-content: end"
+  >
     <v-btn flat color="#fff" class="rounded-lg me-2" height="48" width="162">
       <p>Cancel</p>
     </v-btn>
-    <v-btn flat color="#733EE4" class="rounded-lg" height="48" width="162">
-      <v-icon size="20"> mdi-plus </v-icon>
-      <p>Add Category</p>
+    <v-btn
+      flat
+      :color="route.params.id ? '#27AE60' : '#733EE4'"
+      class="rounded-lg"
+      height="48"
+      width="162"
+    >
+      <v-icon v-if="!route.params.id" size="20"> mdi-plus </v-icon>
+      <p>{{ route.params.id ? 'Save Changes' : 'Add Category' }}</p>
     </v-btn>
   </div>
 </template>
@@ -302,6 +318,7 @@
 import type { Category } from './type';
 import { getCtegory } from '@/apis/categories.ts';
 
+let isPageLoading = ref(false);
 const newCategory: any = ref({}) as unknown as Category;
 let newSubCategoryEn = ref('');
 let newSubCategoryAr = ref('');
@@ -345,14 +362,16 @@ const removeTag = (deletedTag: any) => {
 };
 
 const route = useRoute();
+
 const setCategoryData = async () => {
-  // isPageLoading.value = true;
+  if (!route.params.id) return;
+  isPageLoading.value = true;
   try {
     const { data } = await getCtegory(route.params.id as string);
     newCategory.value = data.data;
     tagsToAdd.value = data.data.tags;
     subCategoriesToAdd.value = data.data.subCategories;
-    // isPageLoading.value = false;
+    isPageLoading.value = false;
   } catch {}
 };
 setCategoryData();
