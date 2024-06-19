@@ -5,9 +5,11 @@ withDefaults(
     placeholder: string;
     pathName?: string;
     labelDate?: string;
+    settings?: boolean;
   }>(),
   {
     pathName: "",
+    settings: true,
   }
 );
 </script>
@@ -15,6 +17,7 @@ withDefaults(
 <template>
   <div class="d-flex" style="align-items: center">
     <v-card
+      v-if="settings"
       flat
       bg-color="#fff"
       max-height="48"
@@ -32,7 +35,7 @@ withDefaults(
         max-height="48"
       >
         <v-text-field
-          class="my-auto px-4 py-1"
+          class="my-auto px-4 py-1 mb-2"
           variant="plain"
           density="compact"
           hide-details
@@ -51,7 +54,7 @@ withDefaults(
           v-if="labelDate"
           :label="labelDate"
           class="mt-8"
-          style="width: 15rem; height: 43px"
+          style="width: 15rem"
           bg-color="#fff"
         />
       </div>

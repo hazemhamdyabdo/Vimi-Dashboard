@@ -137,22 +137,22 @@ const ordersFilter = [
   {
     id: 0,
     label: 'View Details',
-    icon: 'mdi-eye-outline',
+    svg: 'eye',
   },
   {
     id: 1,
     label: 'Change Status',
-    icon: 'mdi-cached',
+    svg: 'Change',
   },
   {
     id: 2,
     label: 'Cancel Order',
-    icon: 'mdi-close-circle',
+    svg: 'close-circle (1)',
   },
   {
     id: 5,
     label: 'Archive Order',
-    icon: 'mdi-bookmark-outline',
+    svg: 'archive',
   },
 
   {

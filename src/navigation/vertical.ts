@@ -30,7 +30,7 @@ export default [
       {
         name: 'Tickets',
         icon: 'tickets',
-        // path: { name: "tickets" },
+        path: { name: "tickets" },
       },
       {
         name: 'Promotion',

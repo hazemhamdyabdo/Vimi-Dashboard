@@ -220,6 +220,22 @@ const getStyleStatus = (status) => {
       color: "#E2B000",
       background: "#e2b0001a",
     },
+    Replied: {
+      color: "#733EE4",
+      background: "#733EE41a",
+    },
+    Solved: {
+      color: "#27AE60",
+      background: "#27AE601a",
+    },
+    Opened: {
+      color: "#F2994A",
+      background: "#F2994A1a",
+    },
+    Deleted: {
+      color: "#EB5757",
+      background: "#EB57571a",
+    },
     Delivered: {
       color: "#27ae60",
       background: "#27ae601a",
@@ -329,24 +345,6 @@ const handleGoTOAction = ({ uuid }, action) => {
       @input="selectItems($event)"
       @click:row="viewDetails"
     >
-      <!-- <template v-slot:header="{ props: { headers } }">
-        <thead>
-          <tr>
-            <th v-for="h in headers" :key="h.text">
-              <div class="mx-auto">
-                <p>{{ h.text }}</p>
-              </div>
-            </th>
-          </tr>
-        </thead>
-      </template> -->
-
-      <!-- <template v-slot:item.exclusive="{ item }">
-        <div class="checkBox">
-          <v-checkbox v-model="item.exclusive" hide-details="true" />
-        </div>
-      </template> -->
-
       <template v-slot:item.uuid="{ item }">
         <div class="d-flex">
           <p class="py-1 text-subtitle-1">#{{ item.uuid.slice(0, 8) }}</p>
@@ -356,6 +354,38 @@ const handleGoTOAction = ({ uuid }, action) => {
       <template v-slot:item.subCategoryCount="{ item }">
         <div>
           <p class="text-subtitle-1">{{ item.subCategoryCount }} sub</p>
+        </div>
+      </template>
+
+      <template v-slot:item.id="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.id }}</p>
+        </div>
+      </template>
+
+      <template v-slot:item.title="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.title }}</p>
+        </div>
+      </template>
+
+      <template v-slot:item.description="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.description }}</p>
+        </div>
+      </template>
+
+      <template v-slot:item.creationDate="{ item }">
+        <div>
+          <p class="product text-subtitle-1">
+            {{ item.creationDate }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.respondDate="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.respondDate }}</p>
         </div>
       </template>
 

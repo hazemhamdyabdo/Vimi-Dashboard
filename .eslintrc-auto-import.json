@@ -317,6 +317,7 @@
     "ExtractPublicPropTypes": true,
     "WritableComputedRef": true,
     "toValue": true,
-    "svgIconD": true
+    "svgIconD": true,
+    "svgIconVueD": true
   }
 }

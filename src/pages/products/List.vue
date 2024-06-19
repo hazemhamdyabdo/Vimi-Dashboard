@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import productsFilter from "@/constants/categoriesFilter";
-import { headers } from "@/constants/products";
+import { headers, productFilter } from "@/constants/products";
 import { getProducts, deleteProduct } from "@/apis/products";
 import { getCtegories } from "@/apis/categories";
 
@@ -134,7 +133,7 @@ onMounted(async () => {
     />
     <tableFilters
       v-else
-      :filters="productsFilter"
+      :filters="productFilter"
       :triggerCheckAll="triggerCheckAll"
       @SelectAll="SelectAll"
       @CancelSellection="resetSelectedItems"

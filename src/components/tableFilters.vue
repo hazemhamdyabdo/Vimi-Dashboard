@@ -11,10 +11,12 @@
       class="d-flex justify-between my-auto"
     >
       <div class="d-flex cursor-pointer" @click="handleEmitActions(filter)">
-        <v-icon v-if="filter.icon" size="15" class="my-auto me-2">
-          {{ filter.icon }}
-        </v-icon>
-        <span v-else-if="+index !== filters.length - 1" class="my-auto me-2">
+        <SvgIcon v-if="filter.svg" class="my-auto me-2" :icon="filter.svg" />
+
+        <span
+          v-else-if="+index !== filters.length - 1 && !filter.svg"
+          class="my-auto me-2"
+        >
           <v-checkbox
             class="shrink"
             density="compact"

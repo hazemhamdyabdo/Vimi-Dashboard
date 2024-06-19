@@ -135,17 +135,20 @@ const customerFilters = [
   {
     id: 0,
     label: 'View Details',
-    icon: 'mdi-eye-outline',
+    svg: 'eye',
+
   },
   {
     id: 1,
     label: 'Block',
-    icon: 'mdi-pencil-outline',
+    svg: 'Block',
+
   },
   {
     id: 2,
     label: 'Delete',
-    icon: 'mdi-eye-off-outline',
+    svg: 'delete (1)',
+
   },
   {
     id: 3,
