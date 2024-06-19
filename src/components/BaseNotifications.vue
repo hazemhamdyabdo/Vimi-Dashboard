@@ -2,11 +2,15 @@
 const props = defineProps({
   color: {
     type: String,
-    default: "#27ae60",
+    default: '#27ae60',
   },
   notification: {
     type: Boolean,
     default: false,
+  },
+  item: {
+    type: String,
+    default: 'Item',
   },
 });
 
@@ -32,7 +36,7 @@ watch(
 <template>
   <VCol>
     <div
-      class="d-flex align-items-center toast"
+      class="d-flex toast"
       :class="{ show: notification }"
       style="
         gap: 1rem;
@@ -46,7 +50,7 @@ watch(
       "
     >
       <SvgIcon icon="True-circle-fill" color="#21094a" />
-      <h3>Product is added successfully</h3>
+      <h5 class="my-auto">{{ item }} has been added successfully</h5>
     </div>
   </VCol>
 </template>
@@ -57,9 +61,9 @@ watch(
   position: fixed;
   z-index: 4;
   top: 70px;
-  right: 10%;
+  right: 0%;
 
-  width: 70vw;
+  width: 20vw;
 
   &.show {
     visibility: visible;

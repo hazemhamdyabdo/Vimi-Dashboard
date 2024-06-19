@@ -26,7 +26,7 @@
       :triggerResetSelectedItems="triggerResetSelectedItems"
       :triggerSelectAll="triggerSelectAll"
     />
-    <div class="w-100">
+    <div class="w-100 d-flex justify-space-between">
       <p class="my-auto text-9089B2">
         View
         {{ tableItems.length }} from {{ totalCount }}
