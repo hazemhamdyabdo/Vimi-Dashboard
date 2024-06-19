@@ -2,9 +2,7 @@
   <div class="px-12 w-100">
     <listingHeader
       v-if="!selectedItems.length"
-      addAction="Add Customer"
       placeholder="Search for customer"
-      pathName="add-customer"
     />
     <tableFilters v-else :filters="customerFilters" />
     <listingItems

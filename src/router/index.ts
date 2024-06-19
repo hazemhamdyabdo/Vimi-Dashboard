@@ -141,13 +141,29 @@ const router = createRouter({
           },
         },
         {
-          path: "tickets",
-          name: "tickets",
+          path: 'tickets',
+          name: 'tickets',
           component: () => import('@/pages/tickets/List.vue'),
           meta: {
             title: 'Tickets',
           },
-        }
+        },
+        {
+          path: 'notifications',
+          name: 'notifications',
+          component: () => import('@/pages/notifications/List.vue'),
+          meta: {
+            title: 'Push Notifications',
+          },
+        },
+        {
+          path: 'add-notification',
+          name: 'add-notification',
+          component: () => import('@/pages/notifications/Add.vue'),
+          meta: {
+            title: 'Push Notification',
+          },
+        },
       ],
     },
   ],
