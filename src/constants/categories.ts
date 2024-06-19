@@ -3,9 +3,9 @@ const headers = [
     title: 'ID',
     key: 'uuid',
     sortable: false,
-    align: 'left',
+    align: 'center',
   },
-  { title: 'Category', key: 'displayName_En', align: 'left', sortable: true },
+  { title: 'Category', key: 'displayName_En', align: 'center', sortable: true },
   {
     title: 'Sub-Cate. No.',
     key: 'subCategoryCount',
