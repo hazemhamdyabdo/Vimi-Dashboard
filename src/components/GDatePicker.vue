@@ -4,7 +4,7 @@
       <v-card
         flat
         class="rounded-lg mb-4 d-flex"
-        height="48"
+        :height="height"
         :style="`
           border-radius: 8px;
           border: 1px solid #e8e7ef;
@@ -45,13 +45,17 @@
 <script>
 export default {
   props: {
+    height: {
+      type: Number,
+      default: 48,
+    },
     modelValue: {
       type: Date,
-      default: "",
+      default: '',
     },
     bgColor: {
       type: String,
-      default: "#faf9fe",
+      default: '#faf9fe',
     },
     border: {
       type: Boolean,
@@ -59,18 +63,18 @@ export default {
     },
     label: {
       type: String,
-      default: "",
+      default: '',
     },
     color: {
       type: String,
-      default: "",
+      default: '',
     },
     min: {
       type: Date,
-      default: "",
+      default: '',
     },
   },
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
   data() {
     return {
       isMenuOpen: false,
@@ -80,17 +84,17 @@ export default {
   computed: {
     formattedDate() {
       return this.selectedDate
-        ? this.selectedDate?.toLocaleDateString("en-CA")
-        : "";
+        ? this.selectedDate?.toLocaleDateString('en-CA')
+        : '';
     },
     applyStyle() {
-      return this.border ? "border-sm rounded-lg px-4 py-1 bg-white" : "";
+      return this.border ? 'border-sm rounded-lg px-4 py-1 bg-white' : '';
     },
   },
   watch: {
     selectedDate(newVal) {
-      const newDate = newVal?.toLocaleDateString("en-CA");
-      this.$emit("update:modelValue", newDate);
+      const newDate = newVal?.toLocaleDateString('en-CA');
+      this.$emit('update:modelValue', newDate);
     },
     modelValue(newVale) {
       // this.selectedDate = newVale ? new Date(newVale) : new Date();

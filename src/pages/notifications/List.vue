@@ -8,9 +8,9 @@ const selectedItems = ref([]);
     <ListingHeader
       v-if="!selectedItems.length"
       placeholder="Search for notification"
+      pathName="add-notification"
+      addAction="Add Notification"
     />
-    <!-- pathName="add-notification"
-      addAction="Add Notification" -->
     <TableFilters v-if="selectedItems.length" :filters="notificationsFilter" />
     <ListingItems
       @emitSelectedItems="selectedItems = $event"
