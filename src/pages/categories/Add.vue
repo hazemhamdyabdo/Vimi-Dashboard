@@ -1,5 +1,6 @@
 <template>
   <section class="add-products px-6">
+    <BaseNotifications :notification="showToast" />
     <VContainer>
       <VRow>
         <VCol cols="6">
@@ -179,10 +180,20 @@
             <VCard flat>
               <VFileInput
                 label=""
+                ref="fileInput"
                 class="card-file-input"
                 prepend-icon="mdi-upload-multiple"
-              ></VFileInput>
-              <VCard class="card-file-ui ma-1">
+                @change="handleFileChange"
+              />
+              <VCard
+                :style="{
+                  border: categoryImg
+                    ? '1px solid var(--Purple, #733ee4)'
+                    : '1px dashed var(--Purple, #733ee4)',
+                }"
+                class="card-file-ui ma-1"
+                @click="fileInput.click()"
+              >
                 <div
                   style="
                     height: inherit;
@@ -193,10 +204,24 @@
                     justify-content: center;
                   "
                 >
-                  <img src="@/icons/upload.svg" style="cursor: pointer" />
-                  <img v-if="false" src="@/assets/multivitamin.png" />
-                  <p class="card-file-text text-decoration-underline">
-                    Upload Image
+                  <img
+                    v-if="categoryImg"
+                    style="width: 50%"
+                    :src="
+                      categoryImg.includes('http')
+                        ? categoryImg
+                        : `https://techify-001-site1.htempurl.com${categoryImg}`
+                    "
+                  />
+                  <img
+                    v-else
+                    src="@/icons/upload.svg"
+                    style="cursor: pointer"
+                  />
+                  <p
+                    class="card-file-text text-decoration-underline cursor-pointer"
+                  >
+                    {{ categoryImg ? 'Change Image' : 'Upload Image' }}
                   </p>
                   <div class="text-center">
                     <p class="card-file-subtitle my-1">
@@ -298,15 +323,18 @@
     class="add-products-actions"
     style="display: flex; justify-content: end"
   >
-    <v-btn flat color="#fff" class="rounded-lg me-2" height="48" width="162">
+    <!-- <v-btn flat color="#fff" class="rounded-lg me-2" height="48" width="162">
       <p>Cancel</p>
-    </v-btn>
+    </v-btn> -->
     <v-btn
       flat
       :color="route.params.id ? '#27AE60' : '#733EE4'"
       class="rounded-lg"
       height="48"
       width="162"
+      :loading="isAddingBtnLoading"
+      :disabled="isAddingBtnLoading || !isValidCategory"
+      @click="addCategory"
     >
       <v-icon v-if="!route.params.id" size="20"> mdi-plus </v-icon>
       <p>{{ route.params.id ? 'Save Changes' : 'Add Category' }}</p>
@@ -317,8 +345,17 @@
 <script setup lang="ts">
 import type { Category } from './type';
 import { getCtegory } from '@/apis/categories.ts';
+import {
+  getFormData,
+  sendFormData,
+} from '@/composables/products/SendFormRequest';
 
+let fileInput: any = ref('');
+let categoryImg = ref('');
+let categoryImgBase64: any = ref('');
 let isPageLoading = ref(false);
+let showToast = ref(false);
+let isAddingBtnLoading = ref(false);
 const newCategory: any = ref({}) as unknown as Category;
 let newSubCategoryEn = ref('');
 let newSubCategoryAr = ref('');
@@ -371,10 +408,51 @@ const setCategoryData = async () => {
     newCategory.value = data.data;
     tagsToAdd.value = data.data.tags;
     subCategoriesToAdd.value = data.data.subCategories;
+    categoryImg.value = data.data.imagePath;
+
     isPageLoading.value = false;
   } catch {}
 };
 setCategoryData();
+const router = useRouter();
+const addCategory = async (): Promise<void> => {
+  // setEditorValue();
+  isAddingBtnLoading.value = true;
+  const form = getFormData({
+    ...newCategory.value,
+    Tags: tagsToAdd.value,
+    SubCategories: subCategoriesToAdd.value,
+    ImageFile: categoryImgBase64.value,
+  });
+
+  try {
+    await sendFormData('categories', form);
+    showToast.value = true;
+    isAddingBtnLoading.value = true;
+    // setTimeout(() => {
+    //   router.push({ name: 'categories' });
+    // }, 1000);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isAddingBtnLoading.value = false;
+  }
+};
+
+const handleFileChange = async (event: any) => {
+  const file = event.target.files[0];
+  const newImgSrcs = (window.URL ? URL : webkitURL).createObjectURL(file);
+  categoryImg.value = newImgSrcs;
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    categoryImgBase64.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+const isValidCategory = computed(() => {
+  return false;
+});
 </script>
 
 <style scoped>
@@ -441,7 +519,6 @@ setCategoryData();
 .card-file-ui {
   border-radius: 6px;
   height: 276px;
-  border: 1px dashed var(--Purple, #733ee4);
   background: rgba(115, 62, 228, 0.05);
   box-shadow: none;
 }

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { Product } from "./type";
-import { getCtegories } from "@/apis/categories";
-import { getBrands } from "@/apis/_brands";
-import { productType } from "@/enums";
+import type { Product } from './type';
+import { getCtegories } from '@/apis/categories';
+import { getBrands } from '@/apis/_brands';
+import { productType } from '@/enums';
 import {
   getFormData,
   sendFormData,
-} from "@/composables/products/SendFormRequest";
-import { useEditProductData } from "@/composables/products/UseEditProductData";
-import { useProductQuantity } from "@/composables/products/UseProductQuantity";
-import { useProductDiscount } from "@/composables/products/UseProductDiscount";
-import { useEditor } from "@/composables/products/UseEditor";
+} from '@/composables/products/SendFormRequest';
+import { useEditProductData } from '@/composables/products/UseEditProductData';
+import { useProductQuantity } from '@/composables/products/UseProductQuantity';
+import { useProductDiscount } from '@/composables/products/UseProductDiscount';
+import { useEditor } from '@/composables/products/UseEditor';
 
 const newProduct = ref({
   discounts: {},
@@ -21,7 +21,7 @@ const allCategories: any = ref([]);
 const imgSrcs = ref([]);
 const selectedFiles = ref([]);
 const allBrands: any = ref([]);
-const newTag = ref("");
+const newTag = ref('');
 const tagsToAdd = ref([]);
 
 const { addQuantity, reduceQuantity, selectedAction } =
@@ -64,7 +64,7 @@ const handleFileChange = async (event: any) => {
 const addTags = (nwTag: any) => {
   // @ts-ignore
   tagsToAdd.value.push(nwTag);
-  newTag.value = "";
+  newTag.value = '';
 };
 
 const removeTag = (nwTag: any) => {
@@ -95,7 +95,7 @@ const uploadProduct = async (): Promise<void> => {
   });
 
   try {
-    sendFormData("products", form);
+    sendFormData('products', form);
     showToast.value = true;
   } catch (error) {
     console.log(error);
