@@ -1,4 +1,6 @@
 <script>
+const iconCache = {};
+
 export default {
   props: {
     icon: {
@@ -7,7 +9,7 @@ export default {
     },
     classes: {
       type: String,
-      default: 'svg-container flex items-center justify-center',
+      default: "svg-container flex items-center justify-center",
     },
   },
   data() {
@@ -16,9 +18,16 @@ export default {
     };
   },
   async created() {
-    const response = await fetch(`/src/icons/${this.icon}.svg`);
-    // fetch(`src/icons/${this.icon}.svg`);
-    this.svgContent = await response.text();
+    if (this.icon) {
+      if (iconCache[this.icon]) {
+        this.svgContent = iconCache[this.icon];
+      } else {
+        const response = await fetch(`/src/icons/${this.icon}.svg`);
+        const svg = await response.text();
+        iconCache[this.icon] = svg;
+        this.svgContent = svg;
+      }
+    }
   },
 };
 </script>
