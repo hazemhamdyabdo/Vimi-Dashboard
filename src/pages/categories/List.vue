@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import categoriesFilter from '@/constants/categoriesFilter';
+import { categoriesFilter, headers } from '@/constants/categories';
 import { getCtegories, deleteCtegories } from '@/apis/categories.ts';
 
 let page = ref(1);
@@ -156,35 +156,6 @@ const setCategories = async () => {
 const tableItems = computed(() => {
   return categories.value.slice(10 * page.value - 10, 10 * page.value);
 });
-const headers = [
-  {
-    title: 'ID',
-    key: 'uuid',
-    sortable: false,
-    align: 'left',
-  },
-  { title: 'Category', key: 'displayName_En', align: 'left', sortable: true },
-  {
-    title: 'Sub-Cate. No.',
-    key: 'subCategoryCount',
-    align: 'center',
-    sortable: false,
-  },
-  {
-    title: 'Items QTY',
-    key: 'productCount',
-    align: 'center',
-    sortable: false,
-  },
-  {
-    title: 'Published date',
-    key: 'dateCreated',
-    align: 'left',
-    sortable: false,
-  },
-  { title: 'Visibility', key: 'visibility', align: 'center', sortable: true },
-  { key: 'actions', align: 'center', sortable: false },
-];
 
 setCategories();
 </script>

@@ -23,6 +23,8 @@ const logout = async () => {
     await userStore.onLogout();
   } catch {}
 };
+
+const route = useRoute();
 </script>
 
 <template>
@@ -37,6 +39,7 @@ const logout = async () => {
                 v-if="!child?.action"
                 :to="child.path"
                 class="text-decoration-none mb-2"
+                exactActiveClass="active-link"
               >
                 <SvgIcon :icon="child.icon" style="background: transparent" />
                 <p class="pt-2" style="background: transparent">
@@ -94,6 +97,12 @@ a:hover,
   border-radius: 8px;
   color: #fff;
 }
+.active-link {
+  background: #733ee4;
+  border-radius: 8px;
+  color: #fff;
+}
+
 a p,
 .action-btn p {
   font-family: 'Roboto', sans-serif;

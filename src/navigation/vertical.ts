@@ -30,28 +30,28 @@ export default [
       {
         name: 'Tickets',
         icon: 'tickets',
-        path: { name: "tickets" },
+        path: { name: 'tickets' },
       },
+      // {
+      //   name: 'Promotion',
+      //   icon: 'Adds',
+      //   // path: { name: "promotion" },
+      // },
       {
-        name: 'Promotion',
-        icon: 'Adds',
-        // path: { name: "promotion" },
-      },
-      {
-        name: 'Notifications',
+        name: 'Push Notifications',
         icon: 'notifications-nav',
-        // path: { name: "notifications" },
+        path: { name: 'notifications' },
       },
     ],
   },
   {
     parent: 'General',
     children: [
-      {
-        name: 'Settings',
-        icon: 'settings',
-        // path: { name: "settings" },
-      },
+      // {
+      //   name: 'Settings',
+      //   icon: 'settings',
+      //   // path: { name: "settings" },
+      // },
       {
         name: 'Log out',
         icon: 'logout',

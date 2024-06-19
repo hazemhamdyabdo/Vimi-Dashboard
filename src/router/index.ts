@@ -139,7 +139,22 @@ const router = createRouter({
           meta: {
             title: 'Ticket Details',
           },
-        }
+        },
+          path: 'notifications',
+          name: 'notifications',
+          component: () => import('@/pages/notifications/List.vue'),
+          meta: {
+            title: 'Push Notifications',
+          },
+        },
+        {
+          path: 'add-notification',
+          name: 'add-notification',
+          component: () => import('@/pages/notifications/Add.vue'),
+          meta: {
+            title: 'Push Notification',
+          },
+        },
       ],
     },
   ],
