@@ -12,9 +12,13 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  routeDir: {
+    type: String,
+    required: true,
+  },
   itemValue: {
     type: String,
-    default: 'uuid',
+    default: "uuid",
   },
   triggerResetSelectedItems: {
     type: Boolean,
@@ -37,234 +41,250 @@ const viewDetails = (...event) => {
 };
 
 const dateFormattinmg = (date) => {
-  return new Date(date).toLocaleDateString('en-US');
+  return new Date(date).toLocaleDateString("en-US");
 };
 const items = [
   {
-    SKU: '#76459849',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Vitamins & Minerals',
-    Type: 'Variables',
-    Qty: '185',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459849",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Vitamins & Minerals",
+    Type: "Variables",
+    Qty: "185",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Brain Health',
-    Type: 'Simple',
-    Qty: '10',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Brain Health",
+    Type: "Simple",
+    Qty: "10",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#764820',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Heart & Metabolism',
-    Type: 'Variables',
-    Qty: '110',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#764820",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Heart & Metabolism",
+    Type: "Variables",
+    Qty: "110",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459820',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Vitamins & Minerals',
-    Type: 'Bundle',
-    Qty: '5',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459820",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Vitamins & Minerals",
+    Type: "Bundle",
+    Qty: "5",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#7645982',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Gut Health',
-    Type: 'Variables',
-    Qty: '144',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#7645982",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Gut Health",
+    Type: "Variables",
+    Qty: "144",
+    Price: "KD 20",
+    Visability: "Published",
   },
 
   {
-    SKU: '#764520',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Vitamins & Minerals',
-    Type: 'Simple',
-    Qty: '6',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#764520",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Vitamins & Minerals",
+    Type: "Simple",
+    Qty: "6",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459819',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Heart & Metabolism',
-    Type: 'Variables',
-    Qty: '210',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459819",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Heart & Metabolism",
+    Type: "Variables",
+    Qty: "210",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459818',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Gut Health',
-    Type: 'Bundle',
-    Qty: '9',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459818",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Gut Health",
+    Type: "Bundle",
+    Qty: "9",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459817',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '199',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459817",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Herbivore",
+    Type: "Simple",
+    Qty: "199",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459815',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Variables',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459815",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Herbivore",
+    Type: "Variables",
+    Qty: "250",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459816',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Bundle',
-    Qty: '400',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459816",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Herbivore",
+    Type: "Bundle",
+    Qty: "400",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459814',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459814",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Herbivore",
+    Type: "Simple",
+    Qty: "250",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459813',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459813",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Herbivore",
+    Type: "Simple",
+    Qty: "250",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459812',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Variables',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459812",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Herbivore",
+    Type: "Variables",
+    Qty: "250",
+    Price: "KD 20",
+    Visability: "Published",
   },
   {
-    SKU: '#76459811',
-    Product: 'Lorem ipsum dolor sit ame consectetur.',
-    Category: 'Herbivore',
-    Type: 'Simple',
-    Qty: '250',
-    Price: 'KD 20',
-    Visability: 'Published',
+    SKU: "#76459811",
+    Product: "Lorem ipsum dolor sit ame consectetur.",
+    Category: "Herbivore",
+    Type: "Simple",
+    Qty: "250",
+    Price: "KD 20",
+    Visability: "Published",
   },
   // ... more items
 ];
 
 const orderStatus = ref([
-  { nameAr: 'قيد الانتظار', nameEn: 'Pending' },
+  { nameAr: "قيد الانتظار", nameEn: "Pending" },
   {
-    nameAr: 'تم التسليم',
-    nameEn: 'Delivered',
+    nameAr: "تم التسليم",
+    nameEn: "Delivered",
   },
   {
-    nameAr: 'تم الشحن',
-    nameEn: 'Shipped',
+    nameAr: "تم الشحن",
+    nameEn: "Shipped",
   },
   {
-    nameAr: 'تم الاسترجاع',
-    nameEn: 'Returned',
+    nameAr: "تم الاسترجاع",
+    nameEn: "Returned",
   },
   {
-    nameAr: 'ملغي',
-    nameEn: 'Cancelled',
+    nameAr: "ملغي",
+    nameEn: "Cancelled",
   },
   {
-    nameAr: 'في الانتظار',
-    nameEn: 'In progress',
+    nameAr: "في الانتظار",
+    nameEn: "In progress",
   },
   {
-    nameAr: 'في انتظار الاسترجاع',
-    nameEn: 'Return in progress',
+    nameAr: "في انتظار الاسترجاع",
+    nameEn: "Return in progress",
   },
   {
-    nameAr: 'مرفوض',
-    nameEn: 'Rejected',
+    nameAr: "مرفوض",
+    nameEn: "Rejected",
   },
 ]);
 const getStyleStatus = (status) => {
   const styles = {
     Pending: {
-      color: '#E2B000',
-      background: '#e2b0001a',
+      color: "#E2B000",
+      background: "#e2b0001a",
+    },
+    Replied: {
+      color: "#733EE4",
+      background: "#733EE41a",
+    },
+    Solved: {
+      color: "#27AE60",
+      background: "#27AE601a",
+    },
+    Opened: {
+      color: "#F2994A",
+      background: "#F2994A1a",
+    },
+    Deleted: {
+      color: "#EB5757",
+      background: "#EB57571a",
     },
     Delivered: {
-      color: '#27ae60',
-      background: '#27ae601a',
+      color: "#27ae60",
+      background: "#27ae601a",
     },
     Active: {
-      color: '#27ae60',
-      background: '#27ae601a',
+      color: "#27ae60",
+      background: "#27ae601a",
     },
     Shipped: {
-      color: '#733EE4',
-      background: '#733ee41a',
+      color: "#733EE4",
+      background: "#733ee41a",
     },
     Returned: {
-      color: '#21094A',
-      background: '#21094a1a',
+      color: "#21094A",
+      background: "#21094a1a",
     },
     Blocked: {
-      color: '#EB5757',
-      background: '#eb57571a',
+      color: "#EB5757",
+      background: "#eb57571a",
     },
     Cancelled: {
-      color: '#EB5757',
-      background: '#eb57571a',
+      color: "#EB5757",
+      background: "#eb57571a",
     },
-    'In progress': {
-      color: '#F2994A',
-      background: '#f2994a1a',
+    "In progress": {
+      color: "#F2994A",
+      background: "#f2994a1a",
     },
-    'Return in progress': {
-      color: '#21094A',
-      background: '#21094a1a',
+    "Return in progress": {
+      color: "#21094A",
+      background: "#21094a1a",
     },
     Rejected: {
-      color: '#EB5757',
-      background: '#eb57571a',
+      color: "#EB5757",
+      background: "#eb57571a",
     },
   };
 
   return styles[status];
 };
 
-const emit = defineEmits(['emitSelectedItems'], ['openDeleteModal']);
+const emit = defineEmits(["emitSelectedItems"], ["openDeleteModal"]);
 //TODO: for discussion l8r how to make it dynamic
 const headerLocal = computed(() => props.headers ?? headers);
 const itemsLocal = computed(() => props.items ?? items);
 let selectedItems = ref([]);
 
 const selectItems = () => {
-  emit('emitSelectedItems', selectedItems.value);
+  emit("emitSelectedItems", selectedItems.value);
 };
 
 watch(
@@ -284,26 +304,26 @@ watch(
     } else {
       selectedItems.value = [];
     }
-    emit('emitSelectedItems', selectedItems.value);
+    emit("emitSelectedItems", selectedItems.value);
   }
 );
 
 const openDeleteModal = ({ uuid }) => {
-  emit('openDeleteModal', {
+  emit("openDeleteModal", {
     uuid,
     options: {
-      title: 'Delete Product',
-      text: 'Are you sure you want to delete this Product ?',
-      buttonTitle: 'Yes, Delete',
-      buttonColor: '#EB5757',
-      icon: 'deleteIcon',
-      sheetColor: '#eb57571a',
+      title: "Delete Product",
+      text: "Are you sure you want to delete this Product ?",
+      buttonTitle: "Yes, Delete",
+      buttonColor: "#EB5757",
+      icon: "deleteIcon",
+      sheetColor: "#eb57571a",
     },
   });
 };
 
 const handleGoTOAction = ({ uuid }, action) => {
-  const type = route.path.includes('products') ? 'product' : 'category';
+  const type = route.path.includes("products") ? "product" : "category";
   router.push({ name: `${action}-${type}`, params: { id: uuid } });
 };
 </script>
@@ -325,24 +345,6 @@ const handleGoTOAction = ({ uuid }, action) => {
       @input="selectItems($event)"
       @click:row="viewDetails"
     >
-      <!-- <template v-slot:header="{ props: { headers } }">
-        <thead>
-          <tr>
-            <th v-for="h in headers" :key="h.text">
-              <div class="mx-auto">
-                <p>{{ h.text }}</p>
-              </div>
-            </th>
-          </tr>
-        </thead>
-      </template> -->
-
-      <!-- <template v-slot:item.exclusive="{ item }">
-        <div class="checkBox">
-          <v-checkbox v-model="item.exclusive" hide-details="true" />
-        </div>
-      </template> -->
-
       <template v-slot:item.uuid="{ item }">
         <div class="d-flex">
           <p class="py-1 text-subtitle-1">#{{ item.uuid.slice(0, 8) }}</p>
@@ -352,6 +354,38 @@ const handleGoTOAction = ({ uuid }, action) => {
       <template v-slot:item.subCategoryCount="{ item }">
         <div>
           <p class="text-subtitle-1">{{ item.subCategoryCount }} sub</p>
+        </div>
+      </template>
+
+      <template v-slot:item.id="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.id }}</p>
+        </div>
+      </template>
+
+      <template v-slot:item.title="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.title }}</p>
+        </div>
+      </template>
+
+      <template v-slot:item.description="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.description }}</p>
+        </div>
+      </template>
+
+      <template v-slot:item.creationDate="{ item }">
+        <div>
+          <p class="product text-subtitle-1">
+            {{ item.creationDate }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.respondDate="{ item }">
+        <div>
+          <p class="product text-subtitle-1">{{ item.respondDate }}</p>
         </div>
       </template>
 

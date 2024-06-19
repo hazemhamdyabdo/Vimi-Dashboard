@@ -5,14 +5,15 @@
         flat
         class="rounded-lg mb-4 d-flex"
         height="48"
-        style="
+        :style="`
           border-radius: 8px;
           border: 1px solid #e8e7ef;
-          background: #faf9fe;
-        "
+          background: ${bgColor};
+          `"
+        v-bind="{ ...$attrs.style }"
       >
         <v-text-field
-          class="my-auto px-4 pb-1 my-auto"
+          class="my-auto px-4 pb-1"
           variant="plain"
           :placeholder="label"
           density="compact"
@@ -20,7 +21,7 @@
           single-line
           readonly
           :model-value="formattedDate"
-          v-bind="{ ...props, ...$attrs }"
+          v-bind="{ ...props }"
         >
           <template v-slot:append-inner>
             <calenderIcon color="#733EE4" width="20" height="20" />

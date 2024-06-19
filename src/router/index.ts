@@ -140,6 +140,14 @@ const router = createRouter({
             title: 'Add Customer',
           },
         },
+        {
+          path: "tickets",
+          name: "tickets",
+          component: () => import('@/pages/tickets/List.vue'),
+          meta: {
+            title: 'Tickets',
+          },
+        }
       ],
     },
   ],

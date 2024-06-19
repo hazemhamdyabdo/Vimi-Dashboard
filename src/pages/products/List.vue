@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import productsFilter from '@/constants/categoriesFilter';
-import { headers } from '@/constants/products';
-import { getProducts, deleteProduct } from '@/apis/products';
-import { getCtegories } from '@/apis/categories';
+import { headers, productFilter } from "@/constants/products";
+import { getProducts, deleteProduct } from "@/apis/products";
+import { getCtegories } from "@/apis/categories";
 
 const selectedItems = ref([]);
 
@@ -13,7 +12,7 @@ const resetSelectedItems = () => {
 
 const modalOptions = ref({});
 const modalState = ref(false);
-const toggleDeleteModal = ({ uuid = '', options = {} }) => {
+const toggleDeleteModal = ({ uuid = "", options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);
@@ -134,7 +133,7 @@ onMounted(async () => {
     />
     <tableFilters
       v-else
-      :filters="productsFilter"
+      :filters="productFilter"
       :triggerCheckAll="triggerCheckAll"
       @SelectAll="SelectAll"
       @CancelSellection="resetSelectedItems"
