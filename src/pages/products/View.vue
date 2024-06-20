@@ -113,7 +113,9 @@ onMounted(async () => {
       <VCard class="card card-products">
         <VRow gutters>
           <VCol cols="4">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               class="card-image"
               style="
                 background: #faf9fe;
@@ -159,145 +161,150 @@ onMounted(async () => {
             cols="8"
             style="display: flex; flex-direction: column; gap: 1rem"
           >
-            <div style="display: flex; justify-content: space-between">
-              <h3 class="card-title">
-                {{ product?.displayName_En }}
-              </h3>
-              <div
-                style="
-                  padding: 0.2rem 0.6rem;
-                  border-radius: 8px;
-                  background: #faf9fe;
-                  width: fit-content;
-                  height: fit-content;
-                  cursor: pointer;
-                "
-                @click="
-                  $router.push({
-                    name: 'edit-product',
-                    params: { id: product.uuid },
-                  })
-                "
-              >
-                <VIcon
-                  class="card-info-icon"
-                  icon="mdi-pencil-outline"
-                  color="#21094a"
-                />
-              </div>
-            </div>
-            <div style="display: flex; gap: 0.7rem">
-              <div>
-                <StarRating :rating="4" />
-              </div>
-              <div>
-                <span style="font-weight: 800"> 4.4 </span>
-                <span style="font-size: 14px; font-weight: 600; color: #733ee4"
-                  >(12 reviews)</span
-                >
-              </div>
-            </div>
-            <p style="color: #7066a2; font-size: 14px">
-              {{ product?.description_En }}
-            </p>
-
-            <div
-              style="
-                display: flex;
-                gap: 0.7rem;
-                margin-top: 1rem;
-                align-items: center;
-              "
-            >
-              <span style="color: #9089b2; font-size: 16px"> Brand: </span>
-              <div class="mt-2" style="margin-left: -1rem">
-                <img
-                  width="60px"
-                  :src="`https://techify-001-site1.htempurl.com${selectedBrand?.photoPath}`"
-                />
-              </div>
-              <span style="font-size: 18px; font-weight: 700">
-                {{ selectedBrand?.displayName_En }}
-              </span>
-              |
-              <span
-                style="
-                  background: rgba(33, 9, 74, 0.1);
-                  font-size: 16px;
-                  padding: 0.2rem 0.7rem;
-                  border-radius: 8px;
-                "
-              >
-                <p style="color: #21094a">{{ product?.type }}</p>
-              </span>
-              |
-              <span
-                style="
-                  background: rgba(39, 174, 96, 0.1);
-                  font-size: 16px;
-                  padding: 0.2rem 0.7rem;
-                  border-radius: 8px;
-                "
-              >
-                <p style="color: #27ae60">{{ product?.visibility }}</p>
-              </span>
-            </div>
-            <div style="display: flex; gap: 1rem">
-              <!-- // ! this not integrated yet as no data came form product api -->
-              <ProductSales title="Sales" icon="usd-circle" value="20" />
-              <ProductSales
-                title="Quantity"
-                icon="Products-icon"
-                value="2034"
-              />
-              <ProductSales title="Orders" icon="Orders-icon" value="30" />
-              <ProductSales title="Revenue" icon="Price-icon" value="3400" />
-            </div>
-            <VCard
-              class="card"
-              style="border: 1px solid #e8e7ef; margin-top: 1.5rem"
-            >
-              <div>
-                <VIcon icon="mdi-tag-outline" color="#7066A2" />
-                <span
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <section v-else>
+              <div style="display: flex; justify-content: space-between">
+                <h3 class="card-title">
+                  {{ product?.displayName_En }}
+                </h3>
+                <div
                   style="
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #7066a2;
-                    margin-left: 0.7rem;
+                    padding: 0.2rem 0.6rem;
+                    border-radius: 8px;
+                    background: #faf9fe;
+                    width: fit-content;
+                    height: fit-content;
+                    cursor: pointer;
                   "
-                  >Tags</span
+                  @click="
+                    $router.push({
+                      name: 'edit-product',
+                      params: { id: product.uuid },
+                    })
+                  "
                 >
+                  <VIcon
+                    class="card-info-icon"
+                    icon="mdi-pencil-outline"
+                    color="#21094a"
+                  />
+                </div>
               </div>
+              <div style="display: flex; gap: 0.7rem">
+                <div>
+                  <StarRating :rating="4" />
+                </div>
+                <div>
+                  <span style="font-weight: 800"> 4.4 </span>
+                  <span
+                    style="font-size: 14px; font-weight: 600; color: #733ee4"
+                    >(12 reviews)</span
+                  >
+                </div>
+              </div>
+              <p style="color: #7066a2; font-size: 14px">
+                {{ product?.description_En }}
+              </p>
+
               <div
                 style="
                   display: flex;
-                  flex-wrap: wrap;
-                  gap: 0.5rem;
-                  margin-top: 0.5rem;
+                  gap: 0.7rem;
+                  margin-top: 1rem;
+                  align-items: center;
                 "
-                v-if="product.tags?.length"
               >
-                <VCard
-                  class="card"
+                <span style="color: #9089b2; font-size: 16px"> Brand: </span>
+                <div class="mt-2" style="margin-left: -1rem">
+                  <img
+                    width="60px"
+                    :src="`https://techify-001-site1.htempurl.com${selectedBrand?.photoPath}`"
+                  />
+                </div>
+                <span style="font-size: 18px; font-weight: 700">
+                  {{ selectedBrand?.displayName_En }}
+                </span>
+                |
+                <span
                   style="
-                    margin-top: 1rem;
-                    background: #e9e7f2;
-                    padding: 0.3rem 0.7rem;
-                    width: fit-content;
+                    background: rgba(33, 9, 74, 0.1);
+                    font-size: 16px;
+                    padding: 0.2rem 0.7rem;
+                    border-radius: 8px;
                   "
-                  v-for="(tag, i) in product.tags"
-                  :key="i"
                 >
-                  <span style="color: #7066a2; font-size: 14px">
-                    {{ tag }}
-                  </span>
-                </VCard>
+                  <p style="color: #21094a">{{ product?.type }}</p>
+                </span>
+                |
+                <span
+                  style="
+                    background: rgba(39, 174, 96, 0.1);
+                    font-size: 16px;
+                    padding: 0.2rem 0.7rem;
+                    border-radius: 8px;
+                  "
+                >
+                  <p style="color: #27ae60">{{ product?.visibility }}</p>
+                </span>
               </div>
-            </VCard>
+              <div style="display: flex; gap: 1rem">
+                <!-- // ! this not integrated yet as no data came form product api -->
+                <ProductSales title="Sales" icon="usd-circle" value="20" />
+                <ProductSales
+                  title="Quantity"
+                  icon="Products-icon"
+                  value="2034"
+                />
+                <ProductSales title="Orders" icon="Orders-icon" value="30" />
+                <ProductSales title="Revenue" icon="Price-icon" value="3400" />
+              </div>
+              <VCard
+                class="card"
+                style="border: 1px solid #e8e7ef; margin-top: 1.5rem"
+              >
+                <div>
+                  <VIcon icon="mdi-tag-outline" color="#7066A2" />
+                  <span
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: #7066a2;
+                      margin-left: 0.7rem;
+                    "
+                    >Tags</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                    margin-top: 0.5rem;
+                  "
+                  v-if="product.tags?.length"
+                >
+                  <VCard
+                    class="card"
+                    style="
+                      margin-top: 1rem;
+                      background: #e9e7f2;
+                      padding: 0.3rem 0.7rem;
+                      width: fit-content;
+                    "
+                    v-for="(tag, i) in product.tags"
+                    :key="i"
+                  >
+                    <span style="color: #7066a2; font-size: 14px">
+                      {{ tag }}
+                    </span>
+                  </VCard>
+                </div>
+              </VCard>
+            </section>
           </VCol>
           <VCol cols="4">
-            <VCard class="card" style="border: 1px solid #e8e7ef">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCard v-else class="card" style="border: 1px solid #e8e7ef">
               <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem">
                 <VIcon
                   icon="mdi-information-slab-circle-outline"
@@ -325,7 +332,12 @@ onMounted(async () => {
             </VCard>
           </VCol>
           <VCol cols="8">
-            <VCard class="card" style="border: 1px solid #e8e7ef; height: 100%">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCard
+              v-else
+              class="card"
+              style="border: 1px solid #e8e7ef; height: 100%"
+            >
               <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem">
                 <SvgIcon icon="Description" color="#7066a2" />
                 <h4 style="color: #9089b2">
@@ -351,7 +363,9 @@ onMounted(async () => {
             </VCard>
           </VCol>
           <VCol cols="12">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               class="card"
               style="border: 1px solid #e8e7ef; background: #faf9fe"
             >
@@ -361,7 +375,8 @@ onMounted(async () => {
               </div>
               <VRow>
                 <VCol cols="3">
-                  <VCard class="card" style="border: 1px solid #e8e7ef">
+                  <v-skeleton-loader v-if="isPageLoading" type="card" />
+                  <VCard v-else class="card" style="border: 1px solid #e8e7ef">
                     <div class="d-flex align-items-center">
                       <VIcon
                         icon="mdi-star"
@@ -401,7 +416,9 @@ onMounted(async () => {
                   </VCard>
                 </VCol>
                 <VCol cols="9">
+                  <v-skeleton-loader v-if="isPageLoading" type="card" />
                   <VCard
+                    v-else
                     class="card"
                     style="border: 1px solid #e8e7ef; background: #faf9fe"
                   >

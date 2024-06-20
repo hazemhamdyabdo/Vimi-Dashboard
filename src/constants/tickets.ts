@@ -1,7 +1,7 @@
 
 const headers = [
   {
-    key: "id",
+    key: "uuid",
     title: "ID",
     sortable: false,
     removable: false,
@@ -28,7 +28,7 @@ const headers = [
     align: "start"
   },
   {
-    key: "creationDate",
+    key: "dateCreated",
     title: "Creation date",
     sortable: false,
     removable: false,
@@ -52,74 +52,74 @@ const headers = [
 
 const items = [
   {
-    "id": "#76459811",
+    "uuid": "#76459811",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Pending"
   },
   {
-    "id": "#875243",
+    "uuid": "#875243",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Replied"
   },
   {
-    "id": "#76459811",
+    "uuid": "#76459811",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Solved"
   },
   {
-    "id": "#76459811",
+    "uuid": "#76459811",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Opened"
   },
   {
-    "id": "#76459811",
+    "uuid": "#76459811",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Deleted"
 
   }, {
-    "id": "#76459811",
+    "uuid": "#76459811",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Solved"
   },
   {
-    "id": "#76459811",
+    "uuid": "#76459811",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Replied"
   },
   {
-    "id": "#76459811",
+    "uuid": "#76459811",
     "Customer": "Lorem ipsum ",
     "title": "Lorem ipsum dolor",
     "description": "Lorem ipsum dolor sit ame consectet",
-    "creationDate": "21/11/2022",
+    "dateCreated": new Date(),
     "respondDate": "11/16/2030",
     "status": "Deleted"
   }

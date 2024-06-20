@@ -42,8 +42,9 @@ const viewDetails = (...event) => {
   });
 };
 
-const dateFormattinmg = (date) => {
-  return new Date(date).toLocaleDateString('en-US');
+
+const dateFormatting = (date) => {
+  return new Date(date).toLocaleDateString("en-US");
 };
 const items = [
   {
@@ -294,8 +295,8 @@ const getCellProps = ({ item }) => {
       @click:row="viewDetails"
     >
       <template v-slot:item.uuid="{ item }">
-        <div class="d-flex">
-          <p class="py-1 text-subtitle-1">#{{ item.uuid.slice(0, 8) }}</p>
+        <div>
+          <p class="product text-subtitle-1">#{{ item.uuid.slice(0, 8) }}</p>
         </div>
       </template>
 
@@ -323,10 +324,48 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
 
-      <template v-slot:item.creationDate="{ item }">
+      <template v-slot:item.dateCreated="{ item }">
         <div>
           <p class="product text-subtitle-1">
-            {{ item.creationDate }}
+            {{ dateFormatting(item.dateCreated) }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.email="{ item }">
+        <div>
+          <p class="product text-subtitle-1">
+            {{ item.email }}
+          </p>
+        </div>
+      </template>
+      <template v-slot:item.phoneNumber="{ item }">
+        <div>
+          <p class="product text-subtitle-1">
+            {{ item.phoneNumber }}
+          </p>
+        </div>
+      </template>
+      <template v-slot:item.spent="{ item }">
+        <div>
+          <p class="product text-subtitle-1">
+            {{ item.spent }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.itemsNumber="{ item }">
+        <div>
+          <p class="product text-subtitle-1">
+            {{ item.itemsNumber }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.joiningDate="{ item }">
+        <div>
+          <p class="product text-subtitle-1">
+            {{ item.joiningDate }}
           </p>
         </div>
       </template>
@@ -356,14 +395,6 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
 
-      <template v-slot:item.dateCreated="{ item }">
-        <div class="d-flex">
-          <p class="px-2 py-1 text-subtitle-1">
-            {{ dateFormattinmg(item.dateCreated) }}
-          </p>
-        </div>
-      </template>
-
       <template v-slot:item.price="{ item }">
         <div class="d-flex">
           <p class="price text-subtitle-1">
@@ -376,7 +407,7 @@ const getCellProps = ({ item }) => {
       <template v-slot:item.stockQuantity="{ item }">
         <div class="d-flex">
           <p
-            class="QTY text-subtitle-1"
+            class="QTY product text-subtitle-1"
             :class="item.stockQuantity <= 10 ? 'low' : ''"
           >
             {{ item.stockQuantity }}
@@ -400,8 +431,8 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
       <template v-slot:item.displayName_En="{ item }">
-        <div class="d-flex align-center">
-          <div v-if="item.imagePath || item.images.length">
+        <div class="d-flex align-center justify-center">
+          <div v-if="item?.imagePath || item?.images?.length">
             <img
               style="width: 38px; height: 38px"
               :src="`https://techify-001-site1.htempurl.com${item.imagePath ? item.imagePath : item.images[0]?.imagePath}`"
@@ -415,7 +446,7 @@ const getCellProps = ({ item }) => {
       </template>
 
       <template v-slot:item.Customer="{ item }">
-        <div class="d-flex align-center">
+        <div class="d-flex align-center justify-center">
           <img src="@/assets/test-avatar.png" alt="avatar" />
           <p class="product text-subtitle-1 ml-2">
             {{ item.Customer }}
