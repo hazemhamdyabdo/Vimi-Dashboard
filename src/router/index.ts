@@ -164,6 +164,14 @@ const router = createRouter({
             title: 'Setting',
           },
         },
+        {
+          path: 'add-roles',
+          name: 'add-roles',
+          component: () => import('@/pages/setting/roles/Add.vue'),
+          meta: {
+            title: 'Add Role',
+          },
+        },
       ],
     },
   ],
