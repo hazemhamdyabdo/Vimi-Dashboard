@@ -35,6 +35,7 @@
         v-if="pagesCount > 1"
         v-model="page"
         :length="pagesCount"
+        :total-visible="pagesCount"
         @change="getNextCategoriesPage"
       />
     </div>

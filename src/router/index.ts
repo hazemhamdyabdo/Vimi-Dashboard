@@ -153,7 +153,15 @@ const router = createRouter({
           name: 'add-notification',
           component: () => import('@/pages/notifications/Add.vue'),
           meta: {
-            title: 'Push Notification',
+            title: 'Add Notification',
+          },
+        },
+        {
+          path: 'view-notification/:id',
+          name: 'view-notification',
+          component: () => import('@/pages/notifications/View.vue'),
+          meta: {
+            title: 'Notification Details',
           },
         },
       ],

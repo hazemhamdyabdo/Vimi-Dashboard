@@ -36,15 +36,15 @@ const router = useRouter();
 const route = useRoute();
 
 const viewDetails = (...event) => {
+  console.log('🚀 ~ viewDetails ~ event:', event);
   router.push({
     name: `view-${props.routeDir}`,
-    params: { id: event[1]?.item.uuid },
+    params: { id: event[1]?.item?.uuid ?? event[1]?.item?.id },
   });
 };
 
-
 const dateFormatting = (date) => {
-  return new Date(date).toLocaleDateString("en-US");
+  return new Date(date).toLocaleDateString('en-US');
 };
 const items = [
   {
