@@ -75,16 +75,43 @@ const roles = [
     "users": 1,
     "permissions": 1,
     "dateCreated": "11/16/2030",
-    "status": "Active"
+    "status": "Active",
+    "images": [
+      {
+        "uuid": "#76459811",
+        "imagePath": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      },
+    ]
   },
   {
     "uuid": "#875243",
     "roleName": "User",
     "description": "User role",
     "users": 1,
-    "permissions": 1,
+    "permissions": 8,
     "dateCreated": "11/16/2030",
-    "status": "Inactive"
+    "status": "Inactive",
+    "images": [
+      {
+        "uuid": "#76459811",
+        "imagePath": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      },
+      {
+        "uuid": "#875243",
+        "imagePath": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+
+      },
+      {
+        "uuid": "#76459811",
+        "imagePath": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+      },
+      {
+        "uuid": "#875243",
+        "imagePath": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+
+      },
+    ]
+
   },
 ]
 

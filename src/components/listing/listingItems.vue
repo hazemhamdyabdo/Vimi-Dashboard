@@ -454,6 +454,33 @@ const getCellProps = ({ item }) => {
           </p>
         </div>
       </template>
+      <template v-slot:item.users="{ item }">
+        <div class="d-flex align-center justify-center">
+          <div
+            v-if="item?.imagePath || item?.images?.length"
+            class="d-flex align-center"
+          >
+            <img
+              v-for="image in item.images"
+              style="
+                width: 32px;
+                height: 35px;
+                border-radius: 50%;
+                margin-left: -15px;
+              "
+              :src="`${image.imagePath}`"
+              alt="product"
+            />
+            <span
+              v-if="item?.images?.length > 3"
+              class="text-subtitle-1 ml-2 product"
+              style="color: #733ee4"
+            >
+              +{{ item?.images?.length - 3 }}</span
+            >
+          </div>
+        </div>
+      </template>
 
       <template v-slot:item.Customer="{ item }">
         <div class="d-flex align-center justify-center">
