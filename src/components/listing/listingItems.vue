@@ -269,7 +269,6 @@ const handleGoTOAction = ({ uuid }, action) => {
 };
 
 const getCellProps = ({ item }) => {
-  console.log('🚀 ~ getCellProps ~ item:', item);
   return selectedItems.value.includes(item[`${props.itemValue}`])
     ? { class: 'bg-f1ecfc' }
     : {};
@@ -277,7 +276,7 @@ const getCellProps = ({ item }) => {
 </script>
 
 <template>
-  <div classs="d-flex w-100">
+  <div class="d-flex w-100">
     <dataTableLoader v-if="isPageLoading" />
     <v-data-table
       v-else-if="itemsLocal.length"

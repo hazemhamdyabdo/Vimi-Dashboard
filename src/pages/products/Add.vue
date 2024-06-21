@@ -123,7 +123,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <section class="add-products px-6">
+  <section class="px-6">
     <BaseNotifications :notification="showToast" />
     <VContainer>
       <VRow>

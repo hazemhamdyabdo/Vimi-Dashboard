@@ -156,6 +156,14 @@ const router = createRouter({
             title: 'Push Notification',
           },
         },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/pages/setting/index.vue'),
+          meta: {
+            title: 'Setting',
+          },
+        },
       ],
     },
   ],
