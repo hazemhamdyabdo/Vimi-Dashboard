@@ -9,7 +9,7 @@ export default [
       },
       {
         name: 'Products',
-        icon: 'products',
+        icon: 'Products',
         path: { name: 'products' },
       },
       {
@@ -19,7 +19,7 @@ export default [
       },
       {
         name: 'Orders',
-        icon: 'orders',
+        icon: 'Orders',
         path: { name: 'orders' },
       },
       {
@@ -32,11 +32,11 @@ export default [
         icon: 'tickets',
         path: { name: 'tickets' },
       },
-      // {
-      //   name: 'Promotion',
-      //   icon: 'Adds',
-      //   // path: { name: "promotion" },
-      // },
+      {
+        name: 'Promotion',
+        icon: 'Adds',
+        path: { name: 'promotion-discounts' },
+      },
       {
         name: 'Push Notifications',
         icon: 'notifications-nav',

@@ -67,6 +67,48 @@ const route = useRoute();
       </v-navigation-drawer>
 
       <v-main style="background: #faf9fe; min-height: 100vh">
+        <div class="pl-12" v-if="route.fullPath.includes('/promotion')">
+          <VCard flat color="#21094A" class="px-8 d-flex mb-6">
+            <router-link
+              :to="{ name: 'promotion-discounts' }"
+              exact-active-class="active-prmotion-link"
+              class="me-8 text-decoration-none pt-4"
+            >
+              <p
+                style="
+                  color: var(--White, #fff);
+                  /* 16/B1-B-16 */
+                  font-family: Roboto;
+                  font-size: 16px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 150%; /* 24px */
+                "
+              >
+                Discounts List
+              </p>
+            </router-link>
+            <router-link
+              :to="{ name: 'notifications' }"
+              exact-active-class="active-prmotion-link"
+              class="me-8 text-decoration-none pt-4"
+            >
+              <p
+                style="
+                  color: var(--White, #fff);
+                  /* 16/B1-B-16 */
+                  font-family: Roboto;
+                  font-size: 16px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 150%; /* 24px */
+                "
+              >
+                Ads List
+              </p>
+            </router-link>
+          </VCard>
+        </div>
         <div class="pa-9">
           <RouterView />
         </div>
@@ -107,5 +149,11 @@ a p,
 .action-btn p {
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
+}
+
+.active-prmotion-link {
+  border-bottom: 4px solid var(--Purple, #733ee4);
+  text-decoration: none;
+  color: #fff;
 }
 </style>

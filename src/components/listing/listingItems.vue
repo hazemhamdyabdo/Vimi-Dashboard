@@ -36,7 +36,6 @@ const router = useRouter();
 const route = useRoute();
 
 const viewDetails = (...event) => {
-  console.log('🚀 ~ viewDetails ~ event:', event);
   router.push({
     name: `view-${props.routeDir}`,
     params: { id: event[1]?.item?.uuid ?? event[1]?.item?.id },
@@ -269,7 +268,6 @@ const handleGoTOAction = ({ uuid }, action) => {
 };
 
 const getCellProps = ({ item }) => {
-  console.log('🚀 ~ getCellProps ~ item:', item);
   return selectedItems.value.includes(item[`${props.itemValue}`])
     ? { class: 'bg-f1ecfc' }
     : {};
@@ -281,7 +279,7 @@ const getCellProps = ({ item }) => {
     <dataTableLoader v-if="isPageLoading" />
     <v-data-table
       v-else-if="itemsLocal.length"
-      class="listin-table"
+      class="listing-table"
       v-bind="$attrs"
       v-model="selectedItems"
       :headers="headerLocal"
@@ -289,6 +287,8 @@ const getCellProps = ({ item }) => {
       :item-value="itemValue"
       :cell-props="getCellProps"
       :items-per-page="10"
+      sort-asc-icon="mdi-menu-swap"
+      sort-desc-icon="mdi-menu-swap"
       show-select
       hide-default-footer
       @input="selectItems($event)"
@@ -296,13 +296,35 @@ const getCellProps = ({ item }) => {
     >
       <template v-slot:item.uuid="{ item }">
         <div>
-          <p class="product text-subtitle-1">#{{ item.uuid.slice(0, 8) }}</p>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              font-family: Roboto;
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%;
+            "
+          >
+            #{{ item.uuid.slice(0, 8) }}
+          </p>
         </div>
       </template>
 
       <template v-slot:item.subCategoryCount="{ item }">
         <div>
-          <p class="text-subtitle-1">{{ item.subCategoryCount }} sub</p>
+          <p
+            style="
+              color: var(--Purple, #733ee4);
+              font-family: Roboto;
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 150%;
+            "
+          >
+            {{ item.subCategoryCount }} sub
+          </p>
         </div>
       </template>
 
@@ -326,7 +348,16 @@ const getCellProps = ({ item }) => {
 
       <template v-slot:item.dateCreated="{ item }">
         <div>
-          <p class="product text-subtitle-1">
+          <p
+            style="
+              color: var(--Black, #21094a);
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 150%;
+            "
+          >
             {{ dateFormatting(item.dateCreated) }}
           </p>
         </div>
@@ -379,7 +410,14 @@ const getCellProps = ({ item }) => {
       <template v-slot:item.productCount="{ item }">
         <div>
           <p
-            class="text-subtitle-1"
+            style="
+              text-align: center;
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%;
+            "
             :style="{ color: item.productCount <= 10 ? '#EB5757' : '#21094A' }"
           >
             {{ item.productCount }}
@@ -430,8 +468,24 @@ const getCellProps = ({ item }) => {
           </p>
         </div>
       </template>
-      <template v-slot:item.displayName_En="{ item }">
+      <template v-slot:item.category="{ item }">
         <div class="d-flex align-center justify-center">
+          <p
+            style="
+              color: var(--Black, #21094a);
+              font-family: Roboto;
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%;
+            "
+          >
+            {{ item.category }}
+          </p>
+        </div>
+      </template>
+      <template v-slot:item.displayName_En="{ item }">
+        <div class="d-flex align-center justify-start">
           <div v-if="item?.imagePath || item?.images?.length">
             <img
               style="width: 38px; height: 38px"
@@ -667,20 +721,24 @@ const getCellProps = ({ item }) => {
   font-weight: 500;
 }
 
-.checkBox {
-  border-right: 1px #afaacb solid;
+.mdi-checkbox-blank-outline {
+  color: #d4d5dc;
 }
 
-.listin-table {
+.mdi-checkbox-marked {
+  color: #733ee4;
+}
+
+.listing-table {
   border-radius: 8px;
 }
 
-.listin-table thead tr:first-child {
-  background-color: #9089b233;
+.listing-table thead tr:first-child {
+  background-color: #e9e7f0;
   color: #21094a;
 }
 
-.listin-table tr > td:first-child {
+.listing-table tr > td:first-child {
   border-right: 1px solid #afaacb;
 }
 </style>

@@ -7,6 +7,7 @@ interface Category {
   ImageFile: string;
   tags?: string[];
   subCategories: string[];
+  value?: any;
 }
 
 type Visibility = 'Published' | 'Unpublished';

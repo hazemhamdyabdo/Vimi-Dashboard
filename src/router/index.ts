@@ -164,6 +164,30 @@ const router = createRouter({
             title: 'Notification Details',
           },
         },
+        {
+          path: 'promotion-discounts',
+          name: 'promotion-discounts',
+          component: () => import('@/pages/promotion-discounts/List.vue'),
+          meta: {
+            title: 'Promotion',
+          },
+        },
+        {
+          path: 'add-promotion-discounts',
+          name: 'add-promotion-discounts',
+          component: () => import('@/pages/promotion-discounts/Add.vue'),
+          meta: {
+            title: 'Add promotion',
+          },
+        },
+        {
+          path: 'view-promotion-discounts/:id',
+          name: 'view-promotion-discounts',
+          component: () => import('@/pages/promotion-discounts/View.vue'),
+          meta: {
+            title: 'promotion Details',
+          },
+        },
       ],
     },
   ],

@@ -1,14 +1,14 @@
 <template>
   <section class="add-products px-6">
-    <BaseNotifications :notification="showToast" />
-    <VContainer>
+    <BaseNotifications v-if="showToast" :notification="showToast" />
+    <VContainer class="pt-0">
       <VRow>
         <VCol cols="6">
           <VCol>
             <v-skeleton-loader v-if="isPageLoading" type="card" />
-            <VCard v-else class="card card-info">
+            <VCard flat v-else class="card pa-8">
               <h3 class="card-title">Main information</h3>
-              <VRow disable-gutters style="gap: 1rem">
+              <VRow disable-gutters style="gap: 1rem" class="mt-3">
                 <VCol cols="12">
                   <h4 class="card-info-title">Category name</h4>
                   <VTextField
@@ -27,9 +27,9 @@
                     v-model="newCategory.displayName_En"
                   />
                 </VCol>
-                <VCol cols="12">
+                <VCol cols="12" style="position: relative">
                   <h4 class="card-info-title">Description</h4>
-                  <v-textarea
+                  <!-- <v-textarea
                     label=""
                     density="compact"
                     placeholder="Write description"
@@ -42,6 +42,19 @@
                       font-weight: 400;
                     "
                     v-model="newCategory.description_En"
+                  /> -->
+                  <Editor
+                    theme="snow"
+                    toolbar="essentials"
+                    ref="description_En"
+                    placeholder="Write info"
+                    style="
+                      border: 1px solid #e8e7ef;
+                      border-radius: 8px;
+                      background: #faf9fe;
+                      height: 150px;
+                      margin-bottom: 0rem;
+                    "
                   />
                 </VCol>
               </VRow>
@@ -51,9 +64,9 @@
         <VCol cols="6" style="direction: rtl">
           <VCol>
             <v-skeleton-loader v-if="isPageLoading" type="card" />
-            <VCard v-else class="card card-info">
+            <VCard flat v-else class="card pa-8">
               <h3 class="card-title">المعلومات الأساسية</h3>
-              <VRow disable-gutters style="gap: 1rem">
+              <VRow disable-gutters style="gap: 1rem" class="mt-3">
                 <VCol cols="12">
                   <h4 class="card-info-title">إسم الفئة</h4>
                   <VTextField
@@ -73,9 +86,13 @@
                     v-model="newCategory.displayName_Ar"
                   />
                 </VCol>
-                <VCol cols="12">
+                <VCol
+                  cols="12"
+                  style="position: relative"
+                  class="arabic-editor-container"
+                >
                   <h4 class="card-info-title">الوصف</h4>
-                  <v-textarea
+                  <!-- <v-textarea
                     label=""
                     density="compact"
                     placeholder="أدخل الوصف"
@@ -89,6 +106,21 @@
                       font-weight: 400;
                     "
                     v-model="newCategory.description_Ar"
+                  /> -->
+                  <Editor
+                    theme="snow"
+                    class="arabic-editor"
+                    toolbar="essentials"
+                    ref="description_Ar"
+                    placeholder="أدخل الوصف"
+                    style="
+                      border: 1px solid #e8e7ef;
+                      border-radius: 8px;
+                      background: #faf9fe;
+                      height: 150px;
+                      margin-bottom: 0rem;
+                      text-align: right;
+                    "
                   />
                 </VCol>
               </VRow>
@@ -99,7 +131,7 @@
           <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCard v-else class="card card-tags" style="margin-bottom: 2rem">
             <VRow>
-              <VCol class="d-flex justify-between">
+              <VCol class="d-flex justify-between pb-0">
                 <VTextField
                   label=""
                   density="compact"
@@ -132,14 +164,25 @@
                 </VBtn>
               </VCol>
 
-              <VCol cols="12" v-if="subCategoriesToAdd.length">
-                <VCard flat class="products-card px-4 py-4">
+              <VCol cols="12" class="pt-0">
+                <VCard
+                  flat
+                  class="products-card px-4 py-4"
+                  :style="{
+                    'min-height': subCategoriesToAdd.length
+                      ? 'fit-content'
+                      : '10rem',
+                  }"
+                >
                   <VCol
-                    class="d-flex justify-space-between pa-0 mb-3 pb-3"
-                    v-for="subCategory in subCategoriesToAdd"
+                    class="d-flex justify-space-between pa-0 py-2"
+                    v-for="(subCategory, index) in subCategoriesToAdd"
                     :key="subCategory.id"
                     :style="{
-                      borderBottom: '1px solid #E5E5E5',
+                      borderBottom:
+                        index != subCategoriesToAdd.length - 1
+                          ? '1px solid #E5E5E5'
+                          : 'none',
                     }"
                   >
                     <div class="d-flex justify-between">
@@ -221,7 +264,7 @@
                   <p
                     class="card-file-text text-decoration-underline cursor-pointer"
                   >
-                    {{ categoryImg ? "Change Image" : "Upload Image" }}
+                    {{ categoryImg ? 'Change Image' : 'Upload Image' }}
                   </p>
                   <div class="text-center">
                     <p class="card-file-subtitle my-1">
@@ -256,6 +299,7 @@
                   color="#21094a"
                   variant="outlined"
                   @click="addTags()"
+                  :disabled="!newTag.length"
                 >
                   <VIcon icon="mdi-plus" color="#21094a"></VIcon>
                 </VBtn>
@@ -333,33 +377,59 @@
       height="48"
       width="162"
       :loading="isAddingBtnLoading"
-      :disabled="isAddingBtnLoading || !isValidCategory"
+      :disabled="isAddingBtnLoading"
       @click="addCategory"
     >
       <v-icon v-if="!route.params.id" size="20"> mdi-plus </v-icon>
-      <p>{{ route.params.id ? "Save Changes" : "Add Category" }}</p>
+      <p>{{ route.params.id ? 'Save Changes' : 'Add Category' }}</p>
     </v-btn>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Category } from "./type";
-import { getCtegory } from "@/apis/categories.ts";
+import type { Category } from './type';
+import { getCtegory } from '@/apis/categories.ts';
 import {
   getFormData,
   sendFormData,
-} from "@/composables/products/SendFormRequest";
+} from '@/composables/products/SendFormRequest';
+import { useEditor } from '@/composables/categories/UseEditor';
+// import { reactive } from 'vue';
+// import { useVuelidate } from '@vuelidate/core';
+// import { required } from '@vuelidate/validators';
 
-let fileInput: any = ref("");
-let categoryImg = ref("");
-let categoryImgBase64: any = ref("");
+let newCategory: any = ref({}) as unknown as Category;
+// let state: any = reactive({
+//   ...newCategory.value,
+// });
+// const rules = {
+//   'newCategory.displayName_En': { required },
+//   'newCategory.displayName_Ar': { required },
+// };
+
+// const v$ = useVuelidate(rules, state);
+let fileInput: any = ref('');
+let categoryImg = ref('');
+let categoryImgBase64: any = ref('');
 let isPageLoading = ref(false);
 let showToast = ref(false);
 let isAddingBtnLoading = ref(false);
-const newCategory: any = ref({}) as unknown as Category;
-let newSubCategoryEn = ref("");
-let newSubCategoryAr = ref("");
+let newSubCategoryEn = ref('');
+let newSubCategoryAr = ref('');
 const subCategoriesToAdd: string[] | any = ref([]);
+
+// const clear = () => {
+//   v$.value.$reset();
+
+//   for (const [key, value] of Object.entries(newCategory)) {
+//     state[key] = value;
+//   }
+// };
+
+// let isValidCategory = ref(false);
+
+const { description_En, description_Ar, setEditorValue } =
+  useEditor(newCategory);
 
 const addSubCategory = () => {
   subCategoriesToAdd.value.push({
@@ -367,8 +437,8 @@ const addSubCategory = () => {
     displayName_En: newSubCategoryEn.value,
     displayName_Ar: newSubCategoryAr.value,
   });
-  newSubCategoryEn.value = "";
-  newSubCategoryAr.value = "";
+  newSubCategoryEn.value = '';
+  newSubCategoryAr.value = '';
 };
 
 const removeSubCategory = (deleteSubCategory: any) => {
@@ -383,7 +453,7 @@ const editSubCategory = (editedSubCategory: any) => {
   removeSubCategory(editedSubCategory);
 };
 
-const newTag = ref("");
+const newTag = ref('');
 const tagsToAdd: string[] | any = ref([]);
 
 const addTags = () => {
@@ -391,7 +461,7 @@ const addTags = () => {
     id: tagsToAdd.value.length,
     title: newTag.value,
   });
-  newTag.value = "";
+  newTag.value = '';
 };
 
 const removeTag = (deletedTag: any) => {
@@ -416,22 +486,27 @@ const setCategoryData = async () => {
 setCategoryData();
 const router = useRouter();
 const addCategory = async (): Promise<void> => {
-  // setEditorValue();
+  setEditorValue();
   isAddingBtnLoading.value = true;
-  const form = getFormData({
+  const form = {
     ...newCategory.value,
-    Tags: tagsToAdd.value,
-    SubCategories: subCategoriesToAdd.value,
-    ImageFile: categoryImgBase64.value,
+    imageFile: categoryImgBase64.value,
+  };
+  subCategoriesToAdd.value.map((subCategory: any, index: any) => {
+    const { id, ...qux } = subCategory;
+    form[`subCategories[${index}]`] = qux;
   });
-
+  tagsToAdd.value.map((tag: any, index: any) => {
+    const { id, ...qux } = tag;
+    form[`tags[${index}]`] = qux;
+  });
   try {
-    await sendFormData("categories", form);
+    await sendFormData('categories', form);
     showToast.value = true;
     isAddingBtnLoading.value = true;
-    // setTimeout(() => {
-    //   router.push({ name: 'categories' });
-    // }, 1000);
+    setTimeout(() => {
+      router.push({ name: 'categories' });
+    }, 1500);
   } catch (error) {
     console.log(error);
   } finally {
@@ -443,22 +518,13 @@ const handleFileChange = async (event: any) => {
   const file = event.target.files[0];
   const newImgSrcs = (window.URL ? URL : webkitURL).createObjectURL(file);
   categoryImg.value = newImgSrcs;
-  const reader = new FileReader();
-  reader.onload = (e: any) => {
-    categoryImgBase64.value = e.target.result;
-  };
-  reader.readAsDataURL(file);
+  categoryImgBase64.value = file;
 };
-
-const isValidCategory = computed(() => {
-  return false;
-});
 </script>
 
 <style scoped>
 .card {
   border-radius: 12px;
-  padding: 1rem 1rem;
   box-shadow: none;
 }
 
@@ -593,5 +659,31 @@ const isValidCategory = computed(() => {
   background: #7066a2;
   padding: 3px 8px;
   color: #fff;
+}
+
+.arabic-editor .ql-editor {
+  text-align: right;
+}
+.ql-toolbar.ql-snow {
+  border: none;
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.6rem;
+  width: 100%;
+  z-index: 3;
+}
+
+.arabic-editor-container .ql-toolbar.ql-snow {
+  right: 1rem;
+  bottom: 0.6rem;
+  width: 100%;
+  z-index: 3;
+}
+.ql-container.ql-snow {
+  color: #7066a2;
+}
+
+.ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+  display: none;
 }
 </style>
