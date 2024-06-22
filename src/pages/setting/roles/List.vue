@@ -6,7 +6,7 @@ const selectedItems = ref([]);
   <div>
     <ListingHeader
       v-if="!selectedItems.length"
-      placeholder="Search for tickets"
+      placeholder="Search for role"
       :settings="false"
       pathName="add-roles"
       addAction="Add Role"

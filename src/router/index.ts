@@ -188,6 +188,14 @@ const router = createRouter({
             title: 'Add User',
           },
         },
+        {
+          path: 'view-users',
+          name: 'view-users',
+          component: () => import('@/pages/setting/users/View.vue'),
+          meta: {
+            title: 'User Details',
+          },
+        },
       ],
     },
   ],

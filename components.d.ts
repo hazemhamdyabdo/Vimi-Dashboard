@@ -12,6 +12,7 @@ declare module 'vue' {
     BasePagination: typeof import('./src/components/BasePagination.vue')['default']
     CalenderIcon: typeof import('./src/components/svgs/CalenderIcon.vue')['default']
     ChatComponent: typeof import('./src/components/tickets/ChatComponent.vue')['default']
+    ContactsCard: typeof import('./src/components/settings/ContactsCard.vue')['default']
     ControlQuantity: typeof import('./src/components/products/ControlQuantity.vue')['default']
     DataTableLoader: typeof import('./src/components/dataTableLoader.vue')['default']
     DeleteIcon: typeof import('./src/components/svgs/DeleteIcon.vue')['default']
@@ -36,8 +37,10 @@ declare module 'vue' {
     TableFilters: typeof import('./src/components/tableFilters.vue')['default']
     Tabs: typeof import('./src/components/settings/Tabs.vue')['default']
     UserCard: typeof import('./src/components/settings/UserCard.vue')['default']
+    UserProfile: typeof import('./src/components/settings/UserProfile.vue')['default']
     ViewChats: typeof import('./src/components/tickets/ViewChats.vue')['default']
     ViewHeader: typeof import('./src/components/tickets/ViewHeader.vue')['default']
     ViewIcon: typeof import('./src/components/svgs/ViewIcon.vue')['default']
+    ViewRole: typeof import('./src/components/settings/ViewRole.vue')['default']
   }
 }

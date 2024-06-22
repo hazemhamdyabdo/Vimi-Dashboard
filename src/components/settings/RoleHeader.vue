@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { useStyleState } from "@/composables/UseStyleState";
 const { getStyleStatus } = useStyleState();
+const router = useRouter();
+const isUserDetails = computed(() => {
+  return router.currentRoute.value.path.includes("users");
+});
 </script>
 <template>
   <VCol>
@@ -37,11 +41,28 @@ const { getStyleStatus } = useStyleState();
         </p>
       </section>
       <section style="display: flex; gap: 1rem; align-items: center">
+        <div
+          v-if="isUserDetails"
+          style="display: flex; align-items: center; gap: 0.5rem"
+        >
+          <SvgIcon icon="lock" />
+          <p style="color: #21094a; font-size: 14px">Reset Password</p>
+          |
+        </div>
+
         <div style="display: flex; align-items: center; gap: 0.5rem">
           <SvgIcon icon="edit (1)" />
           <p style="color: #21094a; font-size: 14px">Edit</p>
         </div>
         |
+        <div
+          v-if="isUserDetails"
+          style="display: flex; align-items: center; gap: 0.5rem"
+        >
+          <SvgIcon icon="block" />
+          <p style="color: #21094a; font-size: 14px">Block</p>
+          |
+        </div>
         <div style="display: flex; align-items: center; gap: 0.5rem">
           <SvgIcon icon="delete (1)" />
           <p style="color: #21094a; font-size: 14px">Delete</p>
