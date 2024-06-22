@@ -3,17 +3,37 @@ const productsTypes: Ref<any> = ref({
   displayName_En: "",
   displayName_Ar: "",
 });
+const productsBrands: Ref<any> = ref({
+  displayName_En: "",
+  displayName_Ar: "",
+});
 const types = ref([]);
 const brands = ref([]);
+
 const addProductType = () => {
   if (productsTypes.value.displayName_En?.trim().length === 0) return;
   types.value.push({ id: types.value.length, ...productsTypes.value });
   productsTypes.value = {};
 };
+
+const addBrand = () => {
+  if (productsBrands.value.displayName_En?.trim().length === 0) return;
+  brands.value.push({ id: brands.value.length, ...productsBrands.value });
+  productsBrands.value = {};
+};
+
 const removeProductType = (deletedProductType: any) => {
   types.value = types.value.filter(
     (productType: any) => productType !== deletedProductType
   );
+};
+const removeBrand = (deletedBrand: any) => {
+  brands.value = brands.value.filter((brand: any) => brand !== deletedBrand);
+};
+const editBrand = (editedBrand: any) => {
+  productsBrands.value.displayName_En = editedBrand.displayName_En;
+  productsBrands.value.displayName_Ar = editedBrand.displayName_Ar;
+  removeBrand(editedBrand);
 };
 const editProductType = (editedProductType: any) => {
   productsTypes.value.displayName_En = editedProductType.displayName_En;
@@ -153,6 +173,7 @@ const editProductType = (editedProductType: any) => {
               bg-color="#fff"
               style="color: #afaacb; font-size: 14px; margin-top: 1rem"
               class="pe-3"
+              v-model="productsBrands.displayName_En"
             />
             <VTextField
               label=""
@@ -163,7 +184,20 @@ const editProductType = (editedProductType: any) => {
               style="color: #afaacb; font-size: 14px"
               dir="rtl"
               class="pe-3"
+              v-model="productsBrands.displayName_Ar"
             />
+            <VBtn
+              class="add-products-actions rounded-lg"
+              color="#733EE4"
+              bg-color="#21094a"
+              height="48"
+              width="162"
+              variant="outlined"
+              @click="addBrand"
+            >
+              <VIcon icon="mdi-plus" color="#733EE4"></VIcon>
+              <span class="card-info-text">Add Brand</span>
+            </VBtn>
           </VCard>
         </VCard>
       </VCol>
@@ -172,7 +206,6 @@ const editProductType = (editedProductType: any) => {
           <h3 class="card-title">Brand List</h3>
           <VCol cols="12" v-if="brands.length">
             <VCard flat class="products-card px-4 py-4">
-              <!-- // ! miss brands list -->
               <VCol
                 class="d-flex justify-space-between pa-0 mb-3 pb-3"
                 v-for="brand in brands"
@@ -181,28 +214,34 @@ const editProductType = (editedProductType: any) => {
                   borderBottom: '1px solid #E5E5E5',
                 }"
               >
-                <div class="d-flex justify-between">
-                  <p class="title-product">
-                    {{ brand.displayName_En }}
-                  </p>
-                  <p class="mx-2">|</p>
-                  <p class="title-product">
-                    {{ brand.displayName_Ar }}
-                  </p>
-                </div>
+                <section class="d-flex align-center" style="gap: 1rem">
+                  <div>
+                    <img src=" @/assets/test-logo.png" />
+                  </div>
+                  <div class="d-flex justify-between">
+                    <p class="title-product">
+                      {{ brand.displayName_En }}
+                    </p>
+                    <p class="mx-2">|</p>
+                    <p class="title-product">
+                      {{ brand.displayName_Ar }}
+                    </p>
+                  </div>
+                </section>
                 <div>
                   <VIcon
                     class="me-2"
                     icon="mdi-pencil-outline"
                     color="#AFAACB"
+                    @click="editBrand(brand)"
                   ></VIcon>
-                  <!-- @click="editProductType(type)" -->
+
                   <VIcon
                     class="me-2"
                     icon="mdi-trash-can-outline"
                     color="#AFAACB"
+                    @click="removeBrand(brand)"
                   ></VIcon>
-                  <!-- @click="removeProductType(type)" -->
                 </div>
               </VCol>
             </VCard>
@@ -229,6 +268,9 @@ const editProductType = (editedProductType: any) => {
   border: 1px solid #733ee4;
 }
 
+.add-products-actions {
+  padding: 1rem 2rem 2rem 2rem;
+}
 .card-title {
   color: #21094a;
   font-size: 18px;
