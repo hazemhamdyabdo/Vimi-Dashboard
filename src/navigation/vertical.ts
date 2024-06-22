@@ -47,11 +47,11 @@ export default [
   {
     parent: 'General',
     children: [
-      // {
-      //   name: 'Settings',
-      //   icon: 'settings',
-      //   // path: { name: "settings" },
-      // },
+      {
+        name: 'Settings',
+        icon: 'settings',
+        path: { name: "settings" },
+      },
       {
         name: 'Log out',
         icon: 'logout',

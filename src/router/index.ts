@@ -164,6 +164,46 @@ const router = createRouter({
             title: 'Notification Details',
           },
         },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/pages/setting/index.vue'),
+          meta: {
+            title: 'Setting',
+          },
+        },
+        {
+          path: 'add-roles',
+          name: 'add-roles',
+          component: () => import('@/pages/setting/roles/Add.vue'),
+          meta: {
+            title: 'Add Role',
+          },
+        },
+        {
+          path: 'view-roles',
+          name: 'view-roles',
+          component: () => import('@/pages/setting/roles/View.vue'),
+          meta: {
+            title: 'Role Details',
+          },
+        },
+        {
+          path: 'add-users',
+          name: 'add-users',
+          component: () => import('@/pages/customers/Add.vue'),
+          meta: {
+            title: 'Add User',
+          },
+        },
+        {
+          path: 'view-users',
+          name: 'view-users',
+          component: () => import('@/pages/setting/users/View.vue'),
+          meta: {
+            title: 'User Details',
+          },
+        },
       ],
     },
   ],

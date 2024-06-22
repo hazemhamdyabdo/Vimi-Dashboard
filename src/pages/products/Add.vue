@@ -123,7 +123,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <section class="add-products px-6">
+  <section class="px-6">
     <BaseNotifications :notification="showToast" />
     <VContainer>
       <VRow>
@@ -788,7 +788,7 @@ onMounted(async () => {
                   label="Published"
                   value="Published"
                   color="primary"
-                  style="margin-right: 6rem"
+                  style="margin-right: 10rem"
                 ></v-radio>
                 <v-radio
                   label="Hidden"

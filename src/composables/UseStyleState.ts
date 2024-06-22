@@ -45,6 +45,10 @@ export const useStyleState = () => {
         color: "#EB5757",
         background: "#eb57571a",
       },
+      Inactive: {
+        color: "#EB5757",
+        background: "#eb57571a",
+      },
       "In progress": {
         color: "#F2994A",
         background: "#f2994a1a",
