@@ -463,8 +463,8 @@ const getCellProps = ({ item }) => {
             <img
               v-for="image in item.images"
               style="
-                width: 32px;
-                height: 35px;
+                width: 28px;
+                height: 30px;
                 border-radius: 50%;
                 margin-left: -15px;
               "
@@ -483,7 +483,7 @@ const getCellProps = ({ item }) => {
       </template>
 
       <template v-slot:item.Customer="{ item }">
-        <div class="d-flex align-center justify-center">
+        <div class="d-flex align-center">
           <img src="@/assets/test-avatar.png" alt="avatar" />
           <p class="product text-subtitle-1 ml-2">
             {{ item.Customer }}

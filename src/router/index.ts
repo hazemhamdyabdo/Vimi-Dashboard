@@ -180,6 +180,14 @@ const router = createRouter({
             title: 'Role Details',
           },
         },
+        {
+          path: 'add-users',
+          name: 'add-users',
+          component: () => import('@/pages/customers/Add.vue'),
+          meta: {
+            title: 'Add User',
+          },
+        },
       ],
     },
   ],

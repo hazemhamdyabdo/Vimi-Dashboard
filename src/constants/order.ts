@@ -12,7 +12,7 @@ const headers = [
     title: "Customer",
     sortable: false,
     removable: false,
-    align: "center"
+    align: "start"
   },
   {
     key: "displayName_En",

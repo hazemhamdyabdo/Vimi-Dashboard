@@ -1,10 +1,15 @@
 <script setup lang="ts">
+const router = useRouter();
 const dropdownOptions = {
   showDialCodeInSelection: true,
   showFlags: true,
 };
 const showPass = ref(false);
 const showConfirmPass = ref(false);
+
+const isCurrentRouteUsers = computed(() => {
+  return router.currentRoute.value.path === "/dashboard/add-users";
+});
 </script>
 <template>
   <section class="px-6">
@@ -78,7 +83,11 @@ const showConfirmPass = ref(false);
                 </VCol>
                 <VCol>
                   <h3 class="card-info-title">Joining date</h3>
-                  <GDatePicker label="Joining date" bg-color="#faf9fe" />
+                  <GDatePicker
+                    label="Joining date"
+                    bg-color="#faf9fe"
+                    style="height: 40px"
+                  />
                 </VCol>
               </VRow>
             </VCard>
@@ -195,11 +204,23 @@ const showConfirmPass = ref(false);
                     label="Active"
                     value="active"
                     color="primary"
-                    class="me-14"
+                    style="margin-right: 10rem"
                   />
                   <v-radio label="Block" value="block" color="primary" />
                 </v-radio-group>
               </div>
+            </VCard>
+          </VCol>
+          <VCol v-if="isCurrentRouteUsers">
+            <VCard class="card p-4" style="margin-bottom: 2rem">
+              <h3 class="card-title mb-8">Role</h3>
+              <VSelect
+                bg-color="#faf9fe"
+                label=""
+                density="compact"
+                variant="outlined"
+                placeholder="Choose Role"
+              />
             </VCard>
           </VCol>
         </VCol>
@@ -210,12 +231,21 @@ const showConfirmPass = ref(false);
     class="add-products-actions"
     style="display: flex; justify-content: end; gap: 0.8rem"
   >
-    <v-btn flat color="#fff" class="rounded-lg me-2" height="48" width="162">
+    <v-btn
+      flat
+      color="#fff"
+      class="rounded-lg me-2"
+      height="48"
+      width="162"
+      @click="$router.go(-1)"
+    >
       <p>Cancel</p>
     </v-btn>
     <v-btn flat color="#733EE4" class="rounded-lg" height="48" width="162">
       <v-icon size="20"> mdi-plus </v-icon>
-      <p>Add Customer</p>
+      <p>
+        {{ isCurrentRouteUsers ? "Add User" : "Add Customer" }}
+      </p>
     </v-btn>
   </div>
 </template>
