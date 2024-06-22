@@ -18,7 +18,7 @@
         "
       />
       <VBtn
-        variant="solo"
+        variant="plain"
         style="
           border-radius: 8px;
           border: 1px dashed #733ee4;
@@ -31,7 +31,7 @@
         </span>
       </VBtn>
       <VBtn
-        variant="solo"
+        variant="plain"
         style="
           border-radius: 8px;
 

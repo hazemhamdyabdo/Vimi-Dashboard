@@ -788,7 +788,7 @@ onMounted(async () => {
                   label="Published"
                   value="Published"
                   color="primary"
-                  style="margin-right: 6rem"
+                  style="margin-right: 10rem"
                 ></v-radio>
                 <v-radio
                   label="Hidden"
