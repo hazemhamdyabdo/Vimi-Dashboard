@@ -1,4 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const router = useRouter();
+
+const isMyAccount = computed(() => {
+  return router.currentRoute.value.path.endsWith("settings");
+});
+</script>
 
 <template>
   <VCol>
@@ -11,6 +17,7 @@
         <p style="color: #21094a; font-weight: 500; font-size: 20px">
           Mohamed Gamal
         </p>
+        <span v-if="isMyAccount" style="color: #733ee4">Administrator</span>
       </div>
     </VCard>
   </VCol>

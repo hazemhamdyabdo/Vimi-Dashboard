@@ -5,6 +5,9 @@ const router = useRouter();
 const isUserDetails = computed(() => {
   return router.currentRoute.value.path.includes("users");
 });
+const isMyAccount = computed(() => {
+  return router.currentRoute.value.path.endsWith("settings");
+});
 </script>
 <template>
   <VCol>
@@ -50,11 +53,14 @@ const isUserDetails = computed(() => {
           |
         </div>
 
-        <div style="display: flex; align-items: center; gap: 0.5rem">
+        <div
+          v-if="!isMyAccount"
+          style="display: flex; align-items: center; gap: 0.5rem"
+        >
           <SvgIcon icon="edit (1)" />
           <p style="color: #21094a; font-size: 14px">Edit</p>
+          |
         </div>
-        |
         <div
           v-if="isUserDetails"
           style="display: flex; align-items: center; gap: 0.5rem"
@@ -63,9 +69,27 @@ const isUserDetails = computed(() => {
           <p style="color: #21094a; font-size: 14px">Block</p>
           |
         </div>
-        <div style="display: flex; align-items: center; gap: 0.5rem">
+        <div
+          v-if="!isMyAccount"
+          style="display: flex; align-items: center; gap: 0.5rem"
+        >
           <SvgIcon icon="delete (1)" />
           <p style="color: #21094a; font-size: 14px">Delete</p>
+        </div>
+        <div
+          v-if="isMyAccount"
+          style="display: flex; align-items: center; gap: 0.5rem"
+        >
+          <SvgIcon icon="lock" />
+          <p style="color: #21094a; font-size: 14px">Reset Password</p>
+          |
+        </div>
+        <div
+          v-if="isMyAccount"
+          style="display: flex; align-items: center; gap: 0.5rem"
+        >
+          <SvgIcon icon="camera" />
+          <p style="color: #21094a; font-size: 14px">Change image</p>
         </div>
       </section>
     </VCard>
