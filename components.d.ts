@@ -22,7 +22,6 @@ declare module 'vue' {
     ListingHeader: typeof import('./src/components/listing/listingHeader.vue')['default']
     ListingItems: typeof import('./src/components/listing/listingItems.vue')['default']
     PermissionsCard: typeof import('./src/components/settings/PermissionsCard.vue')['default']
-    PremissionsCard: typeof import('./src/components/settings/PremissionsCard.vue')['default']
     PriceDiscount: typeof import('./src/components/products/PriceDiscount.vue')['default']
     ProductSales: typeof import('./src/components/ProductSales.vue')['default']
     RatingBar: typeof import('./src/components/RatingBar.vue')['default']

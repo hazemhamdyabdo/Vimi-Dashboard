@@ -57,6 +57,9 @@ const subCategories: any = computed(() => {
 
 const handleFileChange = async (event: any) => {
   const files = event.target.files;
+  const test = event.target.files[0];
+  console.log("files", files);
+  console.log("test", test);
   const newFiles = Array.from(files);
   selectedFiles.value.push(...newFiles);
   const newImgSrcs = newFiles.map((file: any) =>
@@ -77,9 +80,10 @@ const removeTag = (nwTag: any) => {
 
 const getAdditionalData = async () => {
   try {
+    const params = "pageNo=1&rowCount=50";
     const {
       data: { data },
-    } = await getCtegories();
+    } = await getCtegories(params);
     allCategories.value = data.result;
     const {
       data: { data: brands },
@@ -95,11 +99,15 @@ const uploadProduct = async (): Promise<void> => {
   const form = getFormData({
     ...newProduct.value,
     tags: tagsToAdd.value,
-    imageFiles: selectedFiles.value,
+    // imageFiles: selectedFiles.value,
   });
+  // form.append("imageFiles[0]", selectedFiles.value[0]);
   isPageLoading.value = true;
   try {
-    sendFormData("products", form);
+    sendFormData("products", {
+      "imageFiles[0]": selectedFiles.value[0],
+      ...form,
+    });
     showToast.value = true;
   } catch (error) {
     console.log(error);
@@ -372,7 +380,7 @@ onMounted(async () => {
                     class="card-info-list"
                     :items="allCategories"
                     item-value="uuid"
-                    item-title="uuid"
+                    item-title="displayName_En"
                   ></v-select>
                 </VCol>
                 <VCol>
@@ -387,7 +395,7 @@ onMounted(async () => {
                     class="card-info-list"
                     :items="subCategories"
                     item-value="uuid"
-                    item-title="displayName"
+                    item-title="displayName_En"
                   ></v-select>
                 </VCol>
               </VRow>

@@ -27,8 +27,8 @@ const service = reqMethods.reduce((acc: any, method: string) => {
 }, {});
 
 export const resource = (resourceUrl: string) => ({
-  get(param = {}) {
-    return service.get(resourceUrl, { param });
+  get(param = "") {
+    return service.get(`${resourceUrl}${param ? `?${new URLSearchParams(param)}` : ''}`);
   },
   show(id: string) {
     return service.get(`${resourceUrl}/${id}`);
