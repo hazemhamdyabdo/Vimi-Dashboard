@@ -2,8 +2,9 @@
 import { headers, productFilter } from "@/constants/products";
 import { getProducts, deleteProduct } from "@/apis/products";
 import { getCtegories } from "@/apis/categories";
-
+import { useBuildQueryString } from "@/composables/UseBuildQueryString";
 const selectedItems = ref([]);
+const { buildQueryString } = useBuildQueryString();
 
 const resetSelectedItems = () => {
   selectedItems.value = [];
@@ -77,16 +78,21 @@ const getCategoryNameForProduct = () => {
 
 let totalCount = ref(0);
 const isPageLoading = ref(false);
+const page = ref(1);
 
 async function fetchProducts() {
   isPageLoading.value = true;
   try {
+    const params = buildQueryString({
+      rowCount: 10,
+      pageNo: page.value,
+    });
     const {
       data: { data },
-    } = await getProducts();
+    } = await getProducts(params);
     allProducts.value = data.result;
     totalCount.value = data.totalCount;
-    getCategoryNameForProduct();
+    // getCategoryNameForProduct();
   } catch (error) {
     console.log(error);
   } finally {
@@ -100,13 +106,15 @@ const pagesCount = computed(() => {
     : Math.ceil(totalCount.value / 10);
 });
 
-const page = ref(1);
-const tableItems = computed(() => {
-  return allProducts.value.slice(10 * page.value - 10, 10 * page.value);
-});
 const getNextProductsPage = () => {
   page.value += 1;
+  console.log(page.value);
+  fetchProducts();
 };
+
+watch(page, async () => {
+  fetchProducts();
+});
 
 watch(
   () => selectedItems.value,
@@ -152,12 +160,12 @@ onMounted(async () => {
       class="my-6"
       :headers="headers"
       :isPageLoading="isPageLoading"
-      :items="tableItems"
+      :items="allProducts"
     />
     <div class="w-100 d-flex justify-space-between">
       <p class="my-auto text-9089B2">
         View
-        {{ tableItems.length }} from {{ totalCount }}
+        {{ allProducts.length }} from {{ totalCount }}
       </p>
       <v-pagination
         v-if="pagesCount > 1"

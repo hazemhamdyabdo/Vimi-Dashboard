@@ -264,7 +264,7 @@
                   <p
                     class="card-file-text text-decoration-underline cursor-pointer"
                   >
-                    {{ categoryImg ? 'Change Image' : 'Upload Image' }}
+                    {{ categoryImg ? "Change Image" : "Upload Image" }}
                   </p>
                   <div class="text-center">
                     <p class="card-file-subtitle my-1">
@@ -381,19 +381,19 @@
       @click="addCategory"
     >
       <v-icon v-if="!route.params.id" size="20"> mdi-plus </v-icon>
-      <p>{{ route.params.id ? 'Save Changes' : 'Add Category' }}</p>
+      <p>{{ route.params.id ? "Save Changes" : "Add Category" }}</p>
     </v-btn>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Category } from './type';
-import { getCtegory } from '@/apis/categories.ts';
+import type { Category } from "./type";
+import { getCtegory } from "@/apis/categories.ts";
 import {
   getFormData,
   sendFormData,
-} from '@/composables/products/SendFormRequest';
-import { useEditor } from '@/composables/categories/UseEditor';
+} from "@/composables/products/SendFormRequest";
+import { useEditor } from "@/composables/categories/UseEditor";
 // import { reactive } from 'vue';
 // import { useVuelidate } from '@vuelidate/core';
 // import { required } from '@vuelidate/validators';
@@ -408,14 +408,14 @@ let newCategory: any = ref({}) as unknown as Category;
 // };
 
 // const v$ = useVuelidate(rules, state);
-let fileInput: any = ref('');
-let categoryImg = ref('');
-let categoryImgBase64: any = ref('');
+let fileInput: any = ref("");
+let categoryImg = ref("");
+let categoryImgBase64: any = ref("");
 let isPageLoading = ref(false);
 let showToast = ref(false);
 let isAddingBtnLoading = ref(false);
-let newSubCategoryEn = ref('');
-let newSubCategoryAr = ref('');
+let newSubCategoryEn = ref("");
+let newSubCategoryAr = ref("");
 const subCategoriesToAdd: string[] | any = ref([]);
 
 // const clear = () => {
@@ -437,8 +437,8 @@ const addSubCategory = () => {
     displayName_En: newSubCategoryEn.value,
     displayName_Ar: newSubCategoryAr.value,
   });
-  newSubCategoryEn.value = '';
-  newSubCategoryAr.value = '';
+  newSubCategoryEn.value = "";
+  newSubCategoryAr.value = "";
 };
 
 const removeSubCategory = (deleteSubCategory: any) => {
@@ -453,7 +453,7 @@ const editSubCategory = (editedSubCategory: any) => {
   removeSubCategory(editedSubCategory);
 };
 
-const newTag = ref('');
+const newTag = ref("");
 const tagsToAdd: string[] | any = ref([]);
 
 const addTags = () => {
@@ -461,7 +461,7 @@ const addTags = () => {
     id: tagsToAdd.value.length,
     title: newTag.value,
   });
-  newTag.value = '';
+  newTag.value = "";
 };
 
 const removeTag = (deletedTag: any) => {
@@ -501,11 +501,11 @@ const addCategory = async (): Promise<void> => {
     form[`tags[${index}]`] = qux;
   });
   try {
-    await sendFormData('categories', form);
+    await sendFormData("categories", form);
     showToast.value = true;
     isAddingBtnLoading.value = true;
     setTimeout(() => {
-      router.push({ name: 'categories' });
+      router.push({ name: "categories" });
     }, 1500);
   } catch (error) {
     console.log(error);

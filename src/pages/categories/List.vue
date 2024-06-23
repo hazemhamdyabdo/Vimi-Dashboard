@@ -29,7 +29,7 @@
     <div class="w-100 d-flex justify-space-between">
       <p class="my-auto text-9089B2">
         View
-        {{ !isPageLoading ? tableItems.length : '...' }} from {{ totalCount }}
+        {{ !isPageLoading ? tableItems.length : "..." }} from {{ totalCount }}
       </p>
       <v-pagination
         v-if="pagesCount > 1"
@@ -49,8 +49,10 @@
 </template>
 
 <script lang="ts" setup>
-import { categoriesFilter, headers } from '@/constants/categories';
-import { getCtegories, deleteCtegories } from '@/apis/categories.ts';
+import { categoriesFilter, headers } from "@/constants/categories";
+import { getCtegories, deleteCtegories } from "@/apis/categories.ts";
+import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+const { buildQueryString } = useBuildQueryString();
 
 let isPageLoading = ref(false);
 let isDeletionInProgress = ref(false);
@@ -59,7 +61,7 @@ const selectedItems: Ref<string[]> = ref([]);
 let categories = ref([]);
 let currentPage = ref(1);
 let totalCount = ref(0);
-let search = ref('');
+let search = ref("");
 
 let pagesCount = computed(() => {
   return !totalCount.value || !categories.value.length
@@ -105,7 +107,7 @@ const setCheckAll = (val: boolean) => {
 
 // let deletedItemId = ref('');
 
-const toggleDeleteModal = ({ uuid = '', options = {} }) => {
+const toggleDeleteModal = ({ uuid = "", options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);
@@ -132,12 +134,9 @@ const deleteMultiple = async () => {
 
 const setCategories = async () => {
   isPageLoading.value = true;
+  const params = buildQueryString({ rowCount: 10, pageNo: currentPage.value });
   try {
-    const { data } = await getCtegories({
-      rowCount: 10,
-      pageNo: currentPage.value,
-      search: 'grg',
-    });
+    const { data } = await getCtegories(params);
     categories.value = data.data.result ?? [];
     totalCount.value = data.data.totalCount;
     isPageLoading.value = false;

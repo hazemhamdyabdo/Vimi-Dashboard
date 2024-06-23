@@ -13,8 +13,8 @@ export const useProductDiscount = (newProduct: Product) => {
     isScheduledOpen.value = false;
   };
   const setDiscount = (dateFrom: string, dateTo: string) => {
-    newProduct.value.discounts.DateFrom = dateFrom;
-    newProduct.value.discounts.DateTo = dateTo;
+    newProduct.value.discounts.dateFrom = dateFrom;
+    newProduct.value.discounts.dateTo = dateTo;
     isThereSelectedDates.value = true;
   };
 
