@@ -27,8 +27,13 @@ const service = reqMethods.reduce((acc: any, method: string) => {
 }, {});
 
 export const resource = (resourceUrl: string) => ({
-  get(param = {}) {
-    return service.get(resourceUrl, { param });
+  get(param = { rowCount: 10, pageNo: 1, search: '' }) {
+    return service.get(
+      `${resourceUrl}?rowCount=${param.rowCount}&pageNo=${param.pageNo}&search=${param.search}`,
+      {
+        param,
+      }
+    );
   },
   show(id: string) {
     return service.get(`${resourceUrl}/${id}`);

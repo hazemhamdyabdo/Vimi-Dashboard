@@ -29,14 +29,13 @@
     <div class="w-100 d-flex justify-space-between">
       <p class="my-auto text-9089B2">
         View
-        {{ tableItems.length }} from {{ totalCount }}
+        {{ !isPageLoading ? tableItems.length : '...' }} from {{ totalCount }}
       </p>
       <v-pagination
         v-if="pagesCount > 1"
-        v-model="page"
+        v-model="currentPage"
         :length="pagesCount"
         :total-visible="pagesCount"
-        @change="getNextCategoriesPage"
       />
     </div>
     <GlobalPopup
@@ -53,13 +52,14 @@
 import { categoriesFilter, headers } from '@/constants/categories';
 import { getCtegories, deleteCtegories } from '@/apis/categories.ts';
 
-let page = ref(1);
 let isPageLoading = ref(false);
 let isDeletionInProgress = ref(false);
 
 const selectedItems: Ref<string[]> = ref([]);
 let categories = ref([]);
+let currentPage = ref(1);
 let totalCount = ref(0);
+let search = ref('');
 
 let pagesCount = computed(() => {
   return !totalCount.value || !categories.value.length
@@ -75,9 +75,10 @@ let table: any = ref(null);
 let triggerResetSelectedItems = ref(false);
 let triggerSelectAll = ref(false);
 
-const getNextCategoriesPage = () => {
-  page.value += 1;
-};
+watch(currentPage, async () => {
+  setCategories();
+});
+
 const resetSelectedItems = () => {
   selectedItems.value = [];
   triggerResetSelectedItems.value = !triggerResetSelectedItems.value;
@@ -110,18 +111,6 @@ const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   uuid.length && selectedItems.value.push(uuid);
 };
 
-// const deleteItem = async () => {
-//   isDeletionInProgress.value = true;
-//   try {
-//     await deleteCtegories(deletedItemId.value);
-//   } catch {
-//   } finally {
-//     toggleDeleteModal();
-//     isDeletionInProgress.value = false;
-//     setCategories();
-//   }
-// };
-
 const deleteMultiple = async () => {
   isDeletionInProgress.value = true;
   try {
@@ -144,7 +133,11 @@ const deleteMultiple = async () => {
 const setCategories = async () => {
   isPageLoading.value = true;
   try {
-    const { data } = await getCtegories();
+    const { data } = await getCtegories({
+      rowCount: 10,
+      pageNo: currentPage.value,
+      search: 'grg',
+    });
     categories.value = data.data.result ?? [];
     totalCount.value = data.data.totalCount;
     isPageLoading.value = false;
@@ -155,7 +148,7 @@ const setCategories = async () => {
 };
 
 const tableItems = computed(() => {
-  return categories.value.slice(10 * page.value - 10, 10 * page.value);
+  return categories.value;
 });
 
 setCategories();

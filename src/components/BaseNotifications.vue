@@ -36,7 +36,7 @@ watch(
 <template>
   <VCol>
     <div
-      class="d-flex toast"
+      class="d-flex align-items-center toast"
       :class="{ show: notification }"
       style="
         gap: 1rem;
@@ -60,10 +60,10 @@ watch(
   visibility: hidden;
   position: fixed;
   z-index: 4;
-  top: 70px;
-  right: 0%;
+  top: 11vh;
+  right: 10%;
 
-  width: 20vw;
+  width: 70vw;
 
   &.show {
     visibility: visible;
