@@ -4,9 +4,16 @@ const resourceObj = resource('categories');
 
 const {
   get: getCtegories,
+  update: updateCtegories,
   show: getCtegory,
   removeAll: deleteMultipleCtegories,
   remove: deleteCtegories,
 } = resourceObj;
 
-export { getCtegories, getCtegory, deleteMultipleCtegories, deleteCtegories };
+export {
+  getCtegories,
+  updateCtegories,
+  getCtegory,
+  deleteMultipleCtegories,
+  deleteCtegories,
+};

@@ -15,7 +15,7 @@ defineProps({
   },
   numberOfCols: {
     type: Number,
-    default: 6,
+    default: 7,
   },
 });
 </script>

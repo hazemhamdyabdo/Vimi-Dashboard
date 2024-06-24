@@ -8,27 +8,20 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  item: {
+  notificationText: {
     type: String,
-    default: 'Item',
+    default: 'Done',
   },
 });
 
-const notification = ref(false);
-
-onMounted(() => {
-  notification.value = props.notification;
-});
-
+const emit = defineEmits(['closeNotification']);
 watch(
   () => props.notification,
   (val) => {
-    notification.value = val;
-
     if (val) {
       setTimeout(() => {
-        notification.value = false;
-      }, 5000);
+        emit('closeNotification');
+      }, 2000);
     }
   }
 );
@@ -37,10 +30,10 @@ watch(
   <VCol>
     <div
       class="d-flex align-items-center toast"
-      :class="{ show: notification }"
+      :class="{ show: props.notification }"
+      :style="`background: ${color}`"
       style="
         gap: 1rem;
-        background: #27ae60;
         justify-content: center;
         border-radius: 8px;
         padding: 0.4rem 0;
@@ -49,8 +42,11 @@ watch(
         font-size: 18px;
       "
     >
-      <SvgIcon icon="True-circle-fill" color="#21094a" />
-      <h5 class="my-auto">{{ item }} has been added successfully</h5>
+      <SvgIcon
+        :icon="color === '#27ae60' ? 'True-circle-fill' : 'close-cross'"
+        :color="color"
+      />
+      <h5 class="my-auto">{{ notificationText }}</h5>
     </div>
   </VCol>
 </template>

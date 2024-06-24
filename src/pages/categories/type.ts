@@ -1,4 +1,5 @@
 interface Category {
+  uuid?: string;
   displayName_En: string;
   displayName_Ar: string;
   description_En: string;

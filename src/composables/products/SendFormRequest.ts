@@ -45,3 +45,25 @@ export const sendFormData = async function (path: string, form: FormData) {
     throw error;
   }
 };
+
+export const updateFormData = async function (
+  path: string,
+  form: FormData,
+  uuid: String
+) {
+  try {
+    await axios.put(
+      `https://techify-001-site1.htempurl.com/api/v1/${path}/${uuid}`,
+      form,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken'))}`,
+          'x-api-key': 'x5b9j8p2qRz3vdK1st7yf4ul6wa0ezcv',
+        },
+      }
+    );
+  } catch (error) {
+    throw error;
+  }
+};

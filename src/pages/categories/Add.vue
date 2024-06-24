@@ -1,6 +1,11 @@
 <template>
   <section class="add-products px-6">
-    <BaseNotifications v-if="showToast" :notification="showToast" />
+    <BaseNotifications
+      :notification="showToast"
+      :notificationText="notification.text"
+      :color="notification.color"
+      @closeNotification="showToast = false"
+    />
     <VContainer class="pt-0">
       <VRow>
         <VCol cols="6">
@@ -249,7 +254,8 @@
                 >
                   <img
                     v-if="categoryImg"
-                    style="width: 50%"
+                    width="142"
+                    height="142"
                     :src="
                       categoryImg.includes('http')
                         ? categoryImg
@@ -264,7 +270,7 @@
                   <p
                     class="card-file-text text-decoration-underline cursor-pointer"
                   >
-                    {{ categoryImg ? "Change Image" : "Upload Image" }}
+                    {{ categoryImg ? 'Change Image' : 'Upload Image' }}
                   </p>
                   <div class="text-center">
                     <p class="card-file-subtitle my-1">
@@ -367,12 +373,9 @@
     class="add-products-actions"
     style="display: flex; justify-content: end"
   >
-    <!-- <v-btn flat color="#fff" class="rounded-lg me-2" height="48" width="162">
-      <p>Cancel</p>
-    </v-btn> -->
     <v-btn
       flat
-      :color="route.params.id ? '#27AE60' : '#733EE4'"
+      :color="isEditing ? '#27AE60' : '#733EE4'"
       class="rounded-lg"
       height="48"
       width="162"
@@ -380,53 +383,65 @@
       :disabled="isAddingBtnLoading"
       @click="addCategory"
     >
-      <v-icon v-if="!route.params.id" size="20"> mdi-plus </v-icon>
-      <p>{{ route.params.id ? "Save Changes" : "Add Category" }}</p>
+      <v-icon v-if="!isEditing" size="20"> mdi-plus </v-icon>
+      <p>{{ isEditing ? 'Save Changes' : 'Add Category' }}</p>
     </v-btn>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Category } from "./type";
-import { getCtegory } from "@/apis/categories.ts";
+import type { Category } from './type';
+import { updateCtegories } from '@/apis/categories.ts';
 import {
   getFormData,
   sendFormData,
-} from "@/composables/products/SendFormRequest";
-import { useEditor } from "@/composables/categories/UseEditor";
-// import { reactive } from 'vue';
-// import { useVuelidate } from '@vuelidate/core';
-// import { required } from '@vuelidate/validators';
+  updateFormData,
+} from '@/composables/products/SendFormRequest';
+import { useEditor } from '@/composables/categories/UseEditor';
+import { reactive } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import { useEditCategoryData } from '@/composables/categories/UseEditCategoryData';
 
-let newCategory: any = ref({}) as unknown as Category;
-// let state: any = reactive({
-//   ...newCategory.value,
-// });
-// const rules = {
-//   'newCategory.displayName_En': { required },
-//   'newCategory.displayName_Ar': { required },
-// };
+let newCategory: any = reactive({
+  displayName_En: '',
+  displayName_Ar: '',
+  description_En: '',
+  description_Ar: '',
+  visibility: '',
+}) as unknown as Category;
 
-// const v$ = useVuelidate(rules, state);
-let fileInput: any = ref("");
-let categoryImg = ref("");
-let categoryImgBase64: any = ref("");
+const rules = {
+  displayName_En: { required },
+  displayName_Ar: { required },
+  description_En: { required },
+  description_Ar: { required },
+  visibility: { required },
+};
+
+const v$ = useVuelidate(rules, newCategory);
+
+let notification = ref({
+  text: 'Category Added Successfully',
+  color: '#27ae60',
+});
+let fileInput: any = ref('');
+let categoryImg = ref('');
+let categoryImgBase64: any = ref('');
 let isPageLoading = ref(false);
 let showToast = ref(false);
 let isAddingBtnLoading = ref(false);
-let newSubCategoryEn = ref("");
-let newSubCategoryAr = ref("");
+let newSubCategoryEn = ref('');
+let newSubCategoryAr = ref('');
 const subCategoriesToAdd: string[] | any = ref([]);
 
-// const clear = () => {
-//   v$.value.$reset();
+const clear = () => {
+  v$.value.$reset();
 
-//   for (const [key, value] of Object.entries(newCategory)) {
-//     state[key] = value;
-//   }
-// };
-
-// let isValidCategory = ref(false);
+  for (const [key, value] of Object.entries(newCategory)) {
+    newCategory[key] = value;
+  }
+};
 
 const { description_En, description_Ar, setEditorValue } =
   useEditor(newCategory);
@@ -437,8 +452,8 @@ const addSubCategory = () => {
     displayName_En: newSubCategoryEn.value,
     displayName_Ar: newSubCategoryAr.value,
   });
-  newSubCategoryEn.value = "";
-  newSubCategoryAr.value = "";
+  newSubCategoryEn.value = '';
+  newSubCategoryAr.value = '';
 };
 
 const removeSubCategory = (deleteSubCategory: any) => {
@@ -453,7 +468,7 @@ const editSubCategory = (editedSubCategory: any) => {
   removeSubCategory(editedSubCategory);
 };
 
-const newTag = ref("");
+const newTag = ref('');
 const tagsToAdd: string[] | any = ref([]);
 
 const addTags = () => {
@@ -461,35 +476,52 @@ const addTags = () => {
     id: tagsToAdd.value.length,
     title: newTag.value,
   });
-  newTag.value = "";
+  newTag.value = '';
 };
 
 const removeTag = (deletedTag: any) => {
   tagsToAdd.value = tagsToAdd.value.filter((tag: any) => tag !== deletedTag);
 };
 
-const route = useRoute();
+const { isEditing, setCategoryData } = useEditCategoryData();
 
-const setCategoryData = async () => {
-  if (!route.params.id) return;
+onMounted(async () => {
   isPageLoading.value = true;
   try {
-    const { data } = await getCtegory(route.params.id as string);
-    newCategory.value = data.data;
-    tagsToAdd.value = data.data.tags;
-    subCategoriesToAdd.value = data.data.subCategories;
-    categoryImg.value = data.data.imagePath;
-
+    await setCategoryData(
+      newCategory,
+      tagsToAdd,
+      subCategoriesToAdd,
+      categoryImg,
+      description_En,
+      description_Ar
+    );
+  } catch (error) {
+  } finally {
     isPageLoading.value = false;
-  } catch {}
-};
-setCategoryData();
+  }
+});
+
 const router = useRouter();
+
 const addCategory = async (): Promise<void> => {
-  setEditorValue();
   isAddingBtnLoading.value = true;
+  setEditorValue();
+  const isValid = await v$.value.$validate();
+  if (
+    !isValid ||
+    !subCategoriesToAdd.value.length ||
+    !tagsToAdd.value.length ||
+    !categoryImg.value.length
+  ) {
+    isAddingBtnLoading.value = false;
+    notification.value.text = 'Please check your Inputs';
+    notification.value.color = '#EB5757';
+    showToast.value = true;
+    return;
+  }
   const form = {
-    ...newCategory.value,
+    ...newCategory,
     imageFile: categoryImgBase64.value,
   };
   subCategoriesToAdd.value.map((subCategory: any, index: any) => {
@@ -498,15 +530,22 @@ const addCategory = async (): Promise<void> => {
   });
   tagsToAdd.value.map((tag: any, index: any) => {
     const { id, ...qux } = tag;
-    form[`tags[${index}]`] = qux;
+    form[`tags[${index}]`] = qux.title;
   });
+  delete form.uuid;
   try {
-    await sendFormData("categories", form);
+    isEditing.value
+      ? await updateFormData('categories', form, newCategory.uuid)
+      : await sendFormData('categories', form);
+    notification.value.text = isEditing.value
+      ? 'Category Updated Successfully'
+      : 'Category Added Successfully';
+    notification.value.color = '#27ae60';
     showToast.value = true;
     isAddingBtnLoading.value = true;
     setTimeout(() => {
-      router.push({ name: "categories" });
-    }, 1500);
+      router.push({ name: 'categories' });
+    }, 1000);
   } catch (error) {
     console.log(error);
   } finally {
