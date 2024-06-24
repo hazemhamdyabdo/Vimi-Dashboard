@@ -56,7 +56,9 @@
             box-shadow: 0px 4px 24px 0px rgba(35, 0, 110, 0.04);
           "
         >
-          <p v-if="errorMsg.length">{{ errorMsg }}</p>
+          <p v-if="errorMsg.length" style="color: red; text-align: center">
+            {{ errorMsg }}
+          </p>
           <v-card-text class="pa-0">
             <p
               class="mb-2"
@@ -242,7 +244,7 @@ const handleLogion = async () => {
       localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
       fetchUserData(accessToken, refreshToken);
     } catch (e) {
-      errorMsg.value = 'Please check your credentials and try again';
+      errorMsg.value = 'Please check your email and password and try again';
       loadingBtn.value = false;
     }
   }
