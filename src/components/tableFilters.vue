@@ -51,6 +51,7 @@ const emit = defineEmits([
   "SelectAll",
   "viewDetails",
   "edit",
+  "restPassword",
 ]);
 
 const DeleteEmits: any = computed(() => {
@@ -92,6 +93,9 @@ const handleEmitActions = (filter: any) => {
       break;
     case "Edit":
       emit("edit");
+      break;
+    case "Reset Password":
+      emit("restPassword");
       break;
     default:
       break;
