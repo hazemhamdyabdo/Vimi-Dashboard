@@ -42,8 +42,8 @@
       :options="modalOptions"
       :modalState="modalState"
       :isDeletionInProgress="isDeletionInProgress"
-      @closeModal="toggleDeleteModal"
-      @deleteItem="deleteMultiple"
+      :onCancel="handleCancel"
+      :onConfirm="deleteMultiple"
     />
   </div>
 </template>
@@ -149,6 +149,9 @@ const setCategories = async () => {
 const tableItems = computed(() => {
   return categories.value;
 });
+const handleCancel = () => {
+  toggleDeleteModal({});
+};
 
 setCategories();
 </script>

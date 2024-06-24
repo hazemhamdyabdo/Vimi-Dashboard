@@ -62,19 +62,6 @@ const getAllCategories = async () => {
     console.log(error);
   }
 };
-const getCategoryNameForProduct = () => {
-  // add category name to products based on category id
-  allProducts.value.forEach(
-    (product: { categoryUuid: string; categoryName: string }) => {
-      const category = allCategories.value.find(
-        (category: { uuid: string }) => category.uuid === product.categoryUuid
-      );
-      if (category) {
-        product.categoryName = category.displayName_En;
-      }
-    }
-  );
-};
 
 let totalCount = ref(0);
 const isPageLoading = ref(false);
@@ -125,6 +112,9 @@ watch(
     return setCheckAll(false);
   }
 );
+const handleCancel = () => {
+  toggleDeleteModal({});
+};
 onMounted(async () => {
   await getAllCategories();
   fetchProducts();
@@ -178,8 +168,8 @@ onMounted(async () => {
       :options="modalOptions"
       :modalState="modalState"
       :isDeletionInProgress="isDeletionInProgress"
-      @closeModal="toggleDeleteModal"
-      @deleteItem="deleteMultiple"
+      :onCancel="handleCancel"
+      :onConfirm="deleteMultiple"
     />
   </div>
 </template>
