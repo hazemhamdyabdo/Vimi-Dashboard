@@ -32,8 +32,7 @@ const imgsToSend = ref([]);
 
 const { addQuantity, reduceQuantity, selectedAction } =
   useProductQuantity(newProduct);
-const { isEditing, oldQuantity, setProductData } =
-  useEditProductData();
+const { isEditing, oldQuantity, setProductData } = useEditProductData();
 const {
   dateFrom,
   dateTo,

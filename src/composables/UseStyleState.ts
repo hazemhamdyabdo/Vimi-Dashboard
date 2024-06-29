@@ -17,6 +17,14 @@ export const useStyleState = () => {
         color: "#F2994A",
         background: "#F2994A1a",
       },
+      Published: {
+        color: "#27ae60",
+        background: "#27ae601a",
+      },
+      Hidden: {
+        color: "#EB5757",
+        background: "#EB57571a",
+      },
       Deleted: {
         color: "#EB5757",
         background: "#EB57571a",
