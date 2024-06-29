@@ -2,6 +2,10 @@
 import { useStyleState } from '@/composables/UseStyleState';
 const { getStyleStatus } = useStyleState();
 const props = defineProps({
+  showSelect: {
+    type: Boolean,
+    default: true,
+  },
   isPageLoading: {
     type: Boolean,
     required: true,
@@ -280,6 +284,7 @@ const getCellProps = ({ item }) => {
     <dataTableLoader v-if="isPageLoading" />
     <v-data-table
       class="listing-table"
+      :class="{ showSelect: showSelect }"
       v-bind="$attrs"
       v-model="selectedItems"
       :headers="headerLocal"
@@ -289,7 +294,7 @@ const getCellProps = ({ item }) => {
       :items-per-page="10"
       sort-asc-icon="mdi-menu-swap"
       sort-desc-icon="mdi-menu-swap"
-      show-select
+      :show-select="showSelect"
       hide-default-footer
       @input="selectItems($event)"
       @click:row="viewDetails"
@@ -826,7 +831,7 @@ const getCellProps = ({ item }) => {
   height: 64px;
 }
 
-.listing-table tr > td:first-child {
+.listing-table.showSelect tr > td:first-child {
   border-right: 1px solid #afaacb;
 }
 </style>

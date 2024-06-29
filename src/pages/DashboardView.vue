@@ -60,7 +60,7 @@ const headers = [
     title: 'Customer name',
     key: 'CustomerName',
     sortable: false,
-    align: 'center',
+    align: 'left',
   },
   {
     title: 'Product',
@@ -72,13 +72,13 @@ const headers = [
   {
     title: 'Rating',
     key: 'Rating',
-    align: 'center',
-    sortable: false,
+    align: 'left',
+    sortable: true,
   },
   {
     title: 'Review',
     key: 'Review',
-    align: 'center',
+    align: 'left',
     sortable: false,
   },
   {
@@ -283,7 +283,7 @@ const items = [
         >
           <div class="d-flex justify-start">
             <p
-              class="my-auto"
+              class="my-auto mb-6"
               style="
                 color: var(--Black, #21094a);
                 /* 24/H7-B-24 */
@@ -298,10 +298,10 @@ const items = [
             </p>
           </div>
           <ListingItems
-            class="mt-6"
             :headers="headers"
             :items="items"
             :itemValue="'uuid'"
+            :show-select="false"
           />
         </VCard>
       </VCol>
