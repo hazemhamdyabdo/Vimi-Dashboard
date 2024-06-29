@@ -14,7 +14,7 @@ const headers = [
     sortable: true,
     width: 250,
   },
-  { title: "Category", key: "categoryName", align: "center", sortable: true },
+  { title: "Category", key: "categoryDisplayName_Ar", align: "center", sortable: true },
   { title: "Type", key: "type", align: "left", sortable: false },
   { title: "Qty", key: "stockQuantity", align: "left", sortable: false },
   { title: "Price", key: "price", align: "left", sortable: true },
