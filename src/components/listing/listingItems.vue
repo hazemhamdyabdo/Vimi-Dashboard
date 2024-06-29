@@ -433,7 +433,10 @@ const getCellProps = ({ item }) => {
 
       <template v-slot:item.visibility="{ item }">
         <div class="d-flex">
-          <p class="mx-auto px-2 py-1 text-subtitle-1">
+          <p
+            class="mx-auto px-2 py-1 text-subtitle-1"
+            :style="`background-color: ${getStyleStatus(item.visibility)?.background}; color: ${getStyleStatus(item.visibility)?.color};  border-radius: 8px;`"
+          >
             {{ item.visibility }}
           </p>
         </div>
@@ -707,11 +710,6 @@ const getCellProps = ({ item }) => {
 <style>
 .bg-f1ecfc {
   background-color: #f1ecfc;
-}
-.green--tag {
-  color: #27ae60;
-  background-color: rgba(39, 174, 96, 0.1);
-  border-radius: 8px;
 }
 .price {
   color: #21094a;
