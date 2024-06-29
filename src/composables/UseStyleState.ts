@@ -61,6 +61,10 @@ export const useStyleState = () => {
         color: "#F2994A",
         background: "#f2994a1a",
       },
+      InProgress: {
+        color: "#F2994A",
+        background: "#f2994a1a",
+      },
       "Return in progress": {
         color: "#21094A",
         background: "#21094a1a",

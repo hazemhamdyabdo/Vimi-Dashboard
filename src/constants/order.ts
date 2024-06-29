@@ -1,48 +1,48 @@
 
 const headers = [
   {
-    key: "orderNumber",
+    key: "serialNumber",//orderNumber
     title: "Order NO.",
     sortable: false,
     removable: false,
     align: "center"
   },
   {
-    key: "Customer",
+    key: "userFullName",// Customer
     title: "Customer",
     sortable: false,
     removable: false,
-    align: "start"
+    align: "center"
   },
   {
-    key: "displayName_En",
+    key: "items",
     title: "Product",
     sortable: true,
     removable: false,
     align: "center"
   },
   {
-    key: "price",
-    title: "Price",
-    removable: false,
-    align: "start"
-  },
-  {
-    key: "orderDate",
+    key: "dateCreated",
     title: "Order date",
     sortable: false,
     removable: false,
     align: "center"
   },
   {
-    key: "Payment",
+    key: "totalAmount",
+    title: "Price",
+    removable: false,
+    align: "start"
+  },
+  {
+    key: "paymentMethod",
     title: "Payment",
     sortable: false,
     removable: false,
     align: "center"
   },
   {
-    key: "Status",
+    key: "status",
     title: "Status",
     sortable: true,
     removable: false,

@@ -1,8 +1,32 @@
 <script setup lang="ts">
 import { headers, items, ordersFilter } from "@/constants/order";
+import { getOrders } from "@/apis/orders";
 let page = 1;
 const pageCount = 4;
 const selectedItems = ref([]);
+const orders = ref([]);
+const totalCount = ref(0);
+const isPageLoading = ref(false);
+
+const getAllOrders = async () => {
+  isPageLoading.value = true;
+  try {
+    const {
+      data: { data },
+    } = await getOrders();
+    orders.value = data.result;
+    // console.log(orders.value);
+    totalCount.value = data.total;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isPageLoading.value = false;
+  }
+};
+
+onMounted(async () => {
+  await getAllOrders();
+});
 </script>
 <template>
   <section class="px-12 w-100">
@@ -19,7 +43,7 @@ const selectedItems = ref([]);
       @emitSelectedItems="selectedItems = $event"
       class="my-6"
       :headers="headers"
-      :items="items"
+      :items="orders"
       :itemValue="'orderNumber'"
     />
     <BasePagination>

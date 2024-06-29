@@ -185,37 +185,25 @@ const items = [
   // ... more items
 ];
 
-const orderStatus = ref([
-  { nameAr: "قيد الانتظار", nameEn: "Pending" },
-  {
-    nameAr: "تم التسليم",
-    nameEn: "Delivered",
-  },
-  {
-    nameAr: "تم الشحن",
-    nameEn: "Shipped",
-  },
-  {
-    nameAr: "تم الاسترجاع",
-    nameEn: "Returned",
-  },
-  {
-    nameAr: "ملغي",
-    nameEn: "Cancelled",
-  },
-  {
-    nameAr: "في الانتظار",
-    nameEn: "In progress",
-  },
-  {
-    nameAr: "في انتظار الاسترجاع",
-    nameEn: "Return in progress",
-  },
-  {
-    nameAr: "مرفوض",
-    nameEn: "Rejected",
-  },
+const statuses = ref([
+  "pending",
+  "InProgress",
+  "shipped",
+  "delivered",
+  "Cancelled",
+  "return request",
+  "return process",
+  "reject return request",
+  "returned",
 ]);
+
+const nextStatus = (currentStatus) => {
+  const currentIndex = statuses.value?.indexOf(currentStatus);
+  if (currentIndex >= 0 && currentIndex < statuses.value?.length - 1) {
+    return [statuses.value[currentIndex + 1]];
+  }
+  return [currentStatus];
+};
 
 const emit = defineEmits(["emitSelectedItems"], ["openDeleteModal"]);
 //TODO: for discussion l8r how to make it dynamic
@@ -450,6 +438,14 @@ const getCellProps = ({ item }) => {
           </p>
         </div>
       </template>
+      <template v-slot:item.totalAmount="{ item }">
+        <div class="d-flex">
+          <p class="price text-subtitle-1">
+            KD
+            {{ item.totalAmount }}
+          </p>
+        </div>
+      </template>
 
       <template v-slot:item.stockQuantity="{ item }">
         <div class="d-flex">
@@ -543,11 +539,50 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
 
+      <template v-slot:item.items="{ item }">
+        <div
+          v-for="(product, i) in item.items"
+          class="d-flex align-center justify-center"
+        >
+          <section class="d-flex align-center justify-center" v-if="i == 0">
+            <img
+              v-if="product?.productImagePath"
+              style="
+                width: 28px;
+                height: 30px;
+                border-radius: 50%;
+                margin-left: -15px;
+              "
+              :src="`https://techify-001-site1.htempurl.com${product.productImagePath}`"
+              alt="product"
+            />
+            <span class="product text-subtitle-1 ml-2">
+              {{ product.productDisplayName_En }}
+            </span>
+            <span
+              v-if="item.items.length > 1"
+              class="text-subtitle-1 ml-2 product"
+              style="color: #733ee4"
+            >
+              +{{ item.items.length - 1 }}</span
+            >
+          </section>
+        </div>
+      </template>
+
       <template v-slot:item.Customer="{ item }">
         <div class="d-flex align-center">
           <img src="@/assets/test-avatar.png" alt="avatar" />
           <p class="product text-subtitle-1 ml-2">
             {{ item.Customer }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.userFullName="{ item }">
+        <div class="d-flex align-center justify-center">
+          <p class="product text-subtitle-1 ml-2">
+            {{ item.userFullName }}
           </p>
         </div>
       </template>
@@ -576,11 +611,11 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
 
-      <template v-slot:item.Payment="{ item }">
+      <template v-slot:item.paymentMethod="{ item }">
         <div class="d-flex justify-center align-center" style="gap: 0.5rem">
           <SvgIcon :icon="item.paymentMethod" />
           <p class="SKU text-subtitle-1">
-            {{ item.Payment }}
+            {{ item.paymentMethod }}
           </p>
         </div>
       </template>
@@ -589,8 +624,6 @@ const getCellProps = ({ item }) => {
         <div class="d-flex justify-center">
           <VSelect
             :items="orderStatus"
-            item-title="nameEn"
-            item-value="nameEn"
             v-model="item.Status"
             density="compact"
             class="pa-0 w-100 pl-2 pb-1"
@@ -608,7 +641,28 @@ const getCellProps = ({ item }) => {
       </template>
 
       <template v-slot:item.status="{ item }">
-        <div class="d-flex">
+        <div
+          class="d-flex justify-center"
+          v-if="item?.items?.length > 0"
+          @click.stop
+        >
+          <VSelect
+            :items="nextStatus(item.status)"
+            v-model="item.status"
+            density="compact"
+            class="pa-0 w-100 pl-2 pb-1"
+            variant="plain"
+            hide-details
+            style="
+              max-width: 150px;
+              font-size: 12px;
+              padding: 0.2rem 0;
+              border-radius: 8px;
+            "
+            :style="`background-color: ${getStyleStatus(item.status)?.background}; color: ${getStyleStatus(item.status)?.color}`"
+          />
+        </div>
+        <div class="d-flex" v-else>
           <p
             class="px-2 py-1 text-subtitle-1 mx-auto"
             style="
