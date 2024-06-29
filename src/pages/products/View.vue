@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { showProduct } from "@/apis/products";
-import { getBrand } from "@/apis/_brands";
-import { getCtegory } from "@/apis/categories";
-import type { Product, Brand } from "./type";
+import type { Product } from "./type";
 
 const productRatings = [
   {
@@ -33,8 +31,6 @@ const productRatings = [
 const route = useRoute();
 const product = ref({}) as unknown as Ref<Product>;
 const isPageLoading = ref(false);
-const category = ref({}) as unknown as Ref<any>;
-const selectedBrand = ref({}) as unknown as Ref<Brand>;
 const productDetails = computed(() => {
   return [
     {
@@ -67,11 +63,11 @@ const productDetails = computed(() => {
     },
     {
       title: "Category",
-      value: category.value.displayName_En,
+      value: product.value.categoryDisplayName_En,
     },
     {
       title: "Sub-category",
-      value: category.value.subCategories?.[0].displayName_En,
+      value: product.value.subCategoryDisplayName_En,
     },
   ];
 });
@@ -86,24 +82,8 @@ async function fetchProduct() {
     isPageLoading.value = false;
   } catch {}
 }
-const getCategoryNameForProduct = async () => {
-  try {
-    const {
-      data: { data },
-    } = await getCtegory(product.value.categoryUuid);
-    category.value = data;
-  } catch {}
-};
-const getBrandDetails = async () => {
-  const {
-    data: { data: brand },
-  } = await getBrand(product.value.brandUuid);
-  selectedBrand.value = brand;
-};
 onMounted(async () => {
   await fetchProduct();
-  await getBrandDetails();
-  await getCategoryNameForProduct();
 });
 </script>
 
@@ -218,11 +198,11 @@ onMounted(async () => {
                 <div class="mt-2" style="margin-left: -1rem">
                   <img
                     width="60px"
-                    :src="`https://techify-001-site1.htempurl.com${selectedBrand?.photoPath}`"
+                    :src="`https://techify-001-site1.htempurl.com${product?.brandPhotoPath}`"
                   />
                 </div>
                 <span style="font-size: 18px; font-weight: 700">
-                  {{ selectedBrand?.displayName_En }}
+                  {{ product?.brandDisplayName_En }}
                 </span>
                 |
                 <span
