@@ -25,6 +25,7 @@ declare module 'vue' {
     PriceDiscount: typeof import('./src/components/products/PriceDiscount.vue')['default']
     ProductSales: typeof import('./src/components/ProductSales.vue')['default']
     RatingBar: typeof import('./src/components/RatingBar.vue')['default']
+    Ratings: typeof import('./src/components/Ratings.vue')['default']
     ReplayCard: typeof import('./src/components/tickets/ReplayCard.vue')['default']
     ReviewRating: typeof import('./src/components/ReviewRating.vue')['default']
     RoleCard: typeof import('./src/components/settings/RoleCard.vue')['default']

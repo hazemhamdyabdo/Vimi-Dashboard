@@ -19,6 +19,7 @@
       @emitSelectedItems="selectedItems = $event"
       @openDeleteModal="toggleDeleteModal"
       class="my-6"
+      routeDir="category"
       :items="tableItems"
       :headers="headers"
       :itemValue="'uuid'"
@@ -29,7 +30,7 @@
     <div class="w-100 d-flex justify-space-between">
       <p class="my-auto text-9089B2">
         View
-        {{ !isPageLoading ? tableItems.length : "..." }} from {{ totalCount }}
+        {{ !isPageLoading ? tableItems.length : '...' }} from {{ totalCount }}
       </p>
       <v-pagination
         v-if="pagesCount > 1"
@@ -49,9 +50,9 @@
 </template>
 
 <script lang="ts" setup>
-import { categoriesFilter, headers } from "@/constants/categories";
-import { getCtegories, deleteCtegories } from "@/apis/categories.ts";
-import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+import { categoriesFilter, headers } from '@/constants/categories';
+import { getCtegories, deleteCtegories } from '@/apis/categories.ts';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
 const { buildQueryString } = useBuildQueryString();
 
 let isPageLoading = ref(false);
@@ -61,7 +62,7 @@ const selectedItems: Ref<string[]> = ref([]);
 let categories = ref([]);
 let currentPage = ref(1);
 let totalCount = ref(0);
-let search = ref("");
+let search = ref('');
 
 let pagesCount = computed(() => {
   return !totalCount.value || !categories.value.length
@@ -107,7 +108,7 @@ const setCheckAll = (val: boolean) => {
 
 // let deletedItemId = ref('');
 
-const toggleDeleteModal = ({ uuid = "", options = {} }) => {
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { headers, productFilter } from "@/constants/products";
-import { getProducts, deleteProduct } from "@/apis/products";
-import { getCtegories } from "@/apis/categories";
-import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+import { headers, productFilter } from '@/constants/products';
+import { getProducts, deleteProduct } from '@/apis/products';
+import { getCtegories } from '@/apis/categories';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
 const selectedItems = ref([]);
 const { buildQueryString } = useBuildQueryString();
 
@@ -13,7 +13,7 @@ const resetSelectedItems = () => {
 
 const modalOptions = ref({});
 const modalState = ref(false);
-const toggleDeleteModal = ({ uuid = "", options = {} }) => {
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);
