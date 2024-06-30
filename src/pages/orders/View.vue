@@ -1,8 +1,33 @@
 <script setup lang="ts">
+import { showOrder } from "@/apis/orders";
+import { useStyleState } from "@/composables/UseStyleState";
+const { getStyleStatus } = useStyleState();
+const route = useRoute();
+const order = ref({}) as Ref;
+const isPageLoading = ref(false);
+
+const getOrderDetails = async () => {
+  isPageLoading.value = true;
+  try {
+    const {
+      data: { data },
+    } = await showOrder(route.params.id as string);
+    order.value = data;
+    console.log(order.value);
+    isPageLoading.value = false;
+  } catch {}
+};
+
+const dateFormatting = (date: Date) => {
+  return new Date(date).toLocaleDateString("en-US");
+};
+onMounted(async () => {
+  await getOrderDetails();
+});
 const headers = [
   {
     title: "Products",
-    key: "products",
+    key: "productDisplayName_En",
     sortable: false,
   },
   {
@@ -12,48 +37,127 @@ const headers = [
   },
   {
     title: "QTY",
-    key: "qty",
+    key: "quantity",
     sortable: false,
   },
   {
     title: "Total Amount",
-    key: "total",
+    key: "totalAmount",
     sortable: false,
   },
 ];
-const items = [
-  {
-    product: "African Elephant",
-    category: "Herbivore",
-    rating: "4",
-    price: "KD 20",
-    qty: "2",
-    total: "KD 40",
-  },
-  {
-    product: "Gorilla",
-    category: "Savanna",
-    rating: "3",
-    price: "KD 15",
-    qty: "1",
-    total: "KD 15",
-  },
-  {
-    product: "Lion",
-    category: "Zebra",
-    rating: "5",
-    price: "KD 30",
-    qty: "2",
-    total: "KD 60",
-  },
-];
-const orderSummary = {
-  "Products NO.": "2",
-  "Total Amount": "KD 40",
-  Discount: "KD 10 -",
-  "Shipping Charge": "KD 5",
-  "Sub Total": "KD 65",
-};
+
+const headerButtons = computed(() => {
+  const { status } = order.value;
+  const btnConfig = {
+    InProgress: [
+      {
+        text: "Cancel Order",
+        icon: "Close",
+        action() {
+          console.log("Cancel Order");
+        },
+      },
+    ],
+    Pending: [
+      {
+        text: "Cancel Order",
+        icon: "Close",
+        action() {
+          console.log("Cancel Order");
+        },
+      },
+      {
+        text: "Approve Order",
+        icon: "True-circle",
+        action() {
+          console.log("Approve Order");
+        },
+      },
+    ],
+    Shipped: [
+      {
+        text: "Cancel Order",
+        icon: "Close",
+      },
+    ],
+    Delivered: [
+      {
+        text: "Archive Order",
+        icon: "archive",
+      },
+    ],
+    Cancelled: [
+      {
+        text: "Archive Order",
+        icon: "archive",
+      },
+    ],
+    ReturnCancelled: [
+      {
+        text: "Archive Order",
+        icon: "archive",
+      },
+    ],
+    ReturnInProgress: [
+      {
+        text: "Archive Order",
+        icon: "archive",
+      },
+    ],
+    ItemReturnRequested: [
+      {
+        text: "Reject Return Request",
+        icon: "Close",
+      },
+      {
+        text: "Accept Return Request",
+        icon: "True",
+      },
+    ],
+    Rejected: [
+      {
+        text: "Archive Order",
+        icon: "archive",
+      },
+    ],
+    Returned: [
+      {
+        text: "Archive Order",
+        icon: "archive",
+      },
+    ],
+  };
+
+  return btnConfig[status];
+});
+
+const orderSummary = computed(() => {
+  return {
+    ...(order.value.productCount && {
+      "Products NO.": order.value.productCount,
+    }),
+
+    ...(order.value.shippingFees && {
+      "Shipping Charge": `KD ${order.value.shippingFees}`,
+    }),
+
+    ...(order.value.discountValue && {
+      Discount: `KD ${order.value.discountValue}`,
+    }),
+
+    ...(order.value.tax && {
+      Tax: `KD ${order.value.tax}`,
+    }),
+    ...(order.value.subTotal && {
+      "Sub Total": `KD ${order.value.subTotal}`,
+    }),
+
+    ...(order.value.totalAmount && {
+      "Total Amount": `KD ${order.value.totalAmount}`,
+    }),
+  };
+});
 </script>
 
 <template>
@@ -72,36 +176,65 @@ const orderSummary = {
           >
             <section style="display: flex; gap: 1rem; align-items: center">
               <p style="color: #7066a2">Order NO:</p>
-              <span style="color: #21094a; font-weight: 500">#1262123</span>
+              <span style="color: #21094a; font-weight: 500">{{
+                order.serialNumber
+              }}</span>
               <p style="color: #7066a2">Order Reference NO. :</p>
               <span style="color: #733ee4; font-weight: 500">#1262123</span>
             </section>
             <section style="display: flex; gap: 1rem">
-              <VBtn variant="text" color="#21094A">
-                <VIcon icon="mdi-bookmark-outline" />
-                <p>Archive Order</p>
+              <VBtn
+                variant="text"
+                color="#21094A"
+                v-for="headerButton in headerButtons"
+                :key="headerButton.text"
+                class="px-8"
+                @click="headerButton.action()"
+                style="
+                  box-shadow: none;
+                  border-radius: 9px;
+                  text-transform: none;
+                "
+              >
+                <SvgIcon
+                  :icon="headerButton?.icon"
+                  style="margin-right: 0.5rem"
+                />
+                <p style="text-transform: none">{{ headerButton?.text }}</p>
               </VBtn>
               <VBtn
                 variant="elevated"
-                color="#EB5757"
                 class="px-8"
-                style="box-shadow: none; border-radius: 9px"
+                :style="`background-color: ${getStyleStatus(order.status)?.color}; color: white;  border-radius: 8px;`"
+                style="
+                  box-shadow: none;
+                  border-radius: 9px;
+                  text-transform: none;
+                "
               >
-                <p>Cancelled</p>
+                <p>{{ order.status }}</p>
               </VBtn>
             </section>
           </VCard>
         </VCol>
         <VCol cols="8">
-          <VCard class="card">
+          <VCard
+            class="card"
+            style="
+              display: flex;
+              flex-direction: column;
+              height: 500px;
+              overflow-y: scroll;
+            "
+          >
             <h3 class="card-title">Order Details</h3>
             <v-data-table
               class="listen-table"
-              :items="items"
+              :items="order.items"
               :headers="headers"
               hide-default-footer
             >
-              <template v-slot:item.products="{ item }">
+              <template v-slot:item.productDisplayName_En="{ item }">
                 <section style="display: flex; gap: 1rem; margin: 0.7rem 0">
                   <div
                     style="
@@ -110,32 +243,53 @@ const orderSummary = {
                       border-radius: 8px;
                     "
                   >
-                    <img src="@/assets/test-small-product.png" />
+                    <img
+                      style="width: 72px; height: 72px; object-fit: cover"
+                      :alt="item.productDisplayName_En"
+                      :src="`https://techify-001-site1.htempurl.com${item.productImagePath}`"
+                    />
                   </div>
                   <div
                     style="
                       display: flex;
                       flex-direction: column;
                       justify-content: space-around;
+                      color: #21094a;
                     "
                   >
-                    <h4>{{ item.product }}</h4>
+                    <h4>{{ item.productDisplayName_En }}</h4>
                     <div class="d-flex align-items-center" style="gap: 0.5rem">
                       <span style="color: #7066a2; font-size: 14px">
-                        {{ item.category }}
+                        {{ item?.category ?? " no category" }}
                       </span>
-                      <StarRating :rating="item.rating" />
+                      <StarRating :rating="item?.rating ?? 0" />
                       <span
                         style="
                           color: #21094a;
                           font-size: 14px;
                           font-weight: 500;
                         "
-                        >{{ item.rating }}</span
+                        >{{ item?.rating ?? 0 }}</span
                       >
                     </div>
                   </div>
                 </section>
+              </template>
+              <template v-slot:item.price="{ item }">
+                <span
+                  style="color: #21094a; font-weight: 500; text-align: center"
+                  >{{ item.price }}
+                </span>
+              </template>
+              <template v-slot:item.quantity="{ item }">
+                <span style="color: #21094a; font-weight: 500"
+                  >{{ item.quantity }}
+                </span>
+              </template>
+              <template v-slot:item.totalAmount="{ item }">
+                <span style="color: #21094a; font-weight: 500"
+                  >{{ item.totalAmount }}
+                </span>
               </template>
             </v-data-table>
           </VCard>
@@ -156,9 +310,13 @@ const orderSummary = {
               v-for="[key, val] in Object.entries(orderSummary)"
               :key="val"
             >
-              <span style="color: #7066a2"> {{ key }}</span>
               <span
-                :style="`color: ${key === 'Discount' ? '#EB5757' : '#21094a'}`"
+                :style="`color: #7066a2; font-weight: ${key === 'Total Amount' ? '700' : '500'}`"
+              >
+                {{ key }}</span
+              >
+              <span
+                :style="`color: ${key === 'Discount' ? '#EB5757' : '#21094a'}; font-weight: ${key === 'Total Amount' ? '700' : '500'};`"
                 >{{ val }}</span
               >
             </section>
@@ -179,35 +337,34 @@ const orderSummary = {
             style="
               display: flex;
               flex-direction: column;
-              gap: 1rem;
+              gap: 0.5rem;
               width: 100%;
+              height: 745px;
+              overflow-y: scroll;
             "
           >
             <h3 class="card-title">Order History</h3>
             <div
               style="
                 display: flex;
-                gap: 5rem;
+                gap: 4rem;
                 flex-direction: column;
                 position: relative;
               "
             >
               <section
-                style="display: flex; gap: 1rem; align-items: center"
+                style="
+                  display: flex;
+                  gap: 0.8rem;
+                  align-items: center;
+                  height: 3rem;
+                "
                 class="section-history"
-                v-for="i in 5"
-                :key="i"
+                v-for="log in order.logs"
+                :key="log.uuid"
               >
-                <div
-                  class="d-flex align-items-center justify-content-between"
-                  style="
-                    padding: 0.8rem;
-                    border-radius: 50%;
-                    background: #e2b000;
-                    width: fit-content;
-                  "
-                >
-                  <SvgIcon icon="box-closed" />
+                <div class="d-flex align-items-center justify-content-between">
+                  <SvgIcon :icon="log.status" />
                 </div>
                 <div>
                   <div
@@ -216,11 +373,12 @@ const orderSummary = {
                       align-items: center;
                       gap: 0.5rem;
                       font-weight: 500;
+                      margin-top: 1rem;
                     "
                   >
-                    <span style="color: #21094a"> Order Placed: </span>
+                    <span style="color: #21094a"> {{ log.status }}: </span>
                     <span style="color: #7066a2">
-                      25 september 2024 | 12:30 PM
+                      {{ dateFormatting(log?.dateCreated) }}
                     </span>
                   </div>
                   <div
@@ -232,7 +390,7 @@ const orderSummary = {
                     "
                   >
                     <span style="color: #21094a">By:</span>
-                    <span style="color: #7066a2">Amr Khalid</span>
+                    <span style="color: #7066a2">{{ log?.userFullName }}</span>
                     <span style="color: #21094a"> (Customer)</span>
                   </div>
                 </div>
@@ -243,7 +401,7 @@ const orderSummary = {
         <VCol
           cols="4"
           style="
-            margin-top: -5rem;
+            margin-top: -11rem;
             display: flex;
             gap: 1.5rem;
             flex-direction: column;
@@ -260,11 +418,13 @@ const orderSummary = {
                 style="gap: 0.8rem"
               >
                 <div>
-                  <img src="@/assets/test-customer.png" />
+                  <img
+                    :src="`https://techify-001-site1.htempurl.com${order?.userProfilePhoto}`"
+                  />
                 </div>
                 <div>
                   <p style="color: #21094a; font-weight: 500; font-size: 14px">
-                    Mohamed Ali
+                    {{ order?.userFullName }}
                   </p>
                   <span style="color: #9089b2; font-size: 12px">Customer</span>
                 </div>
@@ -283,7 +443,7 @@ const orderSummary = {
                     color="#7066A2"
                     style="margin-right: 0.5rem"
                   />
-                  <span style="color: #7066a2">mohamed.ali@gmail.com</span>
+                  <span style="color: #7066a2">{{ order?.userEmail }}</span>
                 </div>
                 <div>
                   <VIcon
@@ -291,7 +451,9 @@ const orderSummary = {
                     color="#7066A2"
                     style="margin-right: 0.5rem"
                   />
-                  <span style="color: #7066a2">+365 387 287 288</span>
+                  <span style="color: #7066a2">{{
+                    order?.userMobileNumber
+                  }}</span>
                 </div>
               </div>
             </section>
@@ -311,11 +473,16 @@ const orderSummary = {
                 font-weight: 400;
               "
             >
-              <p>Office</p>
-              <p>423 Aljarah st. kuwait city.</p>
-              <p>Floor NO. 5</p>
-              <p>Flat No. 20</p>
-              <p>Near by Algalaa Mosque</p>
+              <p>{{ order?.shippingAddress?.type }}</p>
+              <p>
+                {{
+                  `${order?.shippingAddress?.building} ${order?.shippingAddress?.street} ${order?.shippingAddress?.areaDisplayName} ${order?.shippingAddress?.governorateDisplayName}`
+                }}
+              </p>
+              <!-- 42 Aljarah st. kuwait city. -->
+              <p>Floor NO. {{ order?.shippingAddress?.floorNo }}</p>
+              <p>Flat No. {{ order?.shippingAddress?.flatNo }}</p>
+              <p>{{ order?.shippingAddress?.landmark }}</p>
             </section>
           </VCard>
           <VCard
@@ -330,7 +497,10 @@ const orderSummary = {
               </div>
               <div style="display: flex; gap: 3.5rem">
                 <p style="color: #7066a2; font-size: 14px">Payment Method :</p>
-                <SvgIcon icon="VISA" color="#21094a" />
+                <p style="color: #21094a; font-size: 14px">
+                  {{ order.paymentMethod }}
+                </p>
+                <!-- <SvgIcon icon="VISA" color="#21094a" /> -->
               </div>
               <div style="display: flex; gap: 5.7rem">
                 <p style="color: #7066a2; font-size: 14px">Card name :</p>
@@ -344,7 +514,9 @@ const orderSummary = {
               </div>
               <div style="display: flex; gap: 5rem">
                 <p style="color: #7066a2; font-size: 14px">Total amount :</p>
-                <p style="color: #21094a; font-size: 14px">KD 120</p>
+                <p style="color: #21094a; font-size: 14px">
+                  KD {{ order?.totalAmount }}
+                </p>
               </div>
             </section>
           </VCard>
@@ -387,9 +559,22 @@ const orderSummary = {
   content: "";
   position: absolute;
   z-index: -1;
-  top: 1px;
-  bottom: 1px;
-  left: 22px;
+  top: 4px;
+  bottom: 4px;
+  left: 20px;
   border-left: 2px dotted #733ee4;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #7066a2;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #7066a2a1;
 }
 </style>

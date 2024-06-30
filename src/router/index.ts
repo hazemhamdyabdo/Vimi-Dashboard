@@ -93,7 +93,7 @@ const router = createRouter({
           },
         },
         {
-          path: 'view-order',
+          path: 'view-order/:id',
           name: 'view-order',
           component: () => import('@/pages/orders/View.vue'),
           meta: {

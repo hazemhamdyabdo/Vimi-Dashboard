@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { headers, items, ordersFilter } from "@/constants/order";
+import { headers, ordersFilter } from "@/constants/order";
 import { getOrders } from "@/apis/orders";
 let page = 1;
 const pageCount = 4;
@@ -15,7 +15,6 @@ const getAllOrders = async () => {
       data: { data },
     } = await getOrders();
     orders.value = data.result;
-    // console.log(orders.value);
     totalCount.value = data.total;
   } catch (error) {
     console.log(error);
@@ -42,9 +41,10 @@ onMounted(async () => {
     <ListingItems
       @emitSelectedItems="selectedItems = $event"
       class="my-6"
+      :isPageLoading="isPageLoading"
       :headers="headers"
       :items="orders"
-      :itemValue="'orderNumber'"
+      routeDir="order"
     />
     <BasePagination>
       <template #label> View 8 from 2000 </template>

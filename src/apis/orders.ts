@@ -1,5 +1,6 @@
 import { resource } from "./client"
-const { get: getOrders } = resource('orders')
+const { get: getOrders, show: showOrder } = resource('orders')
 export {
-  getOrders
+  getOrders,
+  showOrder
 }

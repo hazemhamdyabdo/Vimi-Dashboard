@@ -5,6 +5,10 @@ export const useStyleState = () => {
         color: "#E2B000",
         background: "#e2b0001a",
       },
+      Placed: {
+        color: "#E2B000",
+        background: "#e2b0001a",
+      },
       Replied: {
         color: "#733EE4",
         background: "#733EE41a",
@@ -53,6 +57,10 @@ export const useStyleState = () => {
         color: "#EB5757",
         background: "#eb57571a",
       },
+      ReturnCancelled: {
+        color: "#EB5757",
+        background: "#eb57571a",
+      },
       Inactive: {
         color: "#EB5757",
         background: "#eb57571a",
@@ -61,11 +69,15 @@ export const useStyleState = () => {
         color: "#F2994A",
         background: "#f2994a1a",
       },
+      ReturnRequested: {
+        color: "#F2994A",
+        background: "#f2994a1a",
+      },
       InProgress: {
         color: "#F2994A",
         background: "#f2994a1a",
       },
-      "Return in progress": {
+      ReturnInProgress: {
         color: "#21094A",
         background: "#21094a1a",
       },
@@ -77,6 +89,7 @@ export const useStyleState = () => {
 
     return styles[status];
   };
+
   return {
     getStyleStatus
   };

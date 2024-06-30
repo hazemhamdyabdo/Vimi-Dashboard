@@ -186,15 +186,16 @@ const items = [
 ];
 
 const statuses = ref([
-  "pending",
+  "Placed",
   "InProgress",
-  "shipped",
-  "delivered",
+  "Shipped",
+  "Delivered",
   "Cancelled",
-  "return request",
-  "return process",
+  "ReturnRequested",
+  "ReturnCancelled",
+  "ReturnInProgress",
   "reject return request",
-  "returned",
+  "Returned",
 ]);
 
 const nextStatus = (currentStatus) => {
