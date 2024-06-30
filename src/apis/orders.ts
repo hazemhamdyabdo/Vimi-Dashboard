@@ -1,7 +1,7 @@
 import { resource } from "./client"
 const { get: getOrders, show: showOrder } = resource('orders')
-const rejectOrder = (orderId: string) => {
-  const { replace: reject } = resource(`orders/${orderId}/reject`)
+const rejectOrder = (orderId: string, rejectReason: string) => {
+  const { replace: reject } = resource(`orders/${orderId}/reject?rejectionReason=${rejectReason}`)
   return reject
 }
 export {

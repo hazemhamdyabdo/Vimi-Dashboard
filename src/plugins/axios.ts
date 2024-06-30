@@ -5,6 +5,7 @@ const axiosIns = axios.create({
   // timeout: 2000,
   headers: {
     'x-api-key': 'x5b9j8p2qRz3vdK1st7yf4ul6wa0ezcv',
+    "Accept-Language": "en-US"
   },
 });
 

@@ -35,13 +35,11 @@ const dateFormatting = (date: Date) => {
 
 const handleConfirm = async () => {
   if (modalOptions.value.buttonTitle === "Yes, Cancel") {
-    const test = await rejectOrder(order.value.uuid)({
-      uuid: order.value.uuid,
-      rejectionReason: reason.value,
-    });
-    console.log(test);
-  }
-  if (modalOptions.value.buttonTitle === "Yes, Reject") {
+    try {
+      await rejectOrder(order.value.uuid, reason.value)();
+      toggleDeleteModal({});
+    } catch (error) {}
+  } else if (modalOptions.value.buttonTitle === "Yes, Reject") {
     console.log("Yes, Reject");
   }
 };
@@ -80,7 +78,6 @@ const headerButtons = computed(() => {
         icon: "Close",
         action() {
           toggleDeleteModal({
-            uuid: order.value.uuid,
             options: {
               buttonTitle: "Yes, Cancel",
               buttonColor: "#F44336",
@@ -100,7 +97,18 @@ const headerButtons = computed(() => {
         text: "Cancel Order",
         icon: "Close",
         action() {
-          console.log("Cancel Order");
+          toggleDeleteModal({
+            options: {
+              buttonTitle: "Yes, Cancel",
+              buttonColor: "#F44336",
+              title: "Cancel Order",
+              text: "Are you sure you want to cancel this order?",
+              svg: "close-circle (2)",
+              secondaryButtonTitle: "Back",
+              icon: "",
+              sheetColor: "#f443361a",
+            },
+          });
         },
       },
       {
@@ -115,6 +123,20 @@ const headerButtons = computed(() => {
       {
         text: "Cancel Order",
         icon: "Close",
+        action() {
+          toggleDeleteModal({
+            options: {
+              buttonTitle: "Yes, Cancel",
+              buttonColor: "#F44336",
+              title: "Cancel Order",
+              text: "Are you sure you want to cancel this order?",
+              svg: "close-circle (2)",
+              secondaryButtonTitle: "Back",
+              icon: "",
+              sheetColor: "#f443361a",
+            },
+          });
+        },
       },
     ],
     Delivered: [
@@ -216,7 +238,9 @@ const orderSummary = computed(() => {
                 order.serialNumber
               }}</span>
               <p style="color: #7066a2">Order Reference NO. :</p>
-              <span style="color: #733ee4; font-weight: 500">#1262123</span>
+              <span style="color: #733ee4; font-weight: 500">{{
+                order.orderReferenceSerialNumber ?? "-"
+              }}</span>
             </section>
             <section style="display: flex; gap: 1rem">
               <VBtn
@@ -248,7 +272,7 @@ const orderSummary = computed(() => {
                   text-transform: none;
                 "
               >
-                <p>{{ order.status }}</p>
+                <p>{{ order.statusLocalized }}</p>
               </VBtn>
             </section>
           </VCard>
