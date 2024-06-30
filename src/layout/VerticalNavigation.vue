@@ -4,8 +4,16 @@ import { useUserStore } from '@/stores/user.state.js';
 // Pinia Store
 const userStore = useUserStore();
 
-const props = defineProps(['navItems']);
+const props = defineProps(['navItems', 'drawer', 'actions']);
 const builtMenu = ref();
+let rail = ref(false);
+
+watch(
+  () => props.drawer,
+  (val) => {
+    rail.value = val;
+  }
+);
 builtMenu.value = props.navItems.reduce((acc: any, item: any) => {
   if (item.children && item.children.length > 0) {
     item.isOpen = false;
@@ -30,38 +38,111 @@ const route = useRoute();
 <template>
   <v-card class="w-100">
     <v-layout>
-      <v-navigation-drawer style="min-width: 304px; padding: 1rem 1rem">
+      <v-navigation-drawer
+        fixed
+        :width="305"
+        :style="{ padding: !rail ? '1rem 1rem' : '0rem' }"
+        :rail="rail"
+        permanent
+      >
         <template v-for="item in builtMenu">
-          <v-list-item :subtitle="item.parent"></v-list-item>
-          <v-list density="compact" nav style="margin-bottom: 2rem">
+          <v-list-item :subtitle="item.parent" v-if="!rail" />
+          <v-list
+            density="compact"
+            nav
+            class="mb-0"
+            style="margin-bottom: 2rem"
+          >
             <div v-for="child in item.children" :key="child.name">
-              <RouterLink
-                v-if="!child?.action"
-                :to="child.path"
-                class="text-decoration-none mb-2"
-                exactActiveClass="active-link"
-              >
-                <SvgIcon :icon="child.icon" style="background: transparent" />
-                <p class="pt-2" style="background: transparent">
-                  {{ child.name }}
-                </p>
-              </RouterLink>
-              <v-btn
-                v-else
-                flat
-                class="action-btn text-decoration-none mb-2 w-100 d-flex justify-start py-5"
-                @click="logout"
-              >
-                <SvgIcon
-                  class="me-3 mt-2"
-                  :icon="child.icon"
-                  style="background: transparent"
-                />
-                <p class="pt-2" style="background: transparent">
-                  {{ child.name }}
-                </p>
-              </v-btn>
+              <v-hover>
+                <template v-slot:default="{ isHovering, props }">
+                  <RouterLink
+                    v-bind="props"
+                    :style="{
+                      background: isHovering
+                        ? !rail
+                          ? '#733ee4'
+                          : '#f6f5f7'
+                        : undefined,
+                      color: isHovering && !rail ? '#fff' : undefined,
+                    }"
+                    style="border-radius: 8px"
+                    :to="child.path"
+                    class="d-flex align-items-center"
+                    :class="
+                      !rail
+                        ? 'text-decoration-none px-4 py-3 my-3'
+                        : 'py-2 my-5 d-flex justify-center'
+                    "
+                    :exactActiveClass="!rail ? 'active-link' : ''"
+                  >
+                    <SvgIcon
+                      :icon="child.icon"
+                      style="background: transparent"
+                      :class="rail ? 'mx-auto' : ''"
+                      class="my-auto"
+                    />
+                    <p
+                      class="my-auto"
+                      style="
+                        background: transparent;
+                        /* 16/B1-M-16 */
+                        font-family: Roboto;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: 150%; /* 24px */
+                      "
+                      v-if="!rail"
+                    >
+                      {{ child.name }}
+                    </p>
+                  </RouterLink>
+                </template>
+              </v-hover>
             </div>
+          </v-list>
+        </template>
+        <template v-for="action in props.actions">
+          <v-list density="compact" nav style="margin-bottom: 2rem">
+            <v-hover>
+              <template v-slot:default="{ isHovering, props }">
+                <VBtn
+                  variant="flat"
+                  :class="
+                    !rail
+                      ? 'text-decoration-none mb-2 px-4 py-2 w-100 mb-2 d-flex justify-start py-6'
+                      : ''
+                  "
+                  icon
+                  style="border-radius: 8px"
+                  v-bind="props"
+                  :color="isHovering && !rail ? '#733ee4' : undefined"
+                  @click="logout"
+                >
+                  <SvgIcon
+                    :class="!rail ? 'me-3' : 'mx-auto'"
+                    :icon="action.icon"
+                    class="my-auto"
+                  />
+                  <p
+                    class="my-auto"
+                    style="
+                      background: transparent;
+                      /* 16/B1-M-16 */
+                      font-family: Roboto;
+                      font-size: 16px;
+                      font-style: normal;
+                      font-weight: 500;
+                      line-height: 150%; /* 24px */
+                    "
+                    v-if="!rail"
+                  >
+                    {{ action.name }}
+                  </p>
+                </VBtn>
+              </template>
+            </v-hover>
           </v-list>
         </template>
       </v-navigation-drawer>
@@ -89,7 +170,7 @@ const route = useRoute();
               </p>
             </router-link>
             <router-link
-              :to="{ name: 'notifications' }"
+              :to="{ name: 'promotion-ads' }"
               exact-active-class="active-prmotion-link"
               class="me-8 text-decoration-none pt-4"
             >
@@ -118,21 +199,18 @@ const route = useRoute();
 </template>
 
 <style scoped>
-a,
-.action-btn {
+a {
   text-decoration: none;
   color: inherit;
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 0.5rem 1rem;
 }
-a:hover,
-.action-btn:hover {
+/* a:hover {
   background: #733ee4;
   border-radius: 8px;
   color: #fff;
-}
+} */
 
 .router-link-active .router-link-exact-active {
   background: #733ee4;
@@ -145,8 +223,7 @@ a:hover,
   color: #fff;
 }
 
-a p,
-.action-btn p {
+a p {
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
 }

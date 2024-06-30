@@ -256,8 +256,8 @@ const openDeleteModal = ({ uuid }) => {
   emit('openDeleteModal', {
     uuid,
     options: {
-      title: 'Delete Product',
-      text: 'Are you sure you want to delete this Product ?',
+      title: `Delete ${route.meta.key.includes('-') ? route.meta.key.split('-')[1]?.toUpperCase() : route?.meta?.key?.toUpperCase()}`,
+      text: `Are you sure you want to delete this ${route.meta.key} ?`,
       buttonTitle: 'Yes, Delete',
       buttonColor: '#EB5757',
       icon: 'deleteIcon',
@@ -267,8 +267,7 @@ const openDeleteModal = ({ uuid }) => {
 };
 
 const handleGoTOAction = ({ uuid }, action) => {
-  const type = route.path.includes('products') ? 'product' : 'category';
-  router.push({ name: `${action}-${type}`, params: { id: uuid } });
+  router.push({ name: `${action}-${route.meta.key}`, params: { id: uuid } });
 };
 
 const getCellProps = ({ item }) => {
@@ -333,9 +332,90 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
 
+      <template v-slot:item.imagePath="{ item }">
+        <div class="d-flex justify-start">
+          <img
+            :src="`https://techify-001-site1.htempurl.com${item.imagePath}`"
+            alt=""
+            style="
+              width: 88px;
+              height: 44px;
+              border-radius: var(--Spacing-N4, 8px);
+
+              background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+            "
+          />
+        </div>
+      </template>
+
+      <template v-slot:item.target="{ item }">
+        <div>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.target }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.navigation="{ item }">
+        <div>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.navigation }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.place="{ item }">
+        <div>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.place }}
+          </p>
+        </div>
+      </template>
       <template v-slot:item.id="{ item }">
         <div>
-          <p class="product text-subtitle-1">{{ item.id }}</p>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.id }}
+          </p>
         </div>
       </template>
 
@@ -371,6 +451,12 @@ const getCellProps = ({ item }) => {
       <template v-slot:item.dateCreated="{ item }">
         <p class="product text-subtitle-1">
           {{ dateFormatting(item.dateCreated) }}
+        </p>
+      </template>
+
+      <template v-slot:item.startDate="{ item }">
+        <p class="product text-subtitle-1">
+          {{ dateFormatting(item.startDate) }}
         </p>
       </template>
 
@@ -660,13 +746,8 @@ const getCellProps = ({ item }) => {
       <template v-slot:item.status="{ item }">
         <div class="d-flex">
           <p
-            class="px-2 py-1 text-subtitle-1 mx-auto"
-            style="
-              max-width: 150px;
-              font-size: 12px;
-              padding: 0.2rem 0;
-              border-radius: 8px;
-            "
+            class="px-5 py-1 text-subtitle-1 mx-auto"
+            style="font-size: 12px; border-radius: 8px"
             :style="`background-color: ${getStyleStatus(item.status)?.background}; color: ${getStyleStatus(item.status)?.color}`"
           >
             {{ item.status }}
@@ -748,6 +829,63 @@ const getCellProps = ({ item }) => {
                   :height="20"
                 />
                 <p>View Details</p>
+              </v-btn>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
+
+      <template v-slot:item.promotion-actions="{ item }">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn flat v-bind="props" color="transparent">
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item class="px-0">
+              <v-btn
+                @click.stop="handleGoTOAction(item, 'edit')"
+                class="d-flex w-100 justify-start px-5"
+                flat
+              >
+                <svgIcon class="my-auto cursor-pointer me-2" icon="edit (1)" />
+                <p>Edit</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0">
+              <v-btn
+                @click.stop="openDeleteModal(item)"
+                class="d-flex w-100 justify-start px-5"
+                flat
+              >
+                <svgIcon
+                  class="my-auto cursor-pointer me-2"
+                  icon="delete (1)"
+                />
+                <p>Delete</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0">
+              <v-btn
+                class="d-flex w-100 justify-start px-5"
+                flat
+                @click.stop="handleGoTOAction(item, 'view')"
+              >
+                <svgIcon class="my-auto cursor-pointer me-2" icon="eye" />
+                <p>View Details</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0" v-if="item.status !== 'active'">
+              <v-btn class="d-flex w-100 justify-start px-5" flat>
+                <svgIcon class="my-auto cursor-pointer me-2" icon="Change" />
+                <p>Renew AD</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0" v-else>
+              <v-btn class="d-flex w-100 justify-start px-5" flat>
+                <svgIcon class="my-auto cursor-pointer me-2" icon="Hold" />
+                <p>Stop AD</p>
               </v-btn>
             </v-list-item>
           </v-list>

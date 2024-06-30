@@ -26,6 +26,7 @@ const router = createRouter({
           component: () => import('@/pages/products/List.vue'),
           meta: {
             title: 'Products',
+            key: 'product',
           },
         },
         {
@@ -58,6 +59,7 @@ const router = createRouter({
           component: () => import('@/pages/categories/List.vue'),
           meta: {
             title: 'categories',
+            key: 'category',
           },
         },
         {
@@ -224,6 +226,39 @@ const router = createRouter({
           path: 'view-promotion-discounts/:id',
           name: 'view-promotion-discounts',
           component: () => import('@/pages/promotion-discounts/View.vue'),
+          meta: {
+            title: 'promotion Details',
+          },
+        },
+        {
+          path: 'promotion-ads',
+          name: 'promotion-ads',
+          component: () => import('@/pages/promotion-ads/List.vue'),
+          meta: {
+            title: 'Promotion',
+            key: 'promotion-ad',
+          },
+        },
+        {
+          path: 'add-promotion-ad',
+          name: 'add-promotion-ad',
+          component: () => import('@/pages/promotion-ads/Add.vue'),
+          meta: {
+            title: 'Add promotion',
+          },
+        },
+        {
+          path: 'edit-promotion-ad/:id',
+          name: 'edit-promotion-ad',
+          component: () => import('@/pages/promotion-ads/Add.vue'),
+          meta: {
+            title: 'Edit promotion',
+          },
+        },
+        {
+          path: 'view-promotion-ad/:id',
+          name: 'view-promotion-ad',
+          component: () => import('@/pages/promotion-ads/View.vue'),
           meta: {
             title: 'promotion Details',
           },

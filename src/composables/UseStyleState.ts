@@ -18,24 +18,20 @@ export const useStyleState = () => {
         background: '#F2994A1a',
       },
       Published: {
-        color: "#27ae60",
-        background: "#27ae601a",
+        color: '#27ae60',
+        background: '#27ae601a',
       },
       Hidden: {
-        color: "#EB5757",
-        background: "#EB57571a",
+        color: '#EB5757',
+        background: '#EB57571a',
       },
       Deleted: {
         color: '#EB5757',
         background: '#EB57571a',
       },
-      Hidden: {
+      Expired: {
         color: '#EB5757',
         background: '#EB57571a',
-      },
-      Published: {
-        color: '#27ae60',
-        background: '#27ae601a',
       },
       Delivered: {
         color: '#27ae60',
@@ -54,6 +50,10 @@ export const useStyleState = () => {
         background: '#21094a1a',
       },
       Blocked: {
+        color: '#EB5757',
+        background: '#eb57571a',
+      },
+      Stopped: {
         color: '#EB5757',
         background: '#eb57571a',
       },

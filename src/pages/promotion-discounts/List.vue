@@ -48,25 +48,11 @@ const setCheckAll = (val: boolean) => {
   triggerCheckAll.value = val;
 };
 
-// let deletedItemId = ref('');
-
 const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);
 };
-
-// const deleteItem = async () => {
-//   isDeletionInProgress.value = true;
-//   try {
-//     await deleteCtegories(deletedItemId.value);
-//   } catch {
-//   } finally {
-//     toggleDeleteModal();
-//     isDeletionInProgress.value = false;
-//     setCategories();
-//   }
-// };
 
 const deleteMultiple = async () => {
   isDeletionInProgress.value = true;
