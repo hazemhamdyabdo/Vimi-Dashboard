@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { showOrder } from "@/apis/orders";
+import { showOrder, rejectOrder } from "@/apis/orders";
 import { useStyleState } from "@/composables/UseStyleState";
 const { getStyleStatus } = useStyleState();
 const route = useRoute();
 const order = ref({}) as Ref;
 const isPageLoading = ref(false);
+const modalOptions = ref({});
+const modalState = ref(false);
+const reason = ref("");
+
+const toggleDeleteModal = ({ options = {} }) => {
+  modalOptions.value = options;
+  modalState.value = !!Object.keys(options).length;
+};
+const handleCancel = () => {
+  toggleDeleteModal({});
+};
 
 const getOrderDetails = async () => {
   isPageLoading.value = true;
@@ -20,6 +31,19 @@ const getOrderDetails = async () => {
 
 const dateFormatting = (date: Date) => {
   return new Date(date).toLocaleDateString("en-US");
+};
+
+const handleConfirm = async () => {
+  if (modalOptions.value.buttonTitle === "Yes, Cancel") {
+    const test = await rejectOrder(order.value.uuid)({
+      uuid: order.value.uuid,
+      rejectionReason: reason.value,
+    });
+    console.log(test);
+  }
+  if (modalOptions.value.buttonTitle === "Yes, Reject") {
+    console.log("Yes, Reject");
+  }
 };
 onMounted(async () => {
   await getOrderDetails();
@@ -55,7 +79,19 @@ const headerButtons = computed(() => {
         text: "Cancel Order",
         icon: "Close",
         action() {
-          console.log("Cancel Order");
+          toggleDeleteModal({
+            uuid: order.value.uuid,
+            options: {
+              buttonTitle: "Yes, Cancel",
+              buttonColor: "#F44336",
+              title: "Cancel Order",
+              text: "Are you sure you want to cancel this order?",
+              svg: "close-circle (2)",
+              secondaryButtonTitle: "Back",
+              icon: "",
+              sheetColor: "#f443361a",
+            },
+          });
         },
       },
     ],
@@ -188,7 +224,7 @@ const orderSummary = computed(() => {
                 color="#21094A"
                 v-for="headerButton in headerButtons"
                 :key="headerButton.text"
-                class="px-8"
+                class="px-4"
                 @click="headerButton.action()"
                 style="
                   box-shadow: none;
@@ -523,6 +559,37 @@ const orderSummary = computed(() => {
         </VCol>
       </VRow>
     </VContainer>
+    <GlobalPopup
+      :options="modalOptions"
+      :modalState="modalState"
+      @closeModal="toggleDeleteModal"
+      :onCancel="handleCancel"
+      :onConfirm="handleConfirm"
+    >
+      <VCol>
+        <h4 class="card-info-title">
+          {{ modalOptions.title.split(" ")[0] }} Reason
+        </h4>
+        <VRow>
+          <VCol>
+            <VTextarea
+              bg-color="#FAF9FE"
+              variant="outlined"
+              density="compact"
+              v-model="reason"
+              rows="5"
+              placeholder="Enter Reason"
+              hide-details
+              style="
+                margin-bottom: 1rem;
+                border-radius: 8px;
+                border: 1px solid #e8e7ef;
+              "
+            />
+          </VCol>
+        </VRow>
+      </VCol>
+    </GlobalPopup>
   </section>
 </template>
 
@@ -540,6 +607,16 @@ const orderSummary = computed(() => {
   font-weight: 700;
   line-height: 150%;
   margin-bottom: 0.7rem;
+}
+
+.card-info-title {
+  color: #afaacb;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  margin-bottom: 0.8rem;
+  padding-left: 0.4rem;
+  text-align: left;
 }
 .listen-table thead tr {
   background-color: #faf9fe;
@@ -577,4 +654,12 @@ const orderSummary = computed(() => {
 ::-webkit-scrollbar-thumb:hover {
   background: #7066a2a1;
 }
+
+/* :global(.v-field__outline__start) {
+  display: none;
+}
+:global(.v-field__outline__end) {
+  border-radius: 12px !important;
+  border: 1px solid #e8e7ef !important;
+} */
 </style>
