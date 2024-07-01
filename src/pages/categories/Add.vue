@@ -223,7 +223,7 @@
       <VRow>
         <VCol cols="4">
           <v-skeleton-loader v-if="isPageLoading" type="card" />
-          <VCard v-else class="card card-products" style="margin-bottom: 1rem">
+          <VCard flat v-else style="margin-bottom: 1rem" class="pa-8">
             <h3 class="card-title">Category Images</h3>
             <VCard flat>
               <VFileInput

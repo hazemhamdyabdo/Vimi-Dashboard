@@ -1,16 +1,23 @@
 <template>
   <section class="add-products px-6">
-    <BaseNotifications :notification="showToast" />
-    <VContainer>
+    <BaseNotifications
+      :notification="showToast"
+      :notificationText="notification.text"
+      :color="notification.color"
+      @closeNotification="showToast = false"
+    />
+    <VContainer class="pt-0">
       <VRow>
         <VCol cols="8">
-          <VCard
-            flat
-            class="pa-4"
-            style="margin-bottom: 2rem; border-radius: 12px"
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCol
+            cols="12"
+            style="border-radius: 12px; background: var(--White, #fff)"
+            class="pa-8"
+            v-else
           >
-            <div>
-              <h3 class="card-title mb-8">Navigate to</h3>
+            <VCard flat>
+              <h3 class="card-title mb-8">AD Place</h3>
               <div
                 style="
                   height: fit-content;
@@ -19,276 +26,610 @@
                   background: rgba(115, 62, 228, 0.05);
                 "
               >
-                <v-radio-group
-                  v-model="newCategory.visibility"
-                  inline
-                  hide-details
-                  :style="{ color: '#733ee4' }"
-                >
+                <v-radio-group v-model="newAd.Place" inline hide-details>
                   <v-radio
-                    label="Categories"
-                    color="#733EE4"
-                    value="Categories"
-                    class="me-8"
+                    label="At Top"
+                    value="Top"
+                    color="primary"
+                    class="me-14"
                   />
-                  <v-radio
-                    label="Sub-Categories"
-                    color="#733EE4"
-                    value="Sub-Categories"
-                    class="me-8"
-                  />
-                  <v-radio
-                    label="Custom Products"
-                    color="#733EE4"
-                    value="Custom Products"
-                    class="me-8"
-                  />
+                  <v-radio label="At Down" value="Down" color="primary" />
                 </v-radio-group>
               </div>
-            </div>
+            </VCard>
+          </VCol>
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCol
+            cols="12"
+            style="border-radius: 12px; background: var(--White, #fff)"
+            class="pa-8 my-6"
+            v-else
+          >
+            <VCard flat>
+              <div>
+                <h3 class="card-title mb-8">Navigate to</h3>
+                <div
+                  style="
+                    height: fit-content;
+                    padding: 0px 12px;
+                    border-radius: 6px;
+                    background: rgba(115, 62, 228, 0.05);
+                  "
+                >
+                  <v-radio-group
+                    v-model="newAd.Navigation"
+                    inline
+                    hide-details
+                    :style="{ color: '#733ee4' }"
+                    @input="setNavigationItems"
+                  >
+                    <v-radio
+                      label="Categories"
+                      color="#733EE4"
+                      value="Category"
+                      class="me-8"
+                    />
+                    <!-- <v-radio
+                      label="Sub-Categories"
+                      color="#733EE4"
+                      value="SubCategory"
+                      class="me-8"
+                    /> -->
+                    <v-radio
+                      label="Custom Products"
+                      color="#733EE4"
+                      value="CustomProducts"
+                      class="me-8"
+                    />
+                    <v-radio
+                      label="Brand"
+                      color="#733EE4"
+                      value="Brand"
+                      class="me-8"
+                    />
+                  </v-radio-group>
+                </div>
+              </div>
 
-            <VRow>
-              <VCol cols="6">
+              <VCol cols="6" class="pa-0">
                 <div class="mt-4 mb-2">
-                  <h4 class="card-info-title">Products</h4>
+                  <h4
+                    class="mt-4 mb-2"
+                    style="
+                      color: var(--Lite, #afaacb);
+                      font-family: Roboto;
+                      font-size: 14px;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 150%;
+                    "
+                  >
+                    {{ newAd.Navigation }} name
+                  </h4>
                   <v-select
-                    label=""
                     density="compact"
                     variant="outlined"
                     bg-color="#faf9fe"
-                    placeholder="Choose category name"
+                    :placeholder="`Choose ${newAd.Navigation}`"
+                    v-model="newAd[`${newAd.Navigation}Uuid`]"
                     class="card-info-list"
+                    :items="getNavigationItems"
                     item-value="uuid"
-                    item-title="uuid"
-                  ></v-select>
-                </div>
-              </VCol>
-            </VRow>
-          </VCard>
-          <VCard
-            flat
-            class="pa-4"
-            style="margin-bottom: 2rem; border-radius: 12px"
-          >
-            <VRow>
-              <VCol cols="6">
-                <div class="mt-4 mb-2">
-                  <h4 class="card-info-title">Start date</h4>
-                  <GDatePicker
-                    label="Enter Start date"
-                    class="mt-8"
-                    :height="40"
+                    item-title="displayName_En"
                   />
                 </div>
               </VCol>
-              <VCol cols="6">
-                <div class="mt-4 mb-2">
-                  <h4 class="card-info-title">Expiry date</h4>
+            </VCard>
+          </VCol>
+          <VCol
+            cols="12"
+            style="border-radius: 12px; background: var(--White, #fff)"
+            class="pa-8 my-6"
+          >
+            <VCard
+              flat
+              style="border-radius: 12px; background: var(--White, #fff)"
+            >
+              <h3 class="card-title mb-8">Schedule AD</h3>
+              <VRow>
+                <VCol class="py-0">
+                  <h4
+                    style="
+                      color: var(--Lite, #afaacb);
+                      font-family: Roboto;
+                      font-size: 14px;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 150%;
+                      margin-bottom: 0.5rem;
+                    "
+                  >
+                    Start date
+                  </h4>
+                  <GDatePicker
+                    label="Enter start date"
+                    bg-color="#FAF9FE"
+                    v-model="newAd.StartDate"
+                  />
+                </VCol>
+                <VCol class="py-0">
+                  <h4
+                    style="
+                      color: var(--Lite, #afaacb);
+                      font-family: Roboto;
+                      font-size: 14px;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 150%;
+                      margin-bottom: 0.5rem;
+                    "
+                  >
+                    Expiry date
+                  </h4>
                   <GDatePicker
                     label="Enter end date"
-                    class="mt-8"
-                    :height="40"
+                    bg-color="#FAF9FE"
+                    v-model="newAd.EndDate"
                   />
-                </div>
-              </VCol>
-            </VRow>
-          </VCard>
+                </VCol>
+              </VRow>
+            </VCard>
+          </VCol>
         </VCol>
-        <VCol cols="4">
-          <VCard class="card card-tags" style="margin-bottom: 2rem">
-            <h3 class="card-title mb-8">Discount To</h3>
-            <div
-              style="
-                height: fit-content;
-                padding: 0px 12px;
-                border-radius: 6px;
-                background: rgba(115, 62, 228, 0.05);
-              "
-            >
-              <v-radio-group
-                v-model="newCategory.visibility"
-                inline
-                hide-details
+        <VCol cols="4" class="py-0">
+          <VCol cols="12">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCard flat v-else style="margin-bottom: 1rem" class="pa-8">
+              <h3
+                class="mb-6"
+                style="
+                  color: var(--Black, #21094a);
+                  font-family: Roboto;
+                  font-size: 18px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 150%;
+                "
               >
-                <v-radio
-                  label="All users"
-                  value="All users"
-                  color="primary"
-                  class="me-14"
+                AD Banner
+              </h3>
+              <VCard flat>
+                <VFileInput
+                  label=""
+                  ref="fileInput"
+                  class="card-file-input"
+                  prepend-icon="mdi-upload-multiple"
+                  @change="handleFileChange"
                 />
-                <v-radio
-                  label="Governorate"
-                  value="Governorate"
-                  color="primary"
-                />
-              </v-radio-group>
-            </div>
-          </VCard>
-          <VCard class="card card-tags" style="margin-bottom: 2rem">
-            <h3 class="card-title mb-8">Discount ratio</h3>
-            <div
-              style="
-                height: fit-content;
-                border-radius: 6px;
-                background: rgba(115, 62, 228, 0.05);
-              "
+                <VCard
+                  :style="{
+                    border: adImg
+                      ? '1px solid var(--Purple, #733ee4)'
+                      : '1px dashed var(--Purple, #733ee4)',
+                  }"
+                  class="card-file-ui ma-1"
+                  @click="fileInput.click()"
+                >
+                  <div
+                    style="
+                      height: inherit;
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      gap: 0.7rem;
+                      justify-content: center;
+                    "
+                  >
+                    <img
+                      v-if="adImg"
+                      width="142"
+                      height="142"
+                      :src="
+                        adImg.includes('http')
+                          ? adImg
+                          : `https://techify-001-site1.htempurl.com${adImg}`
+                      "
+                    />
+                    <SvgIcon icon="upload" v-else />
+                    <p
+                      class="card-file-text text-decoration-underline cursor-pointer"
+                    >
+                      {{ adImg ? 'Change Image' : 'Upload Image' }}
+                    </p>
+                    <div class="text-center">
+                      <p class="card-file-subtitle my-1">
+                        Max image 5MB jpg, png, jpeg
+                      </p>
+                      <p class="card-file-subtitle">Dimension X*X (Square)</p>
+                    </div>
+                  </div>
+                </VCard>
+              </VCard>
+            </VCard>
+          </VCol>
+          <VCol>
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCol
+              cols="12"
+              style="border-radius: 12px; background: var(--White, #fff)"
+              class="pa-8"
+              v-else
             >
-              <VTextField
-                label=""
-                placeholder="Enter discount ratio"
-                variant="outlined"
-                bg-color="#faf9fe"
-                style="color: #afaacb; font-size: 14px"
-                hide-details
-                suffix="%"
-              />
-            </div>
-          </VCard>
-          <VCard class="card card-tags" style="margin-bottom: 2rem">
-            <h3 class="card-title mb-8">Status</h3>
-            <div
-              style="
-                height: fit-content;
-                padding: 0px 12px;
-                border-radius: 6px;
-                background: rgba(115, 62, 228, 0.05);
-              "
+              <VCard flat>
+                <h3 class="card-title mb-8">AD to</h3>
+                <div
+                  style="
+                    height: fit-content;
+                    padding: 0px 12px;
+                    border-radius: 6px;
+                    background: rgba(115, 62, 228, 0.05);
+                  "
+                >
+                  <v-radio-group
+                    v-model="newAd.Target"
+                    inline
+                    hide-details
+                    @input="setGovernorates"
+                  >
+                    <v-radio
+                      label="All users"
+                      value="All"
+                      color="primary"
+                      class="me-5"
+                    />
+                    <v-radio
+                      label="Governorate"
+                      value="Governorates"
+                      color="primary"
+                    />
+                  </v-radio-group>
+                </div>
+
+                <VCol
+                  cols="12"
+                  class="pa-0"
+                  v-if="newAd.Target === 'Governorates'"
+                >
+                  <div class="mt-4 mb-2">
+                    <v-select
+                      label=""
+                      density="compact"
+                      variant="outlined"
+                      bg-color="#faf9fe"
+                      placeholder="Choose Governorate"
+                      v-model="newAd.GovernorateUuids"
+                      class="card-info-list"
+                      :items="Governorates"
+                      return-object
+                      item-title="displayName_En"
+                      multiple
+                    />
+                  </div>
+                </VCol>
+
+                <VCol
+                  cols="12"
+                  class="pa-0"
+                  v-if="newAd.GovernorateUuids.length"
+                >
+                  <div
+                    class="mt-4 mb-2"
+                    v-for="(Governorate, i) in newAd.GovernorateUuids"
+                    :key="i"
+                  >
+                    <div class="d-flex justify-space-between align-center">
+                      <p
+                        style="
+                          color: var(--Black, #21094a);
+                          font-family: Roboto;
+                          font-size: 14px;
+                          font-style: normal;
+                          font-weight: 400;
+                          line-height: 150%;
+                        "
+                      >
+                        {{ Governorate.displayName }}
+                      </p>
+                      <button
+                        icon
+                        @click="removeGovernorate(Governorate.uuid)"
+                        class="d-flex my-auto"
+                      >
+                        <svgIcon icon="delete" class="my-auto" />
+                      </button>
+                    </div>
+                    <v-divider class="my-3" />
+                  </div>
+                </VCol>
+              </VCard>
+            </VCol>
+          </VCol>
+          <VCol>
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCol
+              cols="12"
+              style="border-radius: 12px; background: var(--White, #fff)"
+              class="pa-8"
+              v-else
             >
-              <v-radio-group
-                v-model="newCategory.visibility"
-                inline
-                hide-details
-              >
-                <v-radio
-                  label="Active"
-                  value="Active"
-                  color="primary"
-                  class="me-14"
-                />
-                <v-radio label="Stopped" value="Stopped" color="primary" />
-              </v-radio-group>
-            </div>
-          </VCard>
+              <VCard flat>
+                <h3 class="card-title mb-8">Status</h3>
+                <div
+                  style="
+                    height: fit-content;
+                    padding: 0px 12px;
+                    border-radius: 6px;
+                    background: rgba(115, 62, 228, 0.05);
+                  "
+                >
+                  <v-radio-group v-model="newAd.Status" inline hide-details>
+                    <v-radio
+                      label="Active"
+                      value="Active"
+                      color="primary"
+                      class="me-14"
+                    />
+                    <v-radio label="Stopped" value="Stopped" color="primary" />
+                  </v-radio-group>
+                </div>
+              </VCard>
+            </VCol>
+          </VCol>
+        </VCol>
+        <VCol class="d-flex justify-end mt-6" v-if="!isPageLoading">
+          <div>
+            <v-spacer />
+            <v-btn
+              flat
+              color="#fff"
+              class="rounded-lg"
+              height="48"
+              width="162"
+              @click="$router.go(-1)"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              flat
+              :color="isEditing ? '#27AE60' : '#733EE4'"
+              class="rounded-lg"
+              height="48"
+              width="162"
+              :loading="isAddingBtnLoading"
+              :disabled="isAddingBtnLoading"
+              @click="addAd"
+            >
+              <v-icon v-if="!isEditing" size="20"> mdi-plus </v-icon>
+              <p>{{ isEditing ? 'Save Changes' : 'Add AD' }}</p>
+            </v-btn>
+          </div>
         </VCol>
       </VRow>
     </VContainer>
   </section>
-  <div
-    v-if="!isPageLoading"
-    class="add-products-actions"
-    style="display: flex; justify-content: end"
-  >
-    <!-- <v-btn flat color="#fff" class="rounded-lg me-2" height="48" width="162">
-        <p>Cancel</p>
-      </v-btn> -->
-    <v-btn
-      flat
-      :color="true ? '#27AE60' : '#733EE4'"
-      class="rounded-lg"
-      height="48"
-      width="162"
-      :loading="isAddingBtnLoading"
-      :disabled="isAddingBtnLoading || !isValidCategory"
-      @click="addCategory"
-    >
-      <v-icon v-if="!true" size="20"> mdi-plus </v-icon>
-      <p>{{ true ? 'Save Changes' : 'Add Discount' }}</p>
-    </v-btn>
-  </div>
 </template>
 
 <script setup lang="ts">
-// import type { Category } from './type';
-import { getCtegory } from '@/apis/categories.ts';
+import type { Ad } from './type';
+import { getCtegories } from '@/apis/categories';
+import { getGovernorates } from '@/apis/governorates';
+import { getBrands } from '@/apis/_brands';
+import { getProducts } from '@/apis/products';
+// import { getCtegories } from '@/apis/subCategories';
 import {
   getFormData,
   sendFormData,
+  updateFormData,
 } from '@/composables/products/SendFormRequest';
+import { reactive } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
 
+const { buildQueryString } = useBuildQueryString();
+const Governorates = ref([]);
+
+let newAd: any = reactive({
+  Place: '',
+  Status: '',
+  Target: '',
+  Navigation: 'Category',
+  StartDate: '',
+  EndDate: '',
+  CategoryUuid: '',
+  SubCategoryUuid: '',
+  BrandUuid: '',
+  ProductUuids: '', // CustomProductsUuid
+  GovernorateUuids: [],
+}) as unknown as Ad;
+
+const allCategories: any = ref([]);
+const allBrands: any = ref([]);
+const allProducts: any = ref([]);
+const allSubCategories: any = ref([]);
+
+const rules = {
+  Place: { required },
+  Target: { required },
+  Status: { required },
+  StartDate: { required },
+};
+
+const v$ = useVuelidate(rules, newAd);
+
+let notification = ref({
+  text: 'Ad has been Added Successfully',
+  color: '#27ae60',
+});
 let fileInput: any = ref('');
-let categoryImg = ref('');
-let categoryImgBase64: any = ref('');
+let adImg = ref('');
+let adImgBase64: any = ref('');
 let isPageLoading = ref(false);
 let showToast = ref(false);
 let isAddingBtnLoading = ref(false);
-const newCategory: any = ref({}) as unknown as Category;
-let newSubCategoryEn = ref('');
-let newSubCategoryAr = ref('');
-const subCategoriesToAdd: string[] | any = ref([]);
 
-const addSubCategory = () => {
-  subCategoriesToAdd.value.push({
-    id: subCategoriesToAdd.value.length,
-    displayName_En: newSubCategoryEn.value,
-    displayName_Ar: newSubCategoryAr.value,
-  });
-  newSubCategoryEn.value = '';
-  newSubCategoryAr.value = '';
+const clear = () => {
+  v$.value.$reset();
+
+  for (const [key, value] of Object.entries(newAd)) {
+    newAd[key] = value;
+  }
 };
 
-const removeSubCategory = (deleteSubCategory: any) => {
-  subCategoriesToAdd.value = subCategoriesToAdd.value.filter(
-    (subCategory: any) => subCategory !== deleteSubCategory
-  );
-};
-
-const editSubCategory = (editedSubCategory: any) => {
-  newSubCategoryEn.value = editedSubCategory.displayName_En;
-  newSubCategoryAr.value = editedSubCategory.displayName_Ar;
-  removeSubCategory(editedSubCategory);
-};
-
-const newTag = ref('');
-const tagsToAdd: string[] | any = ref([]);
-
-const addTags = () => {
-  tagsToAdd.value.push({
-    id: tagsToAdd.value.length,
-    title: newTag.value,
-  });
-  newTag.value = '';
-};
-
-const removeTag = (deletedTag: any) => {
-  tagsToAdd.value = tagsToAdd.value.filter((tag: any) => tag !== deletedTag);
-};
-
-const route = useRoute();
-
-const setCategoryData = async () => {
-  if (!route.params.id) return;
-  isPageLoading.value = true;
+const getAllCategories = async () => {
+  if (allCategories.value.length) {
+    return;
+  }
   try {
-    const { data } = await getCtegory(route.params.id as string);
-    newCategory.value = data.data;
-    tagsToAdd.value = data.data.tags;
-    subCategoriesToAdd.value = data.data.subCategories;
-    categoryImg.value = data.data.imagePath;
-
-    isPageLoading.value = false;
-  } catch {}
-};
-// setCategoryData();
-const router = useRouter();
-const addCategory = async (): Promise<void> => {
-  // setEditorValue();
-  isAddingBtnLoading.value = true;
-  const form = getFormData({
-    ...newCategory.value,
-    Tags: tagsToAdd.value,
-    SubCategories: subCategoriesToAdd.value,
-    ImageFile: categoryImgBase64.value,
-  });
-
-  try {
-    await sendFormData('categories', form);
-    showToast.value = true;
-    isAddingBtnLoading.value = true;
-    // setTimeout(() => {
-    //   router.push({ name: 'categories' });
-    // }, 1000);
+    const params = buildQueryString({
+      rowCount: 100,
+      pageNo: 1,
+    });
+    const {
+      data: { data },
+    } = await getCtegories(params);
+    allCategories.value = data.result;
   } catch (error) {
     console.log(error);
+  }
+};
+
+const getAllBrands = async () => {
+  if (allBrands.value.length) {
+    return;
+  }
+  try {
+    const params = buildQueryString({
+      rowCount: 100,
+      pageNo: 1,
+    });
+    const {
+      data: { data },
+    } = await getBrands(params);
+    allBrands.value = data.result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// const getAllSubCategories = async () => {
+//   try {
+//     const params = buildQueryString({
+//       rowCount: 100,
+//       pageNo: 1,
+//     });
+//     const {
+//       data: { data },
+//     } = await getProducts(params);
+//     allSubCategories.value = data.result;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+const getAllProducts = async () => {
+  if (allProducts.value.length) {
+    return;
+  }
+  try {
+    const params = buildQueryString({
+      rowCount: 100,
+      pageNo: 1,
+    });
+    const {
+      data: { data },
+    } = await getProducts(params);
+    allProducts.value = data.result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// onMounted(async () => {
+//   isPageLoading.value = true;
+//   try {
+//     await setCategoryData(
+//       newAd,
+//       tagsToAdd,
+//       subCategoriesToAdd,
+//       adImg,
+//       description_En,
+//       description_Ar
+//     );
+//   } catch (error) {
+//   } finally {
+//     isPageLoading.value = false;
+//   }
+// });
+
+const router = useRouter();
+const isEditing = ref(false);
+const addAd = async (): Promise<void> => {
+  isAddingBtnLoading.value = true;
+  const isValid = await v$.value.$validate();
+  if (!isValid) {
+    isAddingBtnLoading.value = false;
+    notification.value.text = 'Please check your Inputs';
+    notification.value.color = '#EB5757';
+    showToast.value = true;
+    return;
+  }
+  const form = {
+    ...(newAd.Place.length && {
+      Place: newAd.Place,
+    }),
+    ...(newAd.Status.length && {
+      Status: newAd.Status,
+    }),
+    ...(newAd.Target.length && {
+      Target: newAd.Target,
+    }),
+    ...(newAd.Navigation.length && {
+      Navigation: newAd.Navigation,
+    }),
+    ...(newAd.StartDate.length && {
+      StartDate: newAd.StartDate,
+    }),
+    ...(newAd.EndDate.length && {
+      EndDate: newAd.EndDate,
+    }),
+    ...(newAd.CategoryUuid.length && {
+      CategoryUuid: newAd.CategoryUuid,
+    }),
+    ...(newAd.SubCategoryUuid.length && {
+      SubCategoryUuid: newAd.SubCategoryUuid,
+    }),
+    ...(newAd.BrandUuid.length && {
+      BrandUuid: newAd.BrandUuid,
+    }),
+    ...(newAd.CustomProductsUuid.length && {
+      ProductUuids: newAd.CustomProductsUuid,
+    }),
+    ...(newAd.GovernorateUuids.length && {
+      GovernorateUuids: newAd.GovernorateUuids,
+    }),
+    imageFile: adImgBase64.value,
+  };
+  delete form.uuid;
+  try {
+    isEditing.value
+      ? await updateFormData('ads', form, newAd.uuid)
+      : await sendFormData('ads', form);
+    notification.value.text = isEditing.value
+      ? 'Ad Updated Successfully'
+      : 'Ad Added Successfully';
+    notification.value.color = '#27ae60';
+    showToast.value = true;
+    isAddingBtnLoading.value = true;
+    setTimeout(() => {
+      router.push({ name: 'promotion-ads' });
+    }, 1000);
+  } catch (error) {
+    console.log(error);
+    isAddingBtnLoading.value = false;
+    notification.value.text = 'Somethin went wrong';
+    notification.value.color = '#EB5757';
+    showToast.value = true;
   } finally {
     isAddingBtnLoading.value = false;
   }
@@ -297,23 +638,72 @@ const addCategory = async (): Promise<void> => {
 const handleFileChange = async (event: any) => {
   const file = event.target.files[0];
   const newImgSrcs = (window.URL ? URL : webkitURL).createObjectURL(file);
-  categoryImg.value = newImgSrcs;
-  const reader = new FileReader();
-  reader.onload = (e: any) => {
-    categoryImgBase64.value = e.target.result;
-  };
-  reader.readAsDataURL(file);
+  adImg.value = newImgSrcs;
+  adImgBase64.value = file;
 };
 
-const isValidCategory = computed(() => {
-  return false;
+const setGovernorates = async () => {
+  if (Governorates.value.length) {
+    return;
+  }
+  try {
+    const params = buildQueryString({
+      rowCount: 100,
+      pageNo: 1,
+    });
+    const {
+      data: { data },
+    } = await getGovernorates(params);
+    Governorates.value = data.result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+const setNavigationItems = () => {
+  switch (newAd.Navigation) {
+    case 'Category':
+      return getAllCategories();
+    // case 'SubCategory':
+    //   return getAllSubCategories();
+    case 'CustomProducts':
+      return getAllProducts();
+    case 'Brand':
+      return getAllBrands();
+    default:
+      return;
+  }
+};
+
+const removeGovernorate = (uuid: any) => {
+  console.log('🚀 ~ removeGovernorate ~ uuid:', uuid);
+  newAd.GovernorateUuids = newAd.GovernorateUuids.filter(
+    (item: any) => item.uuid !== uuid
+  );
+};
+
+const getNavigationItems = computed((key: any) => {
+  switch (newAd.Navigation) {
+    case 'Category':
+      return allCategories.value ?? [];
+    case 'SubCategory':
+      return allSubCategories.value ?? [];
+    case 'CustomProducts':
+      return allProducts.value ?? [];
+    case 'Brand':
+      return allBrands.value ?? [];
+    default:
+      return [];
+  }
+});
+
+onMounted(() => {
+  getAllCategories();
 });
 </script>
 
 <style scoped>
 .card {
   border-radius: 12px;
-  padding: 1rem 1rem;
   box-shadow: none;
 }
 
@@ -427,7 +817,7 @@ const isValidCategory = computed(() => {
   font-family: Roboto;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 150%;
 }
 .number-products {
@@ -436,7 +826,7 @@ const isValidCategory = computed(() => {
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 150%;
+  line-height: 150%; /* 21px */
 }
 .products-card {
   border-radius: 8px;
@@ -448,5 +838,31 @@ const isValidCategory = computed(() => {
   background: #7066a2;
   padding: 3px 8px;
   color: #fff;
+}
+
+.arabic-editor .ql-editor {
+  text-align: right;
+}
+.ql-toolbar.ql-snow {
+  border: none;
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.6rem;
+  width: 100%;
+  z-index: 3;
+}
+
+.arabic-editor-container .ql-toolbar.ql-snow {
+  right: 1rem;
+  bottom: 0.6rem;
+  width: 100%;
+  z-index: 3;
+}
+.ql-container.ql-snow {
+  color: #7066a2;
+}
+
+.ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+  display: none;
 }
 </style>
