@@ -1,5 +1,6 @@
 <script setup>
 import { useStyleState } from "@/composables/UseStyleState";
+import { changeOrderStatusAndEstimatedDays } from "@/apis/orders";
 const { getStyleStatus } = useStyleState();
 const props = defineProps({
   isPageLoading: {
@@ -186,21 +187,22 @@ const items = [
 ];
 
 const statuses = ref([
-  "Placed",
-  "InProgress",
+  "Pending",
+  "In progress",
   "Shipped",
   "Delivered",
   "Cancelled",
-  "ReturnRequested",
-  "ReturnCancelled",
-  "ReturnInProgress",
-  "reject return request",
+  "Return Requested",
+  "Return Cancelled",
+  "Return In Progress",
   "Returned",
+  // "reject return request",
 ]);
-
 const nextStatus = (currentStatus) => {
   const currentIndex = statuses.value?.indexOf(currentStatus);
-  if (currentIndex >= 0 && currentIndex < statuses.value?.length - 1) {
+  if (currentStatus === "Delivered" || currentStatus === "Cancelled") {
+    return [currentStatus];
+  } else if (currentIndex >= 0 && currentIndex < statuses.value?.length - 1) {
     return [statuses.value[currentIndex + 1]];
   }
   return [currentStatus];
@@ -249,6 +251,12 @@ const openDeleteModal = ({ uuid }) => {
       sheetColor: "#eb57571a",
     },
   });
+};
+
+const updateOrderStatus = async (item) => {
+  try {
+    await changeOrderStatusAndEstimatedDays(item.uuid)();
+  } catch (error) {}
 };
 
 const handleGoTOAction = ({ uuid }, action) => {
@@ -648,8 +656,9 @@ const getCellProps = ({ item }) => {
           @click.stop
         >
           <VSelect
-            :items="nextStatus(item.status)"
-            v-model="item.status"
+            :items="nextStatus(item.statusLocalized)"
+            v-model="item.statusLocalized"
+            @update:modelValue="updateOrderStatus(item)"
             density="compact"
             class="pa-0 w-100 pl-2 pb-1"
             variant="plain"

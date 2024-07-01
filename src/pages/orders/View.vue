@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { showOrder, rejectOrder } from "@/apis/orders";
+import {
+  showOrder,
+  rejectOrder,
+  changeOrderStatusAndEstimatedDays,
+} from "@/apis/orders";
 import { useStyleState } from "@/composables/UseStyleState";
 const { getStyleStatus } = useStyleState();
 const route = useRoute();
@@ -24,7 +28,6 @@ const getOrderDetails = async () => {
       data: { data },
     } = await showOrder(route.params.id as string);
     order.value = data;
-    console.log(order.value);
     isPageLoading.value = false;
   } catch {}
 };
@@ -40,7 +43,8 @@ const handleConfirm = async () => {
       toggleDeleteModal({});
     } catch (error) {}
   } else if (modalOptions.value.buttonTitle === "Yes, Reject") {
-    console.log("Yes, Reject");
+    await rejectOrder(order.value.uuid, reason.value)();
+    toggleDeleteModal({});
   }
 };
 onMounted(async () => {
@@ -69,10 +73,38 @@ const headers = [
   },
 ];
 
+const updateOrderStatus = async () => {
+  try {
+    await changeOrderStatusAndEstimatedDays(order.value.uuid)();
+  } catch (error) {}
+};
+const statuses = ref([
+  "Pending",
+  "In progress",
+  "Shipped",
+  "Delivered",
+  "Cancelled",
+  "Return Requested",
+  "Return Cancelled",
+  "Return In Progress",
+  "Returned",
+  // "reject return request",
+]);
+
+const nextStatus = (currentStatus: string) => {
+  const currentIndex = statuses.value?.indexOf(currentStatus);
+  if (currentStatus === "Delivered" || currentStatus === "Cancelled") {
+    return [currentStatus];
+  } else if (currentIndex >= 0 && currentIndex < statuses.value?.length - 1) {
+    return [statuses.value[currentIndex + 1]];
+  }
+
+  return [currentStatus];
+};
 const headerButtons = computed(() => {
   const { status } = order.value;
   const btnConfig = {
-    InProgress: [
+    "In Progress": [
       {
         text: "Cancel Order",
         icon: "Close",
@@ -115,7 +147,18 @@ const headerButtons = computed(() => {
         text: "Approve Order",
         icon: "True-circle",
         action() {
-          console.log("Approve Order");
+          toggleDeleteModal({
+            options: {
+              buttonTitle: "Add Estimation",
+              buttonColor: "#733EE4",
+              title: "Estimated delivery days",
+              text: "",
+              svg: "Time",
+              secondaryButtonTitle: "Cancel",
+              icon: "",
+              sheetColor: "#733EE41a",
+            },
+          });
         },
       },
     ],
@@ -262,10 +305,25 @@ const orderSummary = computed(() => {
                 />
                 <p style="text-transform: none">{{ headerButton?.text }}</p>
               </VBtn>
-              <VBtn
+              <VSelect
+                :items="nextStatus(order.statusLocalized)"
+                v-model="order.statusLocalized"
+                density="compact"
+                class="pa-0 w-100 pl-6 pb-1"
+                @update:modelValue="updateOrderStatus"
+                variant="plain"
+                hide-details
+                style="
+                  max-width: 150px;
+                  font-size: 12px;
+                  padding: 0.2rem 0;
+                  border-radius: 8px;
+                "
+                :style="`background-color: ${getStyleStatus(order.status)?.color}; color: white;  border-radius: 8px;`"
+              />
+              <!-- <VBtn
                 variant="elevated"
                 class="px-8"
-                :style="`background-color: ${getStyleStatus(order.status)?.color}; color: white;  border-radius: 8px;`"
                 style="
                   box-shadow: none;
                   border-radius: 9px;
@@ -273,7 +331,7 @@ const orderSummary = computed(() => {
                 "
               >
                 <p>{{ order.statusLocalized }}</p>
-              </VBtn>
+              </VBtn> -->
             </section>
           </VCard>
         </VCol>
@@ -320,16 +378,16 @@ const orderSummary = computed(() => {
                     <h4>{{ item.productDisplayName_En }}</h4>
                     <div class="d-flex align-items-center" style="gap: 0.5rem">
                       <span style="color: #7066a2; font-size: 14px">
-                        {{ item?.category ?? " no category" }}
+                        {{ item?.productTypeLocalized ?? "-" }}
                       </span>
-                      <StarRating :rating="item?.rating ?? 0" />
+                      <StarRating :rating="item?.productRating ?? 0" />
                       <span
                         style="
                           color: #21094a;
                           font-size: 14px;
                           font-weight: 500;
                         "
-                        >{{ item?.rating ?? 0 }}</span
+                        >{{ item?.productRating ?? 0 }}</span
                       >
                     </div>
                   </div>
@@ -451,7 +509,9 @@ const orderSummary = computed(() => {
                   >
                     <span style="color: #21094a">By:</span>
                     <span style="color: #7066a2">{{ log?.userFullName }}</span>
-                    <span style="color: #21094a"> (Customer)</span>
+                    <span style="color: #21094a">
+                      ({{ log?.userTypeLocalized }})</span
+                    >
                   </div>
                 </div>
               </section>
@@ -590,7 +650,12 @@ const orderSummary = computed(() => {
       :onCancel="handleCancel"
       :onConfirm="handleConfirm"
     >
-      <VCol>
+      <VCol
+        v-if="
+          modalOptions.title === 'Cancel Order' ||
+          modalOptions.title === 'Reject Order'
+        "
+      >
         <h4 class="card-info-title">
           {{ modalOptions.title.split(" ")[0] }} Reason
         </h4>
@@ -613,6 +678,48 @@ const orderSummary = computed(() => {
           </VCol>
         </VRow>
       </VCol>
+      <VCol v-if="modalOptions.title === 'Estimated delivery days'">
+        <h4 class="card-info-title">Estimated delivery days</h4>
+        <VRow>
+          <VCol>
+            <VTextField
+              label=""
+              hide-details
+              density="compact"
+              type="number"
+              suffix="days"
+              placeholder="Enter estimations days"
+              variant="outlined"
+              bg-color="#faf9fe"
+              style="
+                color: #afaacb;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+              "
+            />
+          </VCol>
+        </VRow>
+      </VCol>
+      <!-- <VCol v-if="modalOptions.title === 'Change Order Status'">
+        <h4 class="card-info-title">Order Status</h4>
+        <VRow>
+          <VCol>
+            <VSelect
+              bg-color="#faf9fe"
+              label=""
+              :items="nextStatus(order.status)"
+              v-model="order.status"
+              hide-details
+              density="compact"
+              variant="outlined"
+              placeholder="Choose Role"
+              style="border-radius: 8px"
+            />
+      
+          </VCol>
+        </VRow>
+      </VCol> -->
     </GlobalPopup>
   </section>
 </template>
