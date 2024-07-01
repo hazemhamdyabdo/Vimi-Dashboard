@@ -114,9 +114,40 @@
                     v-model="newAd[`${newAd.Navigation}Uuid`]"
                     class="card-info-list"
                     :items="getNavigationItems"
-                    item-value="uuid"
+                    return-object
                     item-title="displayName_En"
                   />
+                </div>
+              </VCol>
+
+              <VCol cols="12" class="pa-0" v-if="newAd.GovernorateUuids.length">
+                <div
+                  class="mt-4 mb-2"
+                  v-for="(Governorate, i) in newAd.GovernorateUuids"
+                  :key="i"
+                >
+                  <div class="d-flex justify-space-between align-center">
+                    <p
+                      style="
+                        color: var(--Black, #21094a);
+                        font-family: Roboto;
+                        font-size: 14px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 150%;
+                      "
+                    >
+                      {{ Governorate.displayName }}
+                    </p>
+                    <button
+                      icon
+                      @click="removeGovernorate(Governorate.uuid)"
+                      class="d-flex my-auto"
+                    >
+                      <svgIcon icon="delete" class="my-auto" />
+                    </button>
+                  </div>
+                  <v-divider class="my-3" />
                 </div>
               </VCol>
             </VCard>
