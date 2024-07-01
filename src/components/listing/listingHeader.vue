@@ -8,8 +8,18 @@ withDefaults(
     settings?: boolean;
   }>(),
   {
-    pathName: "",
+    pathName: '',
     settings: true,
+  }
+);
+
+let search = ref('');
+const emit = defineEmits(['updateSearch']);
+
+watch(
+  () => search.value,
+  (val) => {
+    emit('updateSearch', val);
   }
 );
 </script>
@@ -40,6 +50,7 @@ withDefaults(
           density="compact"
           hide-details
           single-line
+          v-model="search"
         >
           <template v-slot:prepend-inner>
             <img src="@/assets/svgs/search.svg" />

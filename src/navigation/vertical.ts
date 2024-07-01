@@ -1,4 +1,4 @@
-export default [
+const navItems = [
   {
     parent: 'Main',
     children: [
@@ -50,13 +50,18 @@ export default [
       {
         name: 'Settings',
         icon: 'settings',
-        path: { name: "settings" },
-      },
-      {
-        name: 'Log out',
-        icon: 'logout',
-        action: 'logout',
+        path: { name: 'settings' },
       },
     ],
   },
 ];
+
+const actions = [
+  {
+    name: 'Log out',
+    icon: 'logout',
+    action: 'logout',
+  },
+];
+
+export { navItems, actions };

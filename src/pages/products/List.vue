@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { headers, productFilter } from "@/constants/products";
-import { getProducts, deleteProduct } from "@/apis/products";
-import { getCtegories } from "@/apis/categories";
-import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+import { headers, productFilter } from '@/constants/products';
+import { getProducts, deleteProduct } from '@/apis/products';
+import { getCtegories } from '@/apis/categories';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
+import { debounce } from '@/helpers/debounce.ts';
+
 const selectedItems = ref([]);
 const { buildQueryString } = useBuildQueryString();
 
@@ -13,7 +15,7 @@ const resetSelectedItems = () => {
 
 const modalOptions = ref({});
 const modalState = ref(false);
-const toggleDeleteModal = ({ uuid = "", options = {} }) => {
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);
@@ -51,6 +53,12 @@ const deleteMultiple = async () => {
 
 const allProducts = ref([]);
 const allCategories: any = ref([]);
+
+const updateSearch = debounce((searchKey: any) => {
+  search.value = searchKey;
+  fetchProducts();
+}, 500);
+
 const getAllCategories = async () => {
   isPageLoading.value = true;
   try {
@@ -64,6 +72,7 @@ const getAllCategories = async () => {
 };
 
 let totalCount = ref(0);
+let search = ref('');
 const isPageLoading = ref(false);
 const page = ref(1);
 
@@ -73,6 +82,7 @@ async function fetchProducts() {
     const params = buildQueryString({
       rowCount: 10,
       pageNo: page.value,
+      search: search.value,
     });
     const {
       data: { data },
@@ -127,6 +137,7 @@ onMounted(async () => {
       addAction="Add Product"
       placeholder="Search , ID , SKU , Product name"
       pathName="add-product"
+      @updateSearch="updateSearch"
     />
     <tableFilters
       v-else
@@ -158,7 +169,7 @@ onMounted(async () => {
         {{ allProducts.length }} from {{ totalCount }}
       </p>
       <v-pagination
-        v-if="pagesCount > 1"
+        v-if="pagesCount > 1 && !isPageLoading"
         v-model="page"
         :length="pagesCount"
         @change="getNextProductsPage"

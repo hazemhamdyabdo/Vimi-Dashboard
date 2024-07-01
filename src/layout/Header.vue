@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
+const drawer = ref(false);
+const emit = defineEmits(['toggleDrawer']);
+const setDrawer = () => {
+  drawer.value = !drawer.value;
+  emit('toggleDrawer', drawer.value);
+};
 </script>
 
 <template>
@@ -12,7 +18,9 @@ const { t } = useI18n();
     </div>
     <div class="header-bar">
       <div class="header-title">
-        <img src="@/icons/Group 48096656.svg" />
+        <v-btn @click="setDrawer" variant="text">
+          <img src="@/icons/Group 48096656.svg" />
+        </v-btn>
         <h2 class="header-title-text">{{ t($route.meta.title as string) }}</h2>
       </div>
       <div class="header-account">
@@ -64,7 +72,7 @@ header {
   font-style: normal;
   font-weight: 700;
   line-height: 48px;
-  font-family: "Montagu Slab", serif;
+  font-family: 'Montagu Slab', serif;
 }
 .second {
   color: #733ee4;
@@ -72,7 +80,7 @@ header {
   font-style: normal;
   font-weight: 300;
   line-height: 48px;
-  font-family: "Montagu Slab", serif;
+  font-family: 'Montagu Slab', serif;
 }
 .header-bar {
   display: flex;

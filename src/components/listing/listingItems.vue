@@ -1,8 +1,14 @@
 <script setup>
+
 import { useStyleState } from "@/composables/UseStyleState";
 import { changeOrderStatusAndEstimatedDays } from "@/apis/orders";
+
 const { getStyleStatus } = useStyleState();
 const props = defineProps({
+  showSelect: {
+    type: Boolean,
+    default: true,
+  },
   isPageLoading: {
     type: Boolean,
     required: true,
@@ -21,7 +27,7 @@ const props = defineProps({
   },
   itemValue: {
     type: String,
-    default: "uuid",
+    default: 'uuid',
   },
   triggerResetSelectedItems: {
     type: Boolean,
@@ -44,147 +50,148 @@ const viewDetails = (...event) => {
 };
 
 const dateFormatting = (date) => {
-  return new Date(date).toLocaleDateString("en-US");
+  return new Date(date).toLocaleDateString('en-US');
 };
 const items = [
   {
-    SKU: "#76459849",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Vitamins & Minerals",
-    Type: "Variables",
-    Qty: "185",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459849',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Vitamins & Minerals',
+    Type: 'Variables',
+    Qty: '185',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Brain Health",
-    Type: "Simple",
-    Qty: "10",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Brain Health',
+    Type: 'Simple',
+    Qty: '10',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#764820",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Heart & Metabolism",
-    Type: "Variables",
-    Qty: "110",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#764820',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Heart & Metabolism',
+    Type: 'Variables',
+    Qty: '110',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459820",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Vitamins & Minerals",
-    Type: "Bundle",
-    Qty: "5",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459820',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Vitamins & Minerals',
+    Type: 'Bundle',
+    Qty: '5',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#7645982",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Gut Health",
-    Type: "Variables",
-    Qty: "144",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#7645982',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Gut Health',
+    Type: 'Variables',
+    Qty: '144',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
 
   {
-    SKU: "#764520",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Vitamins & Minerals",
-    Type: "Simple",
-    Qty: "6",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#764520',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Vitamins & Minerals',
+    Type: 'Simple',
+    Qty: '6',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459819",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Heart & Metabolism",
-    Type: "Variables",
-    Qty: "210",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459819',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Heart & Metabolism',
+    Type: 'Variables',
+    Qty: '210',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459818",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Gut Health",
-    Type: "Bundle",
-    Qty: "9",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459818',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Gut Health',
+    Type: 'Bundle',
+    Qty: '9',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459817",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Herbivore",
-    Type: "Simple",
-    Qty: "199",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459817',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '199',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459815",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Herbivore",
-    Type: "Variables",
-    Qty: "250",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459815',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Variables',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459816",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Herbivore",
-    Type: "Bundle",
-    Qty: "400",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459816',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Bundle',
+    Qty: '400',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459814",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Herbivore",
-    Type: "Simple",
-    Qty: "250",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459814',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459813",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Herbivore",
-    Type: "Simple",
-    Qty: "250",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459813',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459812",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Herbivore",
-    Type: "Variables",
-    Qty: "250",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459812',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Variables',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   {
-    SKU: "#76459811",
-    Product: "Lorem ipsum dolor sit ame consectetur.",
-    Category: "Herbivore",
-    Type: "Simple",
-    Qty: "250",
-    Price: "KD 20",
-    Visability: "Published",
+    SKU: '#76459811',
+    Product: 'Lorem ipsum dolor sit ame consectetur.',
+    Category: 'Herbivore',
+    Type: 'Simple',
+    Qty: '250',
+    Price: 'KD 20',
+    Visability: 'Published',
   },
   // ... more items
 ];
+
 
 const statuses = ref([
   "Pending",
@@ -197,6 +204,7 @@ const statuses = ref([
   "Return In Progress",
   "Returned",
   // "reject return request",
+
 ]);
 const nextStatus = (currentStatus) => {
   const currentIndex = statuses.value?.indexOf(currentStatus);
@@ -208,14 +216,14 @@ const nextStatus = (currentStatus) => {
   return [currentStatus];
 };
 
-const emit = defineEmits(["emitSelectedItems"], ["openDeleteModal"]);
+const emit = defineEmits(['emitSelectedItems'], ['openDeleteModal']);
 //TODO: for discussion l8r how to make it dynamic
 const headerLocal = computed(() => props.headers ?? headers);
 const itemsLocal = computed(() => props.items ?? items);
 let selectedItems = ref([]);
 
 const selectItems = () => {
-  emit("emitSelectedItems", selectedItems.value);
+  emit('emitSelectedItems', selectedItems.value);
 };
 
 watch(
@@ -235,20 +243,20 @@ watch(
     } else {
       selectedItems.value = [];
     }
-    emit("emitSelectedItems", selectedItems.value);
+    emit('emitSelectedItems', selectedItems.value);
   }
 );
 
 const openDeleteModal = ({ uuid }) => {
-  emit("openDeleteModal", {
+  emit('openDeleteModal', {
     uuid,
     options: {
-      title: "Delete Product",
-      text: "Are you sure you want to delete this Product ?",
-      buttonTitle: "Yes, Delete",
-      buttonColor: "#EB5757",
-      icon: "deleteIcon",
-      sheetColor: "#eb57571a",
+      title: `Delete ${route.meta.key.includes('-') ? route.meta.key.split('-')[1]?.toUpperCase() : route?.meta?.key?.toUpperCase()}`,
+      text: `Are you sure you want to delete this ${route.meta.key} ?`,
+      buttonTitle: 'Yes, Delete',
+      buttonColor: '#EB5757',
+      icon: 'deleteIcon',
+      sheetColor: '#eb57571a',
     },
   });
 };
@@ -260,13 +268,12 @@ const updateOrderStatus = async (item) => {
 };
 
 const handleGoTOAction = ({ uuid }, action) => {
-  const type = route.path.includes("products") ? "product" : "category";
-  router.push({ name: `${action}-${type}`, params: { id: uuid } });
+  router.push({ name: `${action}-${route.meta.key}`, params: { id: uuid } });
 };
 
 const getCellProps = ({ item }) => {
   return selectedItems.value.includes(item[`${props.itemValue}`])
-    ? { class: "bg-f1ecfc" }
+    ? { class: 'bg-f1ecfc' }
     : {};
 };
 </script>
@@ -277,6 +284,7 @@ const getCellProps = ({ item }) => {
     <dataTableLoader v-if="isPageLoading" />
     <v-data-table
       class="listing-table"
+      :class="{ showSelect: showSelect }"
       v-bind="$attrs"
       v-model="selectedItems"
       :headers="headerLocal"
@@ -286,7 +294,7 @@ const getCellProps = ({ item }) => {
       :items-per-page="10"
       sort-asc-icon="mdi-menu-swap"
       sort-desc-icon="mdi-menu-swap"
-      show-select
+      :show-select="showSelect"
       hide-default-footer
       @input="selectItems($event)"
       @click:row="viewDetails"
@@ -325,9 +333,90 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
 
+      <template v-slot:item.imagePath="{ item }">
+        <div class="d-flex justify-start">
+          <img
+            :src="`https://techify-001-site1.htempurl.com${item.imagePath}`"
+            alt=""
+            style="
+              width: 88px;
+              height: 44px;
+              border-radius: var(--Spacing-N4, 8px);
+
+              background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+            "
+          />
+        </div>
+      </template>
+
+      <template v-slot:item.target="{ item }">
+        <div>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.target }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.navigation="{ item }">
+        <div>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.navigation }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.place="{ item }">
+        <div>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.place }}
+          </p>
+        </div>
+      </template>
       <template v-slot:item.id="{ item }">
         <div>
-          <p class="product text-subtitle-1">{{ item.id }}</p>
+          <p
+            style="
+              color: var(--Black, #21094a);
+              /* 16/B1-R-16 */
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 150%; /* 24px */
+            "
+          >
+            {{ item.id }}
+          </p>
         </div>
       </template>
 
@@ -363,6 +452,12 @@ const getCellProps = ({ item }) => {
       <template v-slot:item.dateCreated="{ item }">
         <p class="product text-subtitle-1">
           {{ dateFormatting(item.dateCreated) }}
+        </p>
+      </template>
+
+      <template v-slot:item.startDate="{ item }">
+        <p class="product text-subtitle-1">
+          {{ dateFormatting(item.startDate) }}
         </p>
       </template>
 
@@ -432,7 +527,8 @@ const getCellProps = ({ item }) => {
         <div class="d-flex">
           <p
             class="mx-auto px-2 py-1 text-subtitle-1"
-            :style="`background-color: ${getStyleStatus(item.visibility)?.background}; color: ${getStyleStatus(item.visibility)?.color};  border-radius: 8px;`"
+            style="border-radius: 8px"
+            :style="`background-color: ${getStyleStatus(item.visibility)?.background}; color: ${getStyleStatus(item.visibility)?.color}`"
           >
             {{ item.visibility }}
           </p>
@@ -518,6 +614,42 @@ const getCellProps = ({ item }) => {
           <p class="product text-subtitle-1 ml-2">
             {{ item.displayName_En }}
           </p>
+        </div>
+      </template>
+      <template v-slot:item.CustomerName="{ item }">
+        <div class="d-flex align-center justify-start">
+          <div>
+            <img
+              style="width: 38px; height: 38px"
+              src="@/assets/test-avatar.png"
+              alt="product"
+            />
+          </div>
+          <p class="product text-subtitle-1 ml-2">
+            {{ item.CustomerName }}
+          </p>
+        </div>
+      </template>
+      <template v-slot:item.Product="{ item }">
+        <div class="d-flex align-center justify-start">
+          <div>
+            <img
+              style="width: 38px; height: 38px"
+              src="@/assets/test-avatar.png"
+              alt="product"
+            />
+          </div>
+          <p class="product text-subtitle-1 ml-2">
+            {{ item.Product }}
+          </p>
+        </div>
+      </template>
+      <template v-slot:item.Rating="{ item }">
+        <div class="d-flex align-center justify-start">
+          <Ratings
+            :numnerOfStars="Math.floor(item.Rating)"
+            :numnerOfhalfStars="item.Rating % 1 != 0 ? 1 : 0"
+          />
         </div>
       </template>
       <template v-slot:item.users="{ item }">
@@ -629,6 +761,23 @@ const getCellProps = ({ item }) => {
         </div>
       </template>
 
+      <template v-slot:item.ReviewDate="{ item }">
+        <div class="d-flex justify-center">
+          <p class="SKU text-subtitle-1">
+            {{ item.ReviewDate }}
+          </p>
+        </div>
+      </template>
+
+      <template v-slot:item.Payment="{ item }">
+        <div class="d-flex justify-center align-center" style="gap: 0.5rem">
+          <SvgIcon :icon="item.paymentMethod" />
+          <p class="SKU text-subtitle-1">
+            {{ item.paymentMethod }}
+          </p>
+        </div>
+      </template>
+
       <template v-slot:item.Status="{ item }">
         <div class="d-flex justify-center">
           <VSelect
@@ -674,13 +823,8 @@ const getCellProps = ({ item }) => {
         </div>
         <div class="d-flex" v-else>
           <p
-            class="px-2 py-1 text-subtitle-1 mx-auto"
-            style="
-              max-width: 150px;
-              font-size: 12px;
-              padding: 0.2rem 0;
-              border-radius: 8px;
-            "
+            class="px-5 py-1 text-subtitle-1 mx-auto"
+            style="font-size: 12px; border-radius: 8px"
             :style="`background-color: ${getStyleStatus(item.status)?.background}; color: ${getStyleStatus(item.status)?.color}`"
           >
             {{ item.status }}
@@ -767,6 +911,63 @@ const getCellProps = ({ item }) => {
           </v-list>
         </v-menu>
       </template>
+
+      <template v-slot:item.promotion-actions="{ item }">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn flat v-bind="props" color="transparent">
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item class="px-0">
+              <v-btn
+                @click.stop="handleGoTOAction(item, 'edit')"
+                class="d-flex w-100 justify-start px-5"
+                flat
+              >
+                <svgIcon class="my-auto cursor-pointer me-2" icon="edit (1)" />
+                <p>Edit</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0">
+              <v-btn
+                @click.stop="openDeleteModal(item)"
+                class="d-flex w-100 justify-start px-5"
+                flat
+              >
+                <svgIcon
+                  class="my-auto cursor-pointer me-2"
+                  icon="delete (1)"
+                />
+                <p>Delete</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0">
+              <v-btn
+                class="d-flex w-100 justify-start px-5"
+                flat
+                @click.stop="handleGoTOAction(item, 'view')"
+              >
+                <svgIcon class="my-auto cursor-pointer me-2" icon="eye" />
+                <p>View Details</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0" v-if="item.status !== 'active'">
+              <v-btn class="d-flex w-100 justify-start px-5" flat>
+                <svgIcon class="my-auto cursor-pointer me-2" icon="Change" />
+                <p>Renew AD</p>
+              </v-btn>
+            </v-list-item>
+            <v-list-item class="px-0" v-else>
+              <v-btn class="d-flex w-100 justify-start px-5" flat>
+                <svgIcon class="my-auto cursor-pointer me-2" icon="Hold" />
+                <p>Stop AD</p>
+              </v-btn>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -841,7 +1042,11 @@ const getCellProps = ({ item }) => {
   color: #21094a;
 }
 
-.listing-table tr > td:first-child {
+.listing-table tr {
+  height: 64px;
+}
+
+.listing-table.showSelect tr > td:first-child {
   border-right: 1px solid #afaacb;
 }
 </style>
