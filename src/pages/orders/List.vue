@@ -16,10 +16,9 @@ interface ModalOptions {
   icon: string;
   sheetColor: string;
 }
-let page = 1;
+const page = ref(1);
 const { buildQueryString } = useBuildQueryString();
 const estimatedDays = ref();
-const pageCount = 4;
 const selectedItems = ref([]);
 const orders = ref([]);
 const totalCount = ref(0);
@@ -28,6 +27,9 @@ const modalState = ref(false);
 const reason = ref("");
 const isPageLoading = ref(false);
 const selectedOrder = ref({}) as Ref<{ uuid: string; status: string }>;
+const triggerResetSelectedItems = ref(false);
+const triggerSelectAll = ref(false);
+const triggerCheckAll = ref(false);
 
 const statuses = ref([
   "Pending",
@@ -41,6 +43,18 @@ const statuses = ref([
   "Returned",
   // "reject return request",
 ]);
+
+const setCheckAll = (val: boolean) => {
+  triggerCheckAll.value = val;
+};
+const SelectAll = (selectAll: boolean) => {
+  triggerSelectAll.value = !selectAll;
+};
+
+const resetSelectedItems = () => {
+  selectedItems.value = [];
+  triggerResetSelectedItems.value = !triggerResetSelectedItems.value;
+};
 
 const nextStatus = (currentStatus: string) => {
   const currentIndex = statuses.value?.indexOf(currentStatus);
@@ -57,6 +71,19 @@ const getSelectedOrder = (orderId: string) => {
     (order: { uuid: string }) => order.uuid === orderId
   );
 };
+watch(
+  () => selectedItems.value,
+  (val) => {
+    if (val.length === 10) {
+      return setCheckAll(true);
+    }
+    return setCheckAll(false);
+  }
+);
+watch(page, async () => {
+  fetchProducts();
+});
+
 const toggleDeleteModal = ({ uuid = "", options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
@@ -117,6 +144,11 @@ const cancelOrder = async () => {
   };
   modalState.value = true;
 };
+const pagesCount = computed(() => {
+  return !totalCount.value || !orders.value.length
+    ? 0
+    : Math.ceil(totalCount.value / 10);
+});
 
 const handleConfirm = async () => {
   if (modalOptions.value.buttonTitle === "Yes, Cancel") {
@@ -147,17 +179,26 @@ const handleConfirm = async () => {
 async function getAllOrders() {
   isPageLoading.value = true;
   try {
+    const params = buildQueryString({
+      rowCount: 10,
+      pageNo: page.value,
+    });
     const {
       data: { data },
-    } = await getOrders();
+    } = await getOrders(params);
     orders.value = data.result;
-    totalCount.value = data.total;
+    totalCount.value = data.totalCount;
   } catch (error) {
     console.log(error);
   } finally {
     isPageLoading.value = false;
+    resetSelectedItems();
   }
 }
+const getNextOrderPage = () => {
+  page.value += 1;
+  getAllOrders();
+};
 
 onMounted(async () => {
   await getAllOrders();
@@ -177,22 +218,33 @@ onMounted(async () => {
       v-if="selectedItems.length"
       :filters="ordersFilter"
       @changeStatus="changeStatus"
+      @SelectAll="SelectAll"
+      @CancelSellection="resetSelectedItems"
       @cancelOrder="cancelOrder"
     />
     <ListingItems
       @emitSelectedItems="selectedItems = $event"
+      :triggerResetSelectedItems="triggerResetSelectedItems"
+      :triggerSelectAll="triggerSelectAll"
       class="my-6"
       :isPageLoading="isPageLoading"
       :headers="headers"
       :items="orders"
       routeDir="order"
     />
-    <BasePagination>
-      <template #label> View 8 from 2000 </template>
-      <template #pagination>
-        <v-pagination v-model="page" :length="pageCount" />
-      </template>
-    </BasePagination>
+    <div class="w-100 d-flex justify-space-between">
+      <p class="my-auto text-9089B2">
+        View
+        {{ orders.length }} from {{ totalCount }}
+      </p>
+      <v-pagination
+        v-if="pagesCount > 1"
+        v-model="page"
+        :length="pagesCount"
+        @change="getNextOrderPage"
+        :total-visible="pagesCount"
+      />
+    </div>
     <GlobalPopup
       :options="modalOptions"
       :modalState="modalState"

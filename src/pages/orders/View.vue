@@ -266,7 +266,9 @@ const orderSummary = computed(() => {
     <VContainer>
       <VRow disable-gutters>
         <VCol cols="12">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCard
+            v-else
             class="card"
             style="
               margin-bottom: 1rem;
@@ -336,7 +338,9 @@ const orderSummary = computed(() => {
           </VCard>
         </VCol>
         <VCol cols="8">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCard
+            v-else
             class="card"
             style="
               display: flex;
@@ -413,7 +417,8 @@ const orderSummary = computed(() => {
           </VCard>
         </VCol>
         <VCol cols="4">
-          <VCard class="card">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCard class="card" v-else>
             <h3 class="card-title">Order Summary</h3>
             <section
               style="
@@ -450,7 +455,9 @@ const orderSummary = computed(() => {
           </VCard>
         </VCol>
         <VCol cols="8" style="display: flex">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCard
+            v-else
             class="card"
             style="
               display: flex;
@@ -527,7 +534,8 @@ const orderSummary = computed(() => {
             flex-direction: column;
           "
         >
-          <VCard class="card">
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
+          <VCard class="card" v-else>
             <h3 class="card-title">Customer Details</h3>
             <section
               class="d-flex align-items-center"
@@ -578,7 +586,9 @@ const orderSummary = computed(() => {
               </div>
             </section>
           </VCard>
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCard
+            v-else
             class="card"
             style="display: flex; flex-direction: column; gap: 1rem"
           >
@@ -605,7 +615,9 @@ const orderSummary = computed(() => {
               <p>{{ order?.shippingAddress?.landmark }}</p>
             </section>
           </VCard>
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCard
+            v-else
             class="card"
             style="display: flex; flex-direction: column; gap: 1rem"
           >

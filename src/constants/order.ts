@@ -79,7 +79,7 @@ const ordersFilter = [
   },
   {
     id: 5,
-    label: 'Cancel Selection',
+    label: 'Cancel Sellection',
     icon: '',
   },
 
