@@ -44,7 +44,7 @@ export const resource = (resourceUrl: string) => ({
     }
     return service.post(`${resourceUrl}/${id}`, data);
   },
-  replace(data: any) {
+  replace(data = {}) {
     return service.put(resourceUrl, data);
   },
   remove(id: string) {

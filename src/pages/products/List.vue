@@ -105,7 +105,6 @@ const pagesCount = computed(() => {
 
 const getNextProductsPage = () => {
   page.value += 1;
-  console.log(page.value);
   fetchProducts();
 };
 
@@ -155,6 +154,7 @@ onMounted(async () => {
       @emitSelectedItems="selectedItems = $event"
       @openDeleteModal="toggleDeleteModal"
       @edit="$router.push({ name: 'edit-product', params: { id: $event } })"
+      :triggerResetSelectedItems="triggerResetSelectedItems"
       :triggerSelectAll="triggerSelectAll"
       :routeDir="'product'"
       :itemValue="'uuid'"

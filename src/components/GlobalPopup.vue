@@ -142,7 +142,7 @@
           :disabled="isDeletionInProgress"
           @click="cancelAction"
         >
-          <span class="tf"> Cancel </span>
+          <span class="tf"> {{ options.secondaryButtonTitle }} </span>
         </v-btn>
         <v-btn
           class="mx-2 mt-0"
@@ -177,6 +177,7 @@ const props = defineProps({
       text: "Text",
       buttonColor: "#733EE4",
       buttonTitle: "Button",
+      secondaryButtonTitle: "Cancel",
       input: false,
       svg: "",
     },
