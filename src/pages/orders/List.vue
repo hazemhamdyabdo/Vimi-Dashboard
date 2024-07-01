@@ -242,7 +242,6 @@ onMounted(async () => {
         v-model="page"
         :length="pagesCount"
         @change="getNextOrderPage"
-        :total-visible="pagesCount"
       />
     </div>
     <GlobalPopup
