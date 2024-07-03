@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { headers, ordersFilter } from "@/constants/order";
 import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+import { useDebounceFn } from "@vueuse/core";
 import {
   getOrders,
   rejectOrder,
   changeOrderStatusAndEstimatedDays,
 } from "@/apis/orders";
+import { useOrderStatus } from "@/composables/orders/UseOrderStatus";
+const { nextStatus } = useOrderStatus();
 interface ModalOptions {
   buttonTitle: string;
   buttonColor: string;
@@ -30,19 +33,8 @@ const selectedOrder = ref({}) as Ref<{ uuid: string; status: string }>;
 const triggerResetSelectedItems = ref(false);
 const triggerSelectAll = ref(false);
 const triggerCheckAll = ref(false);
-
-const statuses = ref([
-  "Pending",
-  "In progress",
-  "Shipped",
-  "Delivered",
-  "Cancelled",
-  "Return Requested",
-  "Return Cancelled",
-  "Return In Progress",
-  "Returned",
-  // "reject return request",
-]);
+const search = ref("");
+const searchDate = ref("");
 
 const setCheckAll = (val: boolean) => {
   triggerCheckAll.value = val;
@@ -56,16 +48,6 @@ const resetSelectedItems = () => {
   triggerResetSelectedItems.value = !triggerResetSelectedItems.value;
 };
 
-const nextStatus = (currentStatus: string) => {
-  const currentIndex = statuses.value?.indexOf(currentStatus);
-  if (currentStatus === "Delivered" || currentStatus === "Cancelled") {
-    return [currentStatus];
-  } else if (currentIndex >= 0 && currentIndex < statuses.value?.length - 1) {
-    return [statuses.value[currentIndex + 1]];
-  }
-
-  return [currentStatus];
-};
 const getSelectedOrder = (orderId: string) => {
   selectedOrder.value = orders.value.find(
     (order: { uuid: string }) => order.uuid === orderId
@@ -81,7 +63,7 @@ watch(
   }
 );
 watch(page, async () => {
-  fetchProducts();
+  await getAllOrders();
 });
 
 const toggleDeleteModal = ({ uuid = "", options = {} }) => {
@@ -93,9 +75,19 @@ const handleCancel = () => {
   toggleDeleteModal({});
 };
 
-const changeStatus = async () => {
-  const selectedOrderId = selectedItems.value[0];
-  getSelectedOrder(selectedOrderId);
+const updateSearch = useDebounceFn((searchKeyword: string) => {
+  page.value = 1;
+  search.value = searchKeyword;
+  getAllOrders();
+}, 500);
+
+const searchWithDate = (enterDate: string) => {
+  page.value = 1;
+  searchDate.value = enterDate;
+  getAllOrders();
+};
+const changeStatus = async (id = selectedItems.value[0]) => {
+  getSelectedOrder(id);
 
   const modalOptionsBase = {
     buttonColor: "#733EE4",
@@ -182,6 +174,8 @@ async function getAllOrders() {
     const params = buildQueryString({
       rowCount: 10,
       pageNo: page.value,
+      ...(search.value && { keyword: search.value }),
+      ...(searchDate.value && { orderDate: searchDate.value }),
     });
     const {
       data: { data },
@@ -209,6 +203,8 @@ onMounted(async () => {
     <div style="display: flex">
       <ListingHeader
         v-if="!selectedItems.length"
+        @updateSearch="updateSearch"
+        @searchWithDate="searchWithDate"
         addAction="Add Product"
         placeholder="Search , Order No , Customer , Product name"
         labelDate="Choose Order Date"
@@ -224,6 +220,7 @@ onMounted(async () => {
     />
     <ListingItems
       @emitSelectedItems="selectedItems = $event"
+      @changeStatus="changeStatus"
       :triggerResetSelectedItems="triggerResetSelectedItems"
       :triggerSelectAll="triggerSelectAll"
       class="my-6"
@@ -242,6 +239,7 @@ onMounted(async () => {
         v-model="page"
         :length="pagesCount"
         @change="getNextOrderPage"
+        :total-visible="pagesCount"
       />
     </div>
     <GlobalPopup
@@ -344,7 +342,7 @@ onMounted(async () => {
     </GlobalPopup>
   </section>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
 .card-info-title {
   color: #afaacb;
   font-size: 14px;
@@ -353,5 +351,15 @@ onMounted(async () => {
   margin-bottom: 0.8rem;
   padding-left: 0.4rem;
   text-align: left;
+}
+
+.v-pagination .v-pagination__list .v-pagination__item--is-active {
+  color: #fff;
+  background-color: #733ee4;
+  border-radius: 8px;
+}
+.v-pagination .v-pagination__list li button {
+  max-height: 34px;
+  max-width: 34px;
 }
 </style>

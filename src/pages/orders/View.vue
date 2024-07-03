@@ -5,7 +5,9 @@ import {
   changeOrderStatusAndEstimatedDays,
 } from "@/apis/orders";
 import { useStyleState } from "@/composables/UseStyleState";
+import { useOrderStatus } from "@/composables/orders/UseOrderStatus";
 const { getStyleStatus } = useStyleState();
+const { nextStatus, statuses } = useOrderStatus();
 const route = useRoute();
 const order = ref({}) as Ref;
 const isPageLoading = ref(false);
@@ -78,29 +80,7 @@ const updateOrderStatus = async () => {
     await changeOrderStatusAndEstimatedDays(order.value.uuid)();
   } catch (error) {}
 };
-const statuses = ref([
-  "Pending",
-  "In progress",
-  "Shipped",
-  "Delivered",
-  "Cancelled",
-  "Return Requested",
-  "Return Cancelled",
-  "Return In Progress",
-  "Returned",
-  // "reject return request",
-]);
 
-const nextStatus = (currentStatus: string) => {
-  const currentIndex = statuses.value?.indexOf(currentStatus);
-  if (currentStatus === "Delivered" || currentStatus === "Cancelled") {
-    return [currentStatus];
-  } else if (currentIndex >= 0 && currentIndex < statuses.value?.length - 1) {
-    return [statuses.value[currentIndex + 1]];
-  }
-
-  return [currentStatus];
-};
 const headerButtons = computed(() => {
   const { status } = order.value;
   const btnConfig = {
@@ -501,7 +481,9 @@ const orderSummary = computed(() => {
                       margin-top: 1rem;
                     "
                   >
-                    <span style="color: #21094a"> {{ log.status }}: </span>
+                    <span style="color: #21094a">
+                      {{ log.statusLocalized }}:
+                    </span>
                     <span style="color: #7066a2">
                       {{ dateFormatting(log?.dateCreated) }}
                     </span>
