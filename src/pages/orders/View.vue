@@ -434,7 +434,7 @@ const orderSummary = computed(() => {
             </VBtn>
           </VCard>
         </VCol>
-        <VCol cols="8" style="display: flex">
+        <VCol cols="8">
           <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCard
             v-else
