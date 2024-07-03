@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user.state.js';
+import { useUserStore } from "@/stores/user.state.js";
 
 // Pinia Store
 const userStore = useUserStore();
 
-const props = defineProps(['navItems', 'drawer', 'actions']);
+const props = defineProps(["navItems", "drawer", "actions"]);
 const builtMenu = ref();
 let rail = ref(false);
 
@@ -44,6 +44,7 @@ const route = useRoute();
         :style="{ padding: !rail ? '1rem 1rem' : '0rem' }"
         :rail="rail"
         permanent
+        style="background: #faf9fe; position: fixed; top: 70px"
       >
         <template v-for="item in builtMenu">
           <v-list-item :subtitle="item.parent" v-if="!rail" />
@@ -115,9 +116,12 @@ const route = useRoute();
                       : ''
                   "
                   icon
+                  :style="{
+                    background: isHovering ? '#733ee4' : '#faf9fe',
+                    color: isHovering && !rail ? '#faf9fe' : undefined,
+                  }"
                   style="border-radius: 8px"
                   v-bind="props"
-                  :color="isHovering && !rail ? '#733ee4' : undefined"
                   @click="logout"
                 >
                   <SvgIcon
@@ -190,7 +194,7 @@ const route = useRoute();
             </router-link>
           </VCard>
         </div>
-        <div class="pa-9">
+        <div class="pt-9" style="margin-top: 5rem">
           <RouterView />
         </div>
       </v-main>
@@ -224,7 +228,7 @@ a {
 }
 
 a p {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 600;
 }
 

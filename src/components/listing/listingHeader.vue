@@ -8,18 +8,18 @@ withDefaults(
     settings?: boolean;
   }>(),
   {
-    pathName: '',
+    pathName: "",
     settings: true,
   }
 );
 
-let search = ref('');
-const emit = defineEmits(['updateSearch']);
+let search = ref("");
+const emit = defineEmits(["updateSearch", "searchWithDate"]);
 
 watch(
   () => search.value,
   (val) => {
-    emit('updateSearch', val);
+    emit("updateSearch", val);
   }
 );
 </script>
@@ -48,6 +48,7 @@ watch(
           class="my-auto px-4 py-1 mb-2"
           variant="plain"
           density="compact"
+          @update:modelValue="emit('updateSearch', $event)"
           hide-details
           single-line
           v-model="search"
@@ -64,6 +65,7 @@ watch(
         <GDatePicker
           v-if="labelDate"
           :label="labelDate"
+          @update:modelValue="emit('searchWithDate', $event)"
           class="mt-8"
           style="width: 15rem"
           bg-color="#fff"

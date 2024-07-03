@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const drawer = ref(false);
-const emit = defineEmits(['toggleDrawer']);
+const emit = defineEmits(["toggleDrawer"]);
 const setDrawer = () => {
   drawer.value = !drawer.value;
-  emit('toggleDrawer', drawer.value);
+  emit("toggleDrawer", drawer.value);
 };
 </script>
 
 <template>
-  <header>
+  <header style="background: #faf9fe; position: fixed; z-index: 1; width: 100%">
     <div class="logo">
       <span class="first">VI</span>
       <span class="second">MI</span>
@@ -72,7 +72,7 @@ header {
   font-style: normal;
   font-weight: 700;
   line-height: 48px;
-  font-family: 'Montagu Slab', serif;
+  font-family: "Montagu Slab", serif;
 }
 .second {
   color: #733ee4;
@@ -80,7 +80,7 @@ header {
   font-style: normal;
   font-weight: 300;
   line-height: 48px;
-  font-family: 'Montagu Slab', serif;
+  font-family: "Montagu Slab", serif;
 }
 .header-bar {
   display: flex;
