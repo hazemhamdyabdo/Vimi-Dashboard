@@ -1,25 +1,52 @@
 <script setup lang="ts">
+import { deleteBrand, updateBrand, getBrands } from "@/apis/_brands";
+import {
+  sendFormData,
+  getFormData,
+} from "@/composables/products/SendFormRequest";
+import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+const { buildQueryString } = useBuildQueryString();
+
+const imgSrcs: Ref<any> = ref("");
+const allBrands: any = ref([]);
+const fileInput: any = ref("");
+const imgToSend: Ref<any> = ref("");
+const isPageLoading = ref(false);
+const editedImag = ref("");
+
 const productsTypes: Ref<any> = ref({
   displayName_En: "",
   displayName_Ar: "",
+  photoFile: "",
 });
 const productsBrands: Ref<any> = ref({
   displayName_En: "",
   displayName_Ar: "",
+  visibility: "Published",
 });
-const types = ref([]);
+const types = ref([
+  {
+    id: 0,
+    displayName_En: "Variable",
+    displayName_Ar: "متغير",
+  },
+  {
+    id: 1,
+    displayName_En: "Simple",
+    displayName_Ar: "بسيط",
+  },
+  {
+    id: 2,
+    displayName_En: "Bundle",
+    displayName_Ar: "بندل",
+  },
+]);
 const brands = ref([]);
 
 const addProductType = () => {
   if (productsTypes.value.displayName_En?.trim().length === 0) return;
   types.value.push({ id: types.value.length, ...productsTypes.value });
   productsTypes.value = {};
-};
-
-const addBrand = () => {
-  if (productsBrands.value.displayName_En?.trim().length === 0) return;
-  brands.value.push({ id: brands.value.length, ...productsBrands.value });
-  productsBrands.value = {};
 };
 
 const removeProductType = (deletedProductType: any) => {
@@ -30,16 +57,97 @@ const removeProductType = (deletedProductType: any) => {
 const removeBrand = (deletedBrand: any) => {
   brands.value = brands.value.filter((brand: any) => brand !== deletedBrand);
 };
-const editBrand = (editedBrand: any) => {
-  productsBrands.value.displayName_En = editedBrand.displayName_En;
-  productsBrands.value.displayName_Ar = editedBrand.displayName_Ar;
-  removeBrand(editedBrand);
-};
+
 const editProductType = (editedProductType: any) => {
   productsTypes.value.displayName_En = editedProductType.displayName_En;
   productsTypes.value.displayName_Ar = editedProductType.displayName_Ar;
+
   removeProductType(editedProductType);
 };
+
+const handleFileChange = async (event: any) => {
+  const file = event.target.files[0];
+  const newImgSrcs = (window.URL ? URL : webkitURL).createObjectURL(file);
+  imgSrcs.value = newImgSrcs;
+  imgToSend.value = file;
+};
+
+const addNewBrand = async () => {
+  isPageLoading.value = true;
+  try {
+    const form = getFormData({
+      photoFile: imgToSend.value,
+      ...productsBrands.value,
+    });
+    await sendFormData("brands", form);
+    productsBrands.value = {};
+  } catch (error) {
+  } finally {
+    isPageLoading.value = false;
+    getAllBrands();
+  }
+};
+
+const handleUpdateBrand = async () => {
+  isPageLoading.value = true;
+  try {
+    const form = getFormData({
+      photoFile: imgToSend.value,
+      ...productsBrands.value,
+    });
+    await sendFormData(`brands/${productsBrands.value.uuid}`, form, "put");
+    productsBrands.value = {};
+    editedImag.value = "";
+    imgSrcs.value = "";
+  } catch (error) {
+  } finally {
+    isPageLoading.value = false;
+    getAllBrands();
+  }
+};
+const handleDelBrand = async (brand: any) => {
+  isPageLoading.value = true;
+  try {
+    await deleteBrand(brand.uuid);
+  } catch (error) {
+  } finally {
+    isPageLoading.value = false;
+    getAllBrands();
+  }
+};
+
+const editBrand = (editedBrand: any) => {
+  productsBrands.value.displayName_En = editedBrand.displayName_En;
+  productsBrands.value.displayName_Ar = editedBrand.displayName_Ar;
+  productsBrands.value.visibility = editedBrand.visibility;
+  productsBrands.value.uuid = editedBrand.uuid;
+  editedImag.value = editedBrand.photoPath;
+};
+const getAllBrands = async () => {
+  const params = buildQueryString({
+    rowCount: 50,
+  });
+  try {
+    const {
+      data: {
+        data: { result },
+      },
+    } = await getBrands(params);
+    allBrands.value = result;
+  } catch (error) {}
+};
+
+const editOrUpdate = () => {
+  if (productsBrands.value.uuid) {
+    handleUpdateBrand();
+  } else {
+    addNewBrand();
+  }
+};
+
+onMounted(() => {
+  getAllBrands();
+});
 </script>
 <template>
   <VContainer>
@@ -134,12 +242,14 @@ const editProductType = (editedProductType: any) => {
                 ref="fileInput"
                 class="card-file-input"
                 prepend-icon="mdi-upload-multiple"
+                @change="handleFileChange"
               />
               <VCard
                 :style="{
                   border: '1px dashed var(--Purple, #733ee4)',
                 }"
                 class="card-file-ui ma-1"
+                @click="fileInput.click()"
               >
                 <div
                   style="
@@ -151,11 +261,25 @@ const editProductType = (editedProductType: any) => {
                     justify-content: center;
                   "
                 >
-                  <img src="@/icons/upload.svg" style="cursor: pointer" />
+                  <img
+                    v-if="imgSrcs || editedImag"
+                    width="142"
+                    height="142"
+                    :src="
+                      imgSrcs
+                        ? imgSrcs
+                        : `https://techify-001-site1.htempurl.com${editedImag}`
+                    "
+                  />
+                  <img
+                    v-else
+                    src="@/icons/upload.svg"
+                    style="cursor: pointer"
+                  />
                   <p
                     class="card-file-text text-decoration-underline cursor-pointer"
                   >
-                    {{ "Upload Image" }}
+                    {{ imgSrcs ? "Change Image" : "Upload Image" }}
                   </p>
                   <div class="text-center">
                     <p class="card-file-subtitle my-1">
@@ -187,16 +311,14 @@ const editProductType = (editedProductType: any) => {
               v-model="productsBrands.displayName_Ar"
             />
             <VBtn
-              class="add-products-actions rounded-lg"
+              class="add-products-actions rounded-lg w-100"
               color="#733EE4"
-              bg-color="#21094a"
+              style="background: #733ee4; color: #fff; margin-top: 1rem"
               height="48"
-              width="162"
-              variant="outlined"
-              @click="addBrand"
+              @click="editOrUpdate"
             >
-              <VIcon icon="mdi-plus" color="#733EE4"></VIcon>
-              <span class="card-info-text">Add Brand</span>
+              <VIcon icon="mdi-plus" color="#fff"></VIcon>
+              <span class="card-info-text">Add </span>
             </VBtn>
           </VCard>
         </VCard>
@@ -204,19 +326,23 @@ const editProductType = (editedProductType: any) => {
       <VCol cols="8">
         <VCard class="card px-4" style="height: 100%">
           <h3 class="card-title">Brand List</h3>
-          <VCol cols="12" v-if="brands.length">
+          <VCol cols="12" v-if="allBrands.length">
             <VCard flat class="products-card px-4 py-4">
               <VCol
                 class="d-flex justify-space-between pa-0 mb-3 pb-3"
-                v-for="brand in brands"
-                :key="brand.id"
+                v-for="brand in allBrands"
+                :key="brand.uuid"
                 :style="{
                   borderBottom: '1px solid #E5E5E5',
                 }"
               >
-                <section class="d-flex align-center" style="gap: 1rem">
+                <section class="d-flex align-center" style="gap: 0.5rem">
                   <div>
-                    <img src=" @/assets/test-logo.png" />
+                    <img
+                      :src="`https://techify-001-site1.htempurl.com${brand.photoPath}`"
+                      class="circle"
+                    />
+                    <!-- style="width: 50px; height: 50; border-radius: 50%" -->
                   </div>
                   <div class="d-flex justify-between">
                     <p class="title-product">
@@ -240,7 +366,7 @@ const editProductType = (editedProductType: any) => {
                     class="me-2"
                     icon="mdi-trash-can-outline"
                     color="#AFAACB"
-                    @click="removeBrand(brand)"
+                    @click="handleDelBrand(brand)"
                   ></VIcon>
                 </div>
               </VCol>
@@ -267,7 +393,14 @@ const editProductType = (editedProductType: any) => {
   border-radius: 8px;
   border: 1px solid #733ee4;
 }
-
+.title-product {
+  color: var(--Black, #21094a);
+  font-family: Cairo;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%; /* 21px */
+}
 .add-products-actions {
   padding: 1rem 2rem 2rem 2rem;
 }
@@ -299,6 +432,29 @@ const editProductType = (editedProductType: any) => {
   transform: translate(-50%, -50%);
   z-index: 2;
   cursor: pointer;
+}
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  max-width: 50px;
+  padding: 5px;
+  /* background: gainsboro; */
+  color: white;
+  text-align: center;
+  line-height: 1;
+  box-sizing: content-box;
+  white-space: nowrap;
+}
+.circle:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  padding-top: 100%;
+  height: 0;
+}
+.circle span {
+  display: inline-block;
+  vertical-align: middle;
 }
 .card-file-text {
   color: #733ee4;
