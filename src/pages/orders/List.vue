@@ -202,6 +202,7 @@ onMounted(async () => {
   <section class="px-12 w-100">
     <div style="display: flex" v-if="!selectedItems.length">
       <ListingHeader
+        v-if="!selectedItems.length"
         @updateSearch="updateSearch"
         @searchWithDate="searchWithDate"
         addAction="Add Product"

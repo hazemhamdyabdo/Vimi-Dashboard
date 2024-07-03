@@ -1,6 +1,8 @@
 <script setup>
 import { useStyleState } from '@/composables/UseStyleState';
 import { changeOrderStatusAndEstimatedDays } from '@/apis/orders';
+import { useOrderStatus } from '@/composables/orders/UseOrderStatus';
+const { nextStatus } = useOrderStatus();
 
 const { getStyleStatus } = useStyleState();
 const props = defineProps({
@@ -191,29 +193,11 @@ const items = [
   // ... more items
 ];
 
-const statuses = ref([
-  'Pending',
-  'In progress',
-  'Shipped',
-  'Delivered',
-  'Cancelled',
-  'Return Requested',
-  'Return Cancelled',
-  'Return In Progress',
-  'Returned',
-  // "reject return request",
+const emit = defineEmits([
+  'emitSelectedItems',
+  'openDeleteModal',
+  'changeStatus',
 ]);
-const nextStatus = (currentStatus) => {
-  const currentIndex = statuses.value?.indexOf(currentStatus);
-  if (currentStatus === 'Delivered' || currentStatus === 'Cancelled') {
-    return [currentStatus];
-  } else if (currentIndex >= 0 && currentIndex < statuses.value?.length - 1) {
-    return [statuses.value[currentIndex + 1]];
-  }
-  return [currentStatus];
-};
-
-const emit = defineEmits(['emitSelectedItems'], ['openDeleteModal']);
 //TODO: for discussion l8r how to make it dynamic
 const headerLocal = computed(() => props.headers ?? headers);
 const itemsLocal = computed(() => props.items ?? items);
@@ -261,7 +245,8 @@ const openDeleteModal = ({ uuid }) => {
 
 const updateOrderStatus = async (item) => {
   try {
-    await changeOrderStatusAndEstimatedDays(item.uuid)();
+    // await changeOrderStatusAndEstimatedDays(item.uuid)();
+    emit('changeStatus', item.uuid);
   } catch (error) {}
 };
 
