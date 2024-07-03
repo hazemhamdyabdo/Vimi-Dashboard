@@ -194,7 +194,7 @@ const route = useRoute();
             </router-link>
           </VCard>
         </div>
-        <div class="pa-9" style="margin-top: 5rem">
+        <div class="pt-9" style="margin-top: 5rem">
           <RouterView />
         </div>
       </v-main>
