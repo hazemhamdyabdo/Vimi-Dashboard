@@ -397,6 +397,7 @@ onMounted(async () => {
                     </h4>
                     <div style="margin-top: 1rem">
                       <RatingBar
+                        class="px-0"
                         v-for="rating in productRatings"
                         :key="rating.stars"
                         style="margin-bottom: 0.5rem"
@@ -412,7 +413,11 @@ onMounted(async () => {
                   <VCard
                     v-else
                     class="card"
-                    style="border: 1px solid #e8e7ef; background: #faf9fe"
+                    style="
+                      border: 1px solid #e8e7ef;
+                      background: #faf9fe;
+                      padding: 0.8rem;
+                    "
                   >
                     <ReviewRating
                       v-for="review in product?.reviews"

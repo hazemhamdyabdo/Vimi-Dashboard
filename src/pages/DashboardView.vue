@@ -321,7 +321,7 @@ const items = [
                   />
                 </div>
               </span>
-              <Bar style="width: 100%" :stars="i + 4" />
+              <Bar style="width: 100%" :stars="i" />
             </div>
           </section>
         </VCard>

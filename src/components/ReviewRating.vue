@@ -17,7 +17,7 @@ withDefaults(
 );
 </script>
 <template>
-  <div>
+  <VCol cols="12" md="6" lg="4">
     <h3 v-if="title" class="card-title">{{ title }}</h3>
     <section
       style="
@@ -32,7 +32,7 @@ withDefaults(
     >
       <section style="display: flex; gap: 4rem">
         <div class="d-flex" style="gap: 0.7rem">
-          <div>
+          <div v-if="imgSrc">
             <img
               :src="`https://techify-001-site1.htempurl.com${imgSrc}`"
               style="border-radius: 50%; width: 40px; height: 40px"
@@ -59,7 +59,7 @@ withDefaults(
         <VIcon icon="mdi-trash-can-outline" size="24" color="#afaacb" />
       </div>
     </section>
-  </div>
+  </VCol>
 </template>
 
 <style scoped>

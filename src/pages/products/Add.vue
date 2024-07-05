@@ -717,12 +717,13 @@ onMounted(async () => {
               style="margin-bottom: 1rem; margin-top: 1rem"
             >
               <ReviewRating
-                title="Reviews"
-                deleteIcon
-                name="John Doe"
-                date="25 oct 2022"
-                description="hi i am description here"
-                :numberOfRecords="3"
+                v-for="review in newProduct?.reviews"
+                :description="review?.message"
+                :name="review?.userFullName"
+                :date="review?.dateCreated?.split('T')[0]"
+                :key="review?.uuid"
+                :imgSrc="review?.userProfilePicturePath"
+                :rating="review?.rate"
               />
             </VCard>
           </VCol>
