@@ -16,11 +16,13 @@ import { useProductQuantity } from "@/composables/products/UseProductQuantity";
 import { useProductDiscount } from "@/composables/products/UseProductDiscount";
 import { useEditor } from "@/composables/products/UseEditor";
 import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+const router = useRouter();
 
-const newProduct = ref({
-  discounts: {},
-}) as unknown as Product;
-
+const newProduct = ref({}) as unknown as Product;
+const isEditingMood = computed(() => {
+  return router.currentRoute.value.params.id ? true : false;
+});
+const isAddingBtnLoading = ref(false);
 const showToast = ref(false);
 const allCategories: any = ref([]);
 const imgSrcs = ref([]);
@@ -99,22 +101,15 @@ const getAdditionalData = async () => {
 };
 
 const uploadProduct = async (): Promise<void> => {
+  isAddingBtnLoading.value = true;
   setEditorValue();
   const form = getFormData({
     ...newProduct.value,
     tags: tagsToAdd.value,
   });
-  if (
-    newProduct.value?.discount?.DateFrom &&
-    newProduct.value?.discount?.DateTo
-  ) {
-    Object.keys(newProduct.value.discounts).forEach((key) => {
-      if (key === "dateFrom" || key === "dateTo") {
-        // ! this send to [BE] like that discountsDateFrom
-        form.append(`discounts[0].${key}`, newProduct.value.discounts[key]);
-      }
-    });
-  }
+
+  form.append("discounts[0].dateFrom", dateFrom.value);
+  form.append("discounts[0].dateTo", dateTo.value);
 
   imgsToSend.value.forEach((tag: any) => {
     form.append("imageFiles", tag);
@@ -128,6 +123,10 @@ const uploadProduct = async (): Promise<void> => {
     console.log(error);
   } finally {
     isPageLoading.value = false;
+    isAddingBtnLoading.value = false;
+    setTimeout(() => {
+      router.push({ name: "products" });
+    }, 1000);
   }
 };
 
@@ -688,7 +687,7 @@ onMounted(async () => {
                         color: #733ee4;
                       "
                       variant="elevated"
-                      @click="setDiscount(dateFrom, dateTo)"
+                      @click="setDiscount"
                     >
                       <VIcon
                         icon="mdi-plus"
@@ -879,11 +878,13 @@ onMounted(async () => {
       class=""
       style="margin-right: 1rem"
       variant="elevated"
-      color="#733ee4"
+      :color="isEditingMood ? '#27AE60' : '#733EE4'"
+      :loading="isAddingBtnLoading"
+      :disabled="isAddingBtnLoading"
       @click="uploadProduct"
     >
       <VIcon class="card-info-btn-icon" icon="mdi-plus" />
-      Add Product
+      {{ isEditingMood ? "Update Product" : "Add Product" }}
     </VBtn>
   </div>
 </template>

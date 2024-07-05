@@ -69,7 +69,7 @@ export default defineComponent({
   components: { Chart, Grid, Line, Responsive, Area, Marker, Tooltip },
   setup() {
     const data = ref([
-      { name: "Jan", pl: 2500 },
+      { name: "Jan", pl: 0 },
       { name: "Feb", pl: 4000 },
       { name: "Mar", pl: 1000 },
       { name: "Apr", pl: 4000 },
