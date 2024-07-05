@@ -2,35 +2,40 @@
 import { showProduct } from "@/apis/products";
 import type { Product } from "./type";
 
-const productRatings = [
-  {
-    stars: 10,
-    percentage: 100,
-  },
-  {
-    stars: 8,
-    percentage: 80,
-  },
-  {
-    stars: 6,
-    percentage: 60,
-  },
-  {
-    stars: 4,
-    percentage: 40,
-  },
-  {
-    stars: 2,
-    percentage: 20,
-  },
-  {
-    stars: 0,
-    percentage: 0,
-  },
-];
 const route = useRoute();
 const product = ref({}) as unknown as Ref<Product>;
 const isPageLoading = ref(false);
+
+const productRatings = computed(() => {
+  const totalStars = product?.value?.ratingSummary;
+  return [
+    {
+      label: 5,
+      stars: totalStars?.fiveStarCount,
+      percentage: totalStars?.fiveStarPercentage,
+    },
+    {
+      label: 4,
+      stars: totalStars?.fourStarCount,
+      percentage: totalStars?.fourStarPercentage,
+    },
+    {
+      label: 3,
+      stars: totalStars?.threeStarCount,
+      percentage: totalStars?.threeStarPercentage,
+    },
+    {
+      label: 2,
+      stars: totalStars?.twoStarCount,
+      percentage: totalStars?.twoStarPercentage,
+    },
+    {
+      label: 1,
+      stars: totalStars?.oneStarCount,
+      percentage: totalStars?.oneStarPercentage,
+    },
+  ];
+});
 const productDetails = computed(() => {
   return [
     {
@@ -175,10 +180,12 @@ onMounted(async () => {
                   <StarRating :rating="4" />
                 </div>
                 <div>
-                  <span style="font-weight: 800"> 4.4 </span>
+                  <span style="font-weight: 800; margin-right: 0.5rem">
+                    {{ product.rating }}
+                  </span>
                   <span
                     style="font-size: 14px; font-weight: 600; color: #733ee4"
-                    >(12 reviews)</span
+                    >({{ product.reviewCount }} reviews)</span
                   >
                 </div>
               </div>
@@ -229,11 +236,15 @@ onMounted(async () => {
               </div>
               <div style="display: flex; gap: 1rem">
                 <!-- // ! this not integrated yet as no data came form product api -->
-                <ProductSales title="Sales" icon="usd-circle" value="20" />
+                <ProductSales
+                  title="Price"
+                  icon="usd-circle"
+                  :value="product.price"
+                />
                 <ProductSales
                   title="Quantity"
                   icon="Products-icon"
-                  value="2034"
+                  :value="product.stockQuantity"
                 />
                 <ProductSales title="Orders" icon="Orders-icon" value="30" />
                 <ProductSales title="Revenue" icon="Price-icon" value="3400" />
@@ -376,19 +387,20 @@ onMounted(async () => {
                           font-size: 18px;
                         "
                       >
-                        4.4 out of 5
+                        {{ product?.rating }} out of 5
                       </p>
                     </div>
                     <h4
                       style="color: #21094a; font-size: 18px; margin-top: 1rem"
                     >
-                      60 global ratings
+                      {{ product?.reviewCount }} global ratings
                     </h4>
                     <div style="margin-top: 1rem">
                       <RatingBar
                         v-for="rating in productRatings"
                         :key="rating.stars"
                         style="margin-bottom: 0.5rem"
+                        :label="rating.label"
                         :stars="rating.stars"
                         :percentage="rating.percentage"
                       />
@@ -403,10 +415,13 @@ onMounted(async () => {
                     style="border: 1px solid #e8e7ef; background: #faf9fe"
                   >
                     <ReviewRating
-                      :description="'hi i am description here'"
-                      :name="'John Doe'"
-                      :date="'2021-01-01'"
-                      v-for="i in 3"
+                      v-for="review in product?.reviews"
+                      :description="review?.message"
+                      :name="review?.userFullName"
+                      :date="review?.dateCreated?.split('T')[0]"
+                      :key="review?.uuid"
+                      :imgSrc="review?.userProfilePicturePath"
+                      :rating="review?.rate"
                     />
                   </VCard>
                 </VCol>
