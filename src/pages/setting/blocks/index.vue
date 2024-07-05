@@ -22,7 +22,6 @@ const productsTypes: Ref<any> = ref({
 const productsBrands: Ref<any> = ref({
   displayName_En: "",
   displayName_Ar: "",
-  visibility: "Published",
 });
 const types = ref([
   {
@@ -119,7 +118,6 @@ const handleDelBrand = async (brand: any) => {
 const editBrand = (editedBrand: any) => {
   productsBrands.value.displayName_En = editedBrand.displayName_En;
   productsBrands.value.displayName_Ar = editedBrand.displayName_Ar;
-  productsBrands.value.visibility = editedBrand.visibility;
   productsBrands.value.uuid = editedBrand.uuid;
   editedImag.value = editedBrand.photoPath;
 };
