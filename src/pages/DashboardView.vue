@@ -271,7 +271,7 @@ const items = [
           </section>
           <section>
             <div>
-              <Chart />
+              <DashboardChart />
             </div>
           </section>
         </VCard>
@@ -280,7 +280,11 @@ const items = [
         <VCard
           flat
           class="pa-6"
-          style="border-radius: 12px; background: var(--White, #fff)"
+          style="
+            border-radius: 12px;
+            background: var(--White, #fff);
+            min-height: 100%;
+          "
         >
           <div class="d-flex justify-start">
             <p
@@ -298,7 +302,7 @@ const items = [
               Top Governorate
             </p>
           </div>
-          <section>
+          <section style="display: flex; flex-direction: column; gap: 2rem">
             <div class="mt-6" v-for="(item, i) in Governorate" :key="item.uuid">
               <span class="d-flex justify-space-between mb-3">
                 <p style="color: #21094a; font-weight: 400; font-size: 14px">

@@ -16,6 +16,7 @@ declare module 'vue' {
     ChatComponent: typeof import('./src/components/tickets/ChatComponent.vue')['default']
     ContactsCard: typeof import('./src/components/settings/ContactsCard.vue')['default']
     ControlQuantity: typeof import('./src/components/products/ControlQuantity.vue')['default']
+    DashboardChart: typeof import('./src/components/DashboardChart.vue')['default']
     DataTableLoader: typeof import('./src/components/dataTableLoader.vue')['default']
     DeleteIcon: typeof import('./src/components/svgs/DeleteIcon.vue')['default']
     EditIcon: typeof import('./src/components/svgs/EditIcon.vue')['default']
