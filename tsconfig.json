@@ -4,7 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "baseUrl": "./",
+    "baseUrl": "https://techiffy-team.github.io/",
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
