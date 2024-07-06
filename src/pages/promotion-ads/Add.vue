@@ -687,7 +687,6 @@ const addAd = async (): Promise<void> => {
     newAd.GovernorateUuids.forEach(({ uuid }: any) => {
       form.append('GovernorateUuids', uuid);
     });
-  // delete form.uuid;
   try {
     isEditing.value
       ? await updateFormData('ads', form, newAd.uuid)
