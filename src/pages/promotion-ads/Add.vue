@@ -26,14 +26,19 @@
                   background: rgba(115, 62, 228, 0.05);
                 "
               >
-                <v-radio-group v-model="newAd.Place" inline hide-details>
+                <v-radio-group
+                  v-model="newAd.Place"
+                  inline
+                  hide-details
+                  :style="{ color: '#733ee4' }"
+                >
                   <v-radio
                     label="At Top"
                     value="Top"
-                    color="primary"
+                    color="#733EE4"
                     class="me-14"
                   />
-                  <v-radio label="At Down" value="Down" color="primary" />
+                  <v-radio label="At Down" value="Down" color="#733EE4" />
                 </v-radio-group>
               </div>
             </VCard>
@@ -75,12 +80,12 @@
                       value="SubCategory"
                       class="me-8"
                     /> -->
-                    <v-radio
+                    <!--<v-radio
                       label="Custom Products"
                       color="#733EE4"
                       value="CustomProducts"
                       class="me-8"
-                    />
+                    />-->
                     <v-radio
                       label="Brand"
                       color="#733EE4"
@@ -92,7 +97,7 @@
               </div>
 
               <VCol cols="6" class="pa-0">
-                <div class="mt-4 mb-2">
+                <div class="mt-4 mb-2" v-if="newAd.Navigation.length">
                   <h4
                     class="mt-4 mb-2"
                     style="
@@ -112,20 +117,31 @@
                     bg-color="#faf9fe"
                     :placeholder="`Choose ${newAd.Navigation}`"
                     v-model="newAd[`${newAd.Navigation}Uuid`]"
-                    class="card-info-list"
-                    :items="getNavigationItems"
-                    return-object
+                    item-value="uuid"
                     item-title="displayName_En"
-                  />
+                    :items="getNavigationItems"
+                    style="border-radius: 12px; background: var(--White, #fff)"
+                    :loading="Navigate_To_Loading"
+                  >
+                    <template v-slot:no-data>
+                      <div class="d-flex">
+                        <p class="mx-auto py-2">
+                          {{
+                            Navigate_To_Loading ? 'Loading...' : 'No Data Found'
+                          }}
+                        </p>
+                      </div>
+                    </template>
+                  </v-select>
                 </div>
               </VCol>
 
-              <VCol cols="12" class="pa-0" v-if="newAd.GovernorateUuids.length">
-                <div
-                  class="mt-4 mb-2"
-                  v-for="(Governorate, i) in newAd.GovernorateUuids"
-                  :key="i"
-                >
+              <VCol
+                cols="12"
+                class="pa-0"
+                v-if="newAd[`${newAd.Navigation}Uuid`]"
+              >
+                <div class="mt-4 mb-2">
                   <div class="d-flex justify-space-between align-center">
                     <p
                       style="
@@ -137,11 +153,15 @@
                         line-height: 150%;
                       "
                     >
-                      {{ Governorate.displayName }}
+                      {{
+                        getNavigationItems.find(
+                          (item: any) =>
+                            item.uuid === newAd[`${newAd.Navigation}Uuid`]
+                        )?.displayName_En
+                      }}
                     </p>
                     <button
-                      icon
-                      @click="removeGovernorate(Governorate.uuid)"
+                      @click="newAd[`${newAd.Navigation}Uuid`] = null"
                       class="d-flex my-auto"
                     >
                       <svgIcon icon="delete" class="my-auto" />
@@ -152,7 +172,9 @@
               </VCol>
             </VCard>
           </VCol>
+          <v-skeleton-loader v-if="isPageLoading" type="card" />
           <VCol
+            v-else
             cols="12"
             style="border-radius: 12px; background: var(--White, #fff)"
             class="pa-8 my-6"
@@ -300,18 +322,19 @@
                     v-model="newAd.Target"
                     inline
                     hide-details
+                    :style="{ color: '#733ee4' }"
                     @input="setGovernorates"
                   >
                     <v-radio
                       label="All users"
                       value="All"
-                      color="primary"
+                      color="#733EE4"
                       class="me-5"
                     />
                     <v-radio
                       label="Governorate"
                       value="Governorates"
-                      color="primary"
+                      color="#733EE4"
                     />
                   </v-radio-group>
                 </div>
@@ -332,7 +355,9 @@
                       class="card-info-list"
                       :items="Governorates"
                       return-object
-                      item-title="displayName_En"
+                      :item-title="
+                        !isEditing ? 'displayName_En' : 'governorateDisplayName'
+                      "
                       multiple
                     />
                   </div>
@@ -341,7 +366,10 @@
                 <VCol
                   cols="12"
                   class="pa-0"
-                  v-if="newAd.GovernorateUuids.length"
+                  v-if="
+                    newAd.Target === 'Governorates' &&
+                    newAd.GovernorateUuids.length
+                  "
                 >
                   <div
                     class="mt-4 mb-2"
@@ -359,7 +387,10 @@
                           line-height: 150%;
                         "
                       >
-                        {{ Governorate.displayName }}
+                        {{
+                          Governorate.displayName ??
+                          Governorate.governorateDisplayName
+                        }}
                       </p>
                       <button
                         icon
@@ -393,14 +424,19 @@
                     background: rgba(115, 62, 228, 0.05);
                   "
                 >
-                  <v-radio-group v-model="newAd.Status" inline hide-details>
+                  <v-radio-group
+                    v-model="newAd.Status"
+                    inline
+                    hide-details
+                    :style="{ color: '#733ee4' }"
+                  >
                     <v-radio
                       label="Active"
                       value="Active"
-                      color="primary"
+                      color="#733EE4"
                       class="me-14"
                     />
-                    <v-radio label="Stopped" value="Stopped" color="primary" />
+                    <v-radio label="Stopped" value="Stopped" color="#733EE4" />
                   </v-radio-group>
                 </div>
               </VCard>
@@ -456,21 +492,24 @@ import { reactive } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import { useBuildQueryString } from '@/composables/UseBuildQueryString';
+import { useEditAdData } from '@/composables/ad/useEditorAdData.ts';
 
 const { buildQueryString } = useBuildQueryString();
 const Governorates = ref([]);
+
+let Navigate_To_Loading = ref(false);
 
 let newAd: any = reactive({
   Place: '',
   Status: '',
   Target: '',
-  Navigation: 'Category',
+  Navigation: '',
   StartDate: '',
   EndDate: '',
   CategoryUuid: '',
   SubCategoryUuid: '',
   BrandUuid: '',
-  ProductUuids: '', // CustomProductsUuid
+  // ProductUuids: '', // CustomProductsUuid
   GovernorateUuids: [],
 }) as unknown as Ad;
 
@@ -511,6 +550,7 @@ const getAllCategories = async () => {
   if (allCategories.value.length) {
     return;
   }
+  Navigate_To_Loading.value = true;
   try {
     const params = buildQueryString({
       rowCount: 100,
@@ -522,6 +562,8 @@ const getAllCategories = async () => {
     allCategories.value = data.result;
   } catch (error) {
     console.log(error);
+  } finally {
+    Navigate_To_Loading.value = false;
   }
 };
 
@@ -529,6 +571,7 @@ const getAllBrands = async () => {
   if (allBrands.value.length) {
     return;
   }
+  Navigate_To_Loading.value = true;
   try {
     const params = buildQueryString({
       rowCount: 100,
@@ -540,6 +583,8 @@ const getAllBrands = async () => {
     allBrands.value = data.result;
   } catch (error) {
     console.log(error);
+  } finally {
+    Navigate_To_Loading.value = false;
   }
 };
 
@@ -558,43 +603,43 @@ const getAllBrands = async () => {
 //   }
 // };
 
-const getAllProducts = async () => {
-  if (allProducts.value.length) {
-    return;
-  }
-  try {
-    const params = buildQueryString({
-      rowCount: 100,
-      pageNo: 1,
-    });
-    const {
-      data: { data },
-    } = await getProducts(params);
-    allProducts.value = data.result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-// onMounted(async () => {
-//   isPageLoading.value = true;
-//   try {
-//     await setCategoryData(
-//       newAd,
-//       tagsToAdd,
-//       subCategoriesToAdd,
-//       adImg,
-//       description_En,
-//       description_Ar
-//     );
-//   } catch (error) {
-//   } finally {
-//     isPageLoading.value = false;
+// const getAllProducts = async () => {
+//   if (allProducts.value.length) {
+//     return;
 //   }
-// });
+//   Navigate_To_Loading.value = true;
+//   try {
+//     const params = buildQueryString({
+//       rowCount: 100,
+//       pageNo: 1,
+//     });
+//     const {
+//       data: { data },
+//     } = await getProducts(params);
+//     allProducts.value = data.result;
+//   } catch (error) {
+//     console.log(error);
+//   } finally {
+//     Navigate_To_Loading.value = false;
+//   }
+// };
+
+onMounted(async () => {
+  isPageLoading.value = true;
+  try {
+    await getAllCategories();
+    await setGovernorates();
+    await setAdData(newAd, adImg);
+  } catch (error) {
+  } finally {
+    isPageLoading.value = false;
+  }
+});
+
+const { isEditing, setAdData } = useEditAdData();
 
 const router = useRouter();
-const isEditing = ref(false);
+// const isEditing = ref(false);
 const addAd = async (): Promise<void> => {
   isAddingBtnLoading.value = true;
   const isValid = await v$.value.$validate();
@@ -605,7 +650,7 @@ const addAd = async (): Promise<void> => {
     showToast.value = true;
     return;
   }
-  const form = {
+  const form = getFormData({
     ...(newAd.Place.length && {
       Place: newAd.Place,
     }),
@@ -624,24 +669,24 @@ const addAd = async (): Promise<void> => {
     ...(newAd.EndDate.length && {
       EndDate: newAd.EndDate,
     }),
-    ...(newAd.CategoryUuid.length && {
+    ...(newAd.CategoryUuid?.length && {
       CategoryUuid: newAd.CategoryUuid,
     }),
-    ...(newAd.SubCategoryUuid.length && {
+    ...(newAd.SubCategoryUuid?.length && {
       SubCategoryUuid: newAd.SubCategoryUuid,
     }),
-    ...(newAd.BrandUuid.length && {
+    ...(newAd.BrandUuid?.length && {
       BrandUuid: newAd.BrandUuid,
     }),
-    ...(newAd.CustomProductsUuid.length && {
-      ProductUuids: newAd.CustomProductsUuid,
-    }),
-    ...(newAd.GovernorateUuids.length && {
-      GovernorateUuids: newAd.GovernorateUuids,
-    }),
-    imageFile: adImgBase64.value,
-  };
-  delete form.uuid;
+    // ...(newAd.CustomProductsUuid.length && {
+    //   ProductUuids: newAd.CustomProductsUuid,
+    // }),
+    ImageFile: adImgBase64.value,
+  });
+  newAd.Target === 'Governorates' &&
+    newAd.GovernorateUuids.forEach(({ uuid }: any) => {
+      form.append('GovernorateUuids', uuid);
+    });
   try {
     isEditing.value
       ? await updateFormData('ads', form, newAd.uuid)
@@ -696,8 +741,8 @@ const setNavigationItems = () => {
       return getAllCategories();
     // case 'SubCategory':
     //   return getAllSubCategories();
-    case 'CustomProducts':
-      return getAllProducts();
+    // case 'CustomProducts':
+    //   return getAllProducts();
     case 'Brand':
       return getAllBrands();
     default:
@@ -706,29 +751,24 @@ const setNavigationItems = () => {
 };
 
 const removeGovernorate = (uuid: any) => {
-  console.log('🚀 ~ removeGovernorate ~ uuid:', uuid);
   newAd.GovernorateUuids = newAd.GovernorateUuids.filter(
     (item: any) => item.uuid !== uuid
   );
 };
 
-const getNavigationItems = computed((key: any) => {
+const getNavigationItems = computed(() => {
   switch (newAd.Navigation) {
     case 'Category':
       return allCategories.value ?? [];
     case 'SubCategory':
       return allSubCategories.value ?? [];
-    case 'CustomProducts':
-      return allProducts.value ?? [];
+    // case 'CustomProducts':
+    //   return allProducts.value ?? [];
     case 'Brand':
       return allBrands.value ?? [];
     default:
       return [];
   }
-});
-
-onMounted(() => {
-  getAllCategories();
 });
 </script>
 
