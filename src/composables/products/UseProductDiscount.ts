@@ -12,9 +12,7 @@ export const useProductDiscount = (newProduct: Product) => {
     dateTo.value = "";
     isScheduledOpen.value = false;
   };
-  const setDiscount = (dateFrom: string, dateTo: string) => {
-    newProduct.value.discounts.dateFrom = dateFrom;
-    newProduct.value.discounts.dateTo = dateTo;
+  const setDiscount = () => {
     isThereSelectedDates.value = true;
   };
 
