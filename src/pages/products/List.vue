@@ -5,7 +5,7 @@ import { getCtegories } from '@/apis/categories';
 import { useBuildQueryString } from '@/composables/UseBuildQueryString';
 import { debounce } from '@/helpers/debounce.ts';
 
-const selectedItems = ref([]);
+let selectedItems: any = ref([]);
 const { buildQueryString } = useBuildQueryString();
 
 const resetSelectedItems = () => {
@@ -35,7 +35,7 @@ const isDeletionInProgress = ref(false);
 const deleteMultiple = async () => {
   isDeletionInProgress.value = true;
   try {
-    selectedItems.value.map(async (item) => {
+    selectedItems.value.map(async (item: any) => {
       try {
         await deleteProduct(item);
       } finally {

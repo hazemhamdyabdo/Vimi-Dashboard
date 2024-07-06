@@ -21,14 +21,14 @@
               stroke: '#9f7aea',
             }"
           />
-          <Marker
+          <!-- <Marker
             v-if="marker"
             :value="1000"
             label="Mean."
             color="green"
-            strokeWidth="2"
+            :strokeWidth="2"
             strokeDasharray="6 6"
-          />
+          /> -->
           <defs>
             <linearGradient id="grad" gradientTransform="rotate(90)">
               <stop offset="0%" stop-color="#be90ff" stop-opacity="1" />
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref } from 'vue';
 import {
   Chart,
   Grid,
@@ -62,27 +62,27 @@ import {
   Area,
   Marker,
   Tooltip,
-} from "vue3-charts";
+} from 'vue3-charts';
 
 export default defineComponent({
-  name: "LineChart",
+  name: 'LineChart',
   components: { Chart, Grid, Line, Responsive, Area, Marker, Tooltip },
   setup() {
     const data = ref([
-      { name: "Jan", pl: 0 },
-      { name: "Feb", pl: 4000 },
-      { name: "Mar", pl: 1000 },
-      { name: "Apr", pl: 4000 },
-      { name: "May", pl: 1000 },
-      { name: "Jun", pl: 5000 },
-      { name: "Jul", pl: 2000 },
-      { name: "Aug", pl: 4000 },
-      { name: "Sep", pl: 5000 },
-      { name: "Oct", pl: 3000 },
-      { name: "Nov", pl: 2000 },
-      { name: "Dec", pl: 6000 },
+      { name: 'Jan', pl: 0 },
+      { name: 'Feb', pl: 4000 },
+      { name: 'Mar', pl: 1000 },
+      { name: 'Apr', pl: 4000 },
+      { name: 'May', pl: 1000 },
+      { name: 'Jun', pl: 5000 },
+      { name: 'Jul', pl: 2000 },
+      { name: 'Aug', pl: 4000 },
+      { name: 'Sep', pl: 5000 },
+      { name: 'Oct', pl: 3000 },
+      { name: 'Nov', pl: 2000 },
+      { name: 'Dec', pl: 6000 },
     ]);
-    const direction = ref("horizontal");
+    const direction: any = ref('horizontal');
     const margin = ref({
       left: 0,
       top: 20,
@@ -90,13 +90,13 @@ export default defineComponent({
       bottom: 0,
     });
 
-    const axis = ref({
+    const axis: any = ref({
       primary: {
-        type: "band",
+        type: 'band',
       },
       secondary: {
-        domain: ["dataMin", "dataMax + 100"],
-        type: "linear",
+        domain: ['dataMin', 'dataMax + 100'],
+        type: 'linear',
         ticks: 8,
       },
     });

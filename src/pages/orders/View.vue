@@ -3,17 +3,17 @@ import {
   showOrder,
   rejectOrder,
   changeOrderStatusAndEstimatedDays,
-} from "@/apis/orders";
-import { useStyleState } from "@/composables/UseStyleState";
-import { useOrderStatus } from "@/composables/orders/UseOrderStatus";
+} from '@/apis/orders';
+import { useStyleState } from '@/composables/UseStyleState';
+import { useOrderStatus } from '@/composables/orders/UseOrderStatus';
 const { getStyleStatus } = useStyleState();
 const { nextStatus, statuses } = useOrderStatus();
 const route = useRoute();
 const order = ref({}) as Ref;
 const isPageLoading = ref(false);
-const modalOptions = ref({});
+const modalOptions: any = ref({});
 const modalState = ref(false);
-const reason = ref("");
+const reason = ref('');
 
 const toggleDeleteModal = ({ options = {} }) => {
   modalOptions.value = options;
@@ -35,16 +35,16 @@ const getOrderDetails = async () => {
 };
 
 const dateFormatting = (date: Date) => {
-  return new Date(date).toLocaleDateString("en-US");
+  return new Date(date).toLocaleDateString('en-US');
 };
 
 const handleConfirm = async () => {
-  if (modalOptions.value.buttonTitle === "Yes, Cancel") {
+  if (modalOptions.value.buttonTitle === 'Yes, Cancel') {
     try {
       await rejectOrder(order.value.uuid, reason.value)();
       toggleDeleteModal({});
     } catch (error) {}
-  } else if (modalOptions.value.buttonTitle === "Yes, Reject") {
+  } else if (modalOptions.value.buttonTitle === 'Yes, Reject') {
     await rejectOrder(order.value.uuid, reason.value)();
     toggleDeleteModal({});
   }
@@ -54,23 +54,23 @@ onMounted(async () => {
 });
 const headers = [
   {
-    title: "Products",
-    key: "productDisplayName_En",
+    title: 'Products',
+    key: 'productDisplayName_En',
     sortable: false,
   },
   {
-    title: "Price",
-    key: "price",
+    title: 'Price',
+    key: 'price',
     sortable: false,
   },
   {
-    title: "QTY",
-    key: "quantity",
+    title: 'QTY',
+    key: 'quantity',
     sortable: false,
   },
   {
-    title: "Total Amount",
-    key: "totalAmount",
+    title: 'Total Amount',
+    key: 'totalAmount',
     sortable: false,
   },
 ];
@@ -83,22 +83,22 @@ const updateOrderStatus = async () => {
 
 const headerButtons = computed(() => {
   const { status } = order.value;
-  const btnConfig = {
-    "In Progress": [
+  const btnConfig: any = {
+    'In Progress': [
       {
-        text: "Cancel Order",
-        icon: "Close",
+        text: 'Cancel Order',
+        icon: 'Close',
         action() {
           toggleDeleteModal({
             options: {
-              buttonTitle: "Yes, Cancel",
-              buttonColor: "#F44336",
-              title: "Cancel Order",
-              text: "Are you sure you want to cancel this order?",
-              svg: "close-circle (2)",
-              secondaryButtonTitle: "Back",
-              icon: "",
-              sheetColor: "#f443361a",
+              buttonTitle: 'Yes, Cancel',
+              buttonColor: '#F44336',
+              title: 'Cancel Order',
+              text: 'Are you sure you want to cancel this order?',
+              svg: 'close-circle (2)',
+              secondaryButtonTitle: 'Back',
+              icon: '',
+              sheetColor: '#f443361a',
             },
           });
         },
@@ -106,37 +106,37 @@ const headerButtons = computed(() => {
     ],
     Pending: [
       {
-        text: "Cancel Order",
-        icon: "Close",
+        text: 'Cancel Order',
+        icon: 'Close',
         action() {
           toggleDeleteModal({
             options: {
-              buttonTitle: "Yes, Cancel",
-              buttonColor: "#F44336",
-              title: "Cancel Order",
-              text: "Are you sure you want to cancel this order?",
-              svg: "close-circle (2)",
-              secondaryButtonTitle: "Back",
-              icon: "",
-              sheetColor: "#f443361a",
+              buttonTitle: 'Yes, Cancel',
+              buttonColor: '#F44336',
+              title: 'Cancel Order',
+              text: 'Are you sure you want to cancel this order?',
+              svg: 'close-circle (2)',
+              secondaryButtonTitle: 'Back',
+              icon: '',
+              sheetColor: '#f443361a',
             },
           });
         },
       },
       {
-        text: "Approve Order",
-        icon: "True-circle",
+        text: 'Approve Order',
+        icon: 'True-circle',
         action() {
           toggleDeleteModal({
             options: {
-              buttonTitle: "Add Estimation",
-              buttonColor: "#733EE4",
-              title: "Estimated delivery days",
-              text: "",
-              svg: "Time",
-              secondaryButtonTitle: "Cancel",
-              icon: "",
-              sheetColor: "#733EE41a",
+              buttonTitle: 'Add Estimation',
+              buttonColor: '#733EE4',
+              title: 'Estimated delivery days',
+              text: '',
+              svg: 'Time',
+              secondaryButtonTitle: 'Cancel',
+              icon: '',
+              sheetColor: '#733EE41a',
             },
           });
         },
@@ -144,19 +144,19 @@ const headerButtons = computed(() => {
     ],
     Shipped: [
       {
-        text: "Cancel Order",
-        icon: "Close",
+        text: 'Cancel Order',
+        icon: 'Close',
         action() {
           toggleDeleteModal({
             options: {
-              buttonTitle: "Yes, Cancel",
-              buttonColor: "#F44336",
-              title: "Cancel Order",
-              text: "Are you sure you want to cancel this order?",
-              svg: "close-circle (2)",
-              secondaryButtonTitle: "Back",
-              icon: "",
-              sheetColor: "#f443361a",
+              buttonTitle: 'Yes, Cancel',
+              buttonColor: '#F44336',
+              title: 'Cancel Order',
+              text: 'Are you sure you want to cancel this order?',
+              svg: 'close-circle (2)',
+              secondaryButtonTitle: 'Back',
+              icon: '',
+              sheetColor: '#f443361a',
             },
           });
         },
@@ -164,48 +164,48 @@ const headerButtons = computed(() => {
     ],
     Delivered: [
       {
-        text: "Archive Order",
-        icon: "archive",
+        text: 'Archive Order',
+        icon: 'archive',
       },
     ],
     Cancelled: [
       {
-        text: "Archive Order",
-        icon: "archive",
+        text: 'Archive Order',
+        icon: 'archive',
       },
     ],
     ReturnCancelled: [
       {
-        text: "Archive Order",
-        icon: "archive",
+        text: 'Archive Order',
+        icon: 'archive',
       },
     ],
     ReturnInProgress: [
       {
-        text: "Archive Order",
-        icon: "archive",
+        text: 'Archive Order',
+        icon: 'archive',
       },
     ],
     ItemReturnRequested: [
       {
-        text: "Reject Return Request",
-        icon: "Close",
+        text: 'Reject Return Request',
+        icon: 'Close',
       },
       {
-        text: "Accept Return Request",
-        icon: "True",
+        text: 'Accept Return Request',
+        icon: 'True',
       },
     ],
     Rejected: [
       {
-        text: "Archive Order",
-        icon: "archive",
+        text: 'Archive Order',
+        icon: 'archive',
       },
     ],
     Returned: [
       {
-        text: "Archive Order",
-        icon: "archive",
+        text: 'Archive Order',
+        icon: 'archive',
       },
     ],
   };
@@ -216,11 +216,11 @@ const headerButtons = computed(() => {
 const orderSummary = computed(() => {
   return {
     ...(order.value.productCount && {
-      "Products NO.": order.value.productCount,
+      'Products NO.': order.value.productCount,
     }),
 
     ...(order.value.shippingFees && {
-      "Shipping Charge": `KD ${order.value.shippingFees}`,
+      'Shipping Charge': `KD ${order.value.shippingFees}`,
     }),
 
     ...(order.value.discountValue && {
@@ -231,11 +231,11 @@ const orderSummary = computed(() => {
       Tax: `KD ${order.value.tax}`,
     }),
     ...(order.value.subTotal && {
-      "Sub Total": `KD ${order.value.subTotal}`,
+      'Sub Total': `KD ${order.value.subTotal}`,
     }),
 
     ...(order.value.totalAmount && {
-      "Total Amount": `KD ${order.value.totalAmount}`,
+      'Total Amount': `KD ${order.value.totalAmount}`,
     }),
   };
 });
@@ -264,7 +264,7 @@ const orderSummary = computed(() => {
               }}</span>
               <p style="color: #7066a2">Order Reference NO. :</p>
               <span style="color: #733ee4; font-weight: 500">{{
-                order.orderReferenceSerialNumber ?? "-"
+                order.orderReferenceSerialNumber ?? '-'
               }}</span>
             </section>
             <section style="display: flex; gap: 1rem">
@@ -334,6 +334,7 @@ const orderSummary = computed(() => {
               class="listen-table"
               :items="order.items"
               :headers="headers"
+              v-bind="$attrs"
               hide-default-footer
             >
               <template v-slot:item.productDisplayName_En="{ item }">
@@ -347,7 +348,6 @@ const orderSummary = computed(() => {
                   >
                     <img
                       style="width: 72px; height: 72px; object-fit: cover"
-                      :alt="item.productDisplayName_En"
                       :src="`https://techify-001-site1.htempurl.com${item.productImagePath}`"
                     />
                   </div>
@@ -362,7 +362,7 @@ const orderSummary = computed(() => {
                     <h4>{{ item.productDisplayName_En }}</h4>
                     <div class="d-flex align-items-center" style="gap: 0.5rem">
                       <span style="color: #7066a2; font-size: 14px">
-                        {{ item?.productTypeLocalized ?? "-" }}
+                        {{ item?.productTypeLocalized ?? '-' }}
                       </span>
                       <StarRating :rating="item?.productRating ?? 0" />
                       <span
@@ -411,7 +411,7 @@ const orderSummary = computed(() => {
                 font-weight: 500;
               "
               v-for="[key, val] in Object.entries(orderSummary)"
-              :key="val"
+              :key="key"
             >
               <span
                 :style="`color: #7066a2; font-weight: ${key === 'Total Amount' ? '700' : '500'}`"
@@ -651,7 +651,7 @@ const orderSummary = computed(() => {
         "
       >
         <h4 class="card-info-title">
-          {{ modalOptions.title.split(" ")[0] }} Reason
+          {{ modalOptions.title.split(' ')[0] }} Reason
         </h4>
         <VRow>
           <VCol>
@@ -758,7 +758,7 @@ const orderSummary = computed(() => {
 }
 
 .section-history:after {
-  content: "";
+  content: '';
   position: absolute;
   z-index: -1;
   top: 4px;

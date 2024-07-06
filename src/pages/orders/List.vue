@@ -22,14 +22,14 @@ interface ModalOptions {
 const page = ref(1);
 const { buildQueryString } = useBuildQueryString();
 const estimatedDays = ref();
-const selectedItems = ref([]);
+const selectedItems: any = ref([]);
 const orders = ref([]);
 const totalCount = ref(0);
-const modalOptions = ref({}) as Ref<ModalOptions>;
+const modalOptions: any = ref({}) as Ref<ModalOptions>;
 const modalState = ref(false);
 const reason = ref('');
 const isPageLoading = ref(false);
-const selectedOrder = ref({}) as Ref<{ uuid: string; status: string }>;
+const selectedOrder: any = ref({}) as Ref<{ uuid: string; status: string }>;
 const triggerResetSelectedItems = ref(false);
 const triggerSelectAll = ref(false);
 const triggerCheckAll = ref(false);

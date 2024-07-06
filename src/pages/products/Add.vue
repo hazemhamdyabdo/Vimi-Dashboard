@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import type { Product } from "./type";
-import { getCtegories } from "@/apis/categories";
-import { getBrands } from "@/apis/_brands";
-import { productType } from "@/enums";
+import type { Product } from './type';
+import { getCtegories } from '@/apis/categories';
+import { getBrands } from '@/apis/_brands';
+import { productType } from '@/enums';
 import {
   getFormData,
   sendFormData,
-} from "@/composables/products/SendFormRequest";
+} from '@/composables/products/SendFormRequest';
 import {
   useEditProductData,
   isPageLoading,
-} from "@/composables/products/UseEditProductData";
+} from '@/composables/products/UseEditProductData';
 
-import { useProductQuantity } from "@/composables/products/UseProductQuantity";
-import { useProductDiscount } from "@/composables/products/UseProductDiscount";
-import { useEditor } from "@/composables/products/UseEditor";
-import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+import { useProductQuantity } from '@/composables/products/UseProductQuantity';
+import { useProductDiscount } from '@/composables/products/UseProductDiscount';
+import { useEditor } from '@/composables/products/UseEditor';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
 const router = useRouter();
 
 const newProduct = ref({}) as unknown as Product;
@@ -25,12 +25,12 @@ const isEditingMood = computed(() => {
 const isAddingBtnLoading = ref(false);
 const showToast = ref(false);
 const allCategories: any = ref([]);
-const imgSrcs = ref([]);
-const selectedFiles = ref([]);
+const imgSrcs: any = ref([]);
+const selectedFiles: any = ref([]);
 const allBrands: any = ref([]);
-const newTag = ref("");
+const newTag = ref('');
 const tagsToAdd = ref([]);
-const imgsToSend = ref([]);
+const imgsToSend: any = ref([]);
 
 const { addQuantity, reduceQuantity, selectedAction } =
   useProductQuantity(newProduct);
@@ -74,7 +74,7 @@ const handleFileChange = async (event: any) => {
 const addTags = (nwTag: any) => {
   // @ts-ignore
   tagsToAdd.value.push(nwTag);
-  newTag.value = "";
+  newTag.value = '';
 };
 
 const removeTag = (nwTag: any) => {
@@ -108,16 +108,16 @@ const uploadProduct = async (): Promise<void> => {
     tags: tagsToAdd.value,
   });
 
-  form.append("discounts[0].dateFrom", dateFrom.value);
-  form.append("discounts[0].dateTo", dateTo.value);
+  form.append('discounts[0].dateFrom', dateFrom.value);
+  form.append('discounts[0].dateTo', dateTo.value);
 
   imgsToSend.value.forEach((tag: any) => {
-    form.append("imageFiles", tag);
+    form.append('imageFiles', tag);
   });
 
   isPageLoading.value = true;
   try {
-    sendFormData("products", form);
+    sendFormData('products', form);
     showToast.value = true;
   } catch (error) {
     console.log(error);
@@ -125,7 +125,7 @@ const uploadProduct = async (): Promise<void> => {
     isPageLoading.value = false;
     isAddingBtnLoading.value = false;
     setTimeout(() => {
-      router.push({ name: "products" });
+      router.push({ name: 'products' });
     }, 1000);
   }
 };
@@ -885,7 +885,7 @@ onMounted(async () => {
       @click="uploadProduct"
     >
       <VIcon class="card-info-btn-icon" icon="mdi-plus" />
-      {{ isEditingMood ? "Update Product" : "Add Product" }}
+      {{ isEditingMood ? 'Update Product' : 'Add Product' }}
     </VBtn>
   </div>
 </template>
