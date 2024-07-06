@@ -12,7 +12,6 @@ declare module 'vue' {
     BaseNotifications: typeof import('./src/components/BaseNotifications.vue')['default']
     BasePagination: typeof import('./src/components/BasePagination.vue')['default']
     CalenderIcon: typeof import('./src/components/svgs/CalenderIcon.vue')['default']
-    Chart: typeof import('./src/components/Chart.vue')['default']
     ChatComponent: typeof import('./src/components/tickets/ChatComponent.vue')['default']
     ContactsCard: typeof import('./src/components/settings/ContactsCard.vue')['default']
     ControlQuantity: typeof import('./src/components/products/ControlQuantity.vue')['default']
