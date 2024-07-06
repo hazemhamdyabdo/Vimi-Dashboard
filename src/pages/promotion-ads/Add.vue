@@ -684,8 +684,8 @@ const addAd = async (): Promise<void> => {
     ImageFile: adImgBase64.value,
   });
   newAd.Target === 'Governorates' &&
-    newAd.GovernorateUuids.forEach(({ uuid }: any) => {
-      form.append('GovernorateUuids', uuid);
+    newAd.GovernorateUuids.forEach(({ uuid, governorateUuid }: any) => {
+      form.append('GovernorateUuids', isEditing ? governorateUuid : uuid);
     });
   try {
     isEditing.value
