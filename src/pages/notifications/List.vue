@@ -57,7 +57,7 @@ const toggleDeleteModal = ({ uuid = '', options = {} }) => {
 const deleteMultiple = async () => {
   isDeletionInProgress.value = true;
   try {
-    await selectedItems.value.map(async (item) => {
+    await selectedItems.value.map(async () => {
       try {
         // await deleteCtegories(item);
       } finally {
