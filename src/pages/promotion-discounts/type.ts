@@ -1,6 +1,7 @@
 interface Discount {
   uuid?: string;
   discountOn: string;
+  displayName_En?: string;
   status?: string;
   Target: string;
   ratio: Number;

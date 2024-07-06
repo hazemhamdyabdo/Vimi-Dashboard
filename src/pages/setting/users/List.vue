@@ -58,10 +58,10 @@ const handleConfirm = () => {
     deleteMultiple();
   }
   if (modalOptions.value.buttonTitle === 'Reset Password') {
-    restPassword(selectedItems.value[0]);
+    restPassword();
   }
   if (modalOptions.value.buttonTitle === 'Save changes') {
-    toggleEditModal(selectedItems.value[0]);
+    toggleEditModal();
   }
 };
 </script>

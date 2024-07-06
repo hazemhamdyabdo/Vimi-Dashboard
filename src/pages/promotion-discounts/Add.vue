@@ -113,13 +113,14 @@
                       line-height: 150%;
                     "
                   >
-                    {{
+                    <!-- {{
                       getNavigationItems.find(
                         (item: any) =>
                           item.uuid ===
                           newDiscount[`${newDiscount.discountOn}Uuid`]
                       )?.displayName_En
-                    }}
+                    }} -->
+                      <p>Test</p>
                   </p>
                   <button
                     @click="newDiscount[`${newDiscount.discountOn}Uuid`] = null"
