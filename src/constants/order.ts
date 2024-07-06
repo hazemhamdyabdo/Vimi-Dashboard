@@ -1,54 +1,53 @@
-
 const headers = [
   {
-    key: "serialNumber",//orderNumber
-    title: "Order NO.",
+    key: 'serialNumber', //orderNumber
+    title: 'Order NO.',
     sortable: false,
     removable: false,
-    align: "center"
+    align: 'center',
   },
   {
-    key: "userFullName",// Customer
-    title: "Customer",
+    key: 'userFullName', // Customer
+    title: 'Customer',
     sortable: false,
     removable: false,
-    align: "center"
+    align: 'center',
   },
   {
-    key: "items",
-    title: "Product",
+    key: 'items',
+    title: 'Product',
     sortable: true,
     removable: false,
-    align: "center"
+    align: 'center',
   },
   {
-    key: "dateCreated",
-    title: "Order date",
+    key: 'dateCreated',
+    title: 'Order date',
     sortable: false,
     removable: false,
-    align: "center"
+    align: 'center',
   },
   {
-    key: "totalAmount",
-    title: "Price",
+    key: 'totalAmount',
+    title: 'Price',
     removable: false,
-    align: "start"
+    align: 'start',
   },
   {
-    key: "paymentMethod",
-    title: "Payment",
+    key: 'paymentMethod',
+    title: 'Payment',
     sortable: false,
     removable: false,
-    align: "center"
+    align: 'center',
   },
   {
-    key: "status",
-    title: "Status",
+    key: 'status',
+    title: 'Status',
     sortable: true,
     removable: false,
-    align: "center"
-  }
-]
+    align: 'center',
+  },
+];
 
 const ordersFilter = [
   {
@@ -82,11 +81,6 @@ const ordersFilter = [
     label: 'Cancel Sellection',
     icon: '',
   },
+];
 
-]
-
-export {
-  headers,
-  items,
-  ordersFilter
-}
+export { headers, ordersFilter };

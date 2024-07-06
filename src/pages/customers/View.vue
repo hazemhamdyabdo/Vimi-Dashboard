@@ -53,7 +53,7 @@ const items = [
   },
 ];
 const getStyleStatus = (status: string) => {
-  const styles = {
+  const styles: any = {
     Pending: {
       color: '#E2B000',
       background: '#e2b0001a',

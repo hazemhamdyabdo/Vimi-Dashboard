@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { usersHeader, users, userFilter } from "@/constants/settings";
-const selectedItems = ref([]);
-const modalOptions = ref({});
+import { usersHeader, users, userFilter } from '@/constants/settings';
+let selectedItems: any = ref([]);
+const modalOptions: any = ref({});
 const modalState = ref(false);
 const showPass = ref(false);
 const showPass2 = ref(false);
-const toggleDeleteModal = ({ uuid = "", options = {} }) => {
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);
@@ -13,7 +13,7 @@ const toggleDeleteModal = ({ uuid = "", options = {} }) => {
 
 const isDeletionInProgress = ref(false);
 const deleteMultiple = async () => {
-  console.log("deleteMultiple");
+  console.log('deleteMultiple');
   isDeletionInProgress.value = true;
   try {
   } catch {
@@ -27,25 +27,25 @@ const deleteMultiple = async () => {
 
 const toggleEditModal = (uuid: string) => {
   modalOptions.value = {
-    buttonColor: "#27AE60",
-    buttonTitle: "Save changes",
-    title: "Edit Role",
-    text: "",
-    svg: "edit (2)",
-    icon: "",
-    sheetColor: "#27AE601a",
+    buttonColor: '#27AE60',
+    buttonTitle: 'Save changes',
+    title: 'Edit Role',
+    text: '',
+    svg: 'edit (2)',
+    icon: '',
+    sheetColor: '#27AE601a',
   };
   modalState.value = true;
 };
 const restPassword = (uuid: string) => {
   modalOptions.value = {
-    buttonColor: "#733EE4",
-    buttonTitle: "Reset Password",
-    title: "Reset Password",
-    text: "",
-    svg: "lock (1)",
-    icon: "",
-    sheetColor: "#733EE41a",
+    buttonColor: '#733EE4',
+    buttonTitle: 'Reset Password',
+    title: 'Reset Password',
+    text: '',
+    svg: 'lock (1)',
+    icon: '',
+    sheetColor: '#733EE41a',
   };
   modalState.value = true;
 };
@@ -54,13 +54,13 @@ const handleCancel = () => {
   toggleDeleteModal({});
 };
 const handleConfirm = () => {
-  if (modalOptions.value.buttonTitle === "Yes, Delete") {
+  if (modalOptions.value.buttonTitle === 'Yes, Delete') {
     deleteMultiple();
   }
-  if (modalOptions.value.buttonTitle === "Reset Password") {
+  if (modalOptions.value.buttonTitle === 'Reset Password') {
     restPassword(selectedItems.value[0]);
   }
-  if (modalOptions.value.buttonTitle === "Save changes") {
+  if (modalOptions.value.buttonTitle === 'Save changes') {
     toggleEditModal(selectedItems.value[0]);
   }
 };

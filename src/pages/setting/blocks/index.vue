@@ -1,43 +1,44 @@
 <script setup lang="ts">
-import { deleteBrand, updateBrand, getBrands } from "@/apis/_brands";
+import { deleteBrand, updateBrand, getBrands } from '@/apis/_brands';
 import {
   sendFormData,
+  updateFormData,
   getFormData,
-} from "@/composables/products/SendFormRequest";
-import { useBuildQueryString } from "@/composables/UseBuildQueryString";
+} from '@/composables/products/SendFormRequest';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
 const { buildQueryString } = useBuildQueryString();
 
-const imgSrcs: Ref<any> = ref("");
+const imgSrcs: Ref<any> = ref('');
 const allBrands: any = ref([]);
-const fileInput: any = ref("");
-const imgToSend: Ref<any> = ref("");
+const fileInput: any = ref('');
+const imgToSend: Ref<any> = ref('');
 const isPageLoading = ref(false);
-const editedImag = ref("");
+const editedImag = ref('');
 
 const productsTypes: Ref<any> = ref({
-  displayName_En: "",
-  displayName_Ar: "",
-  photoFile: "",
+  displayName_En: '',
+  displayName_Ar: '',
+  photoFile: '',
 });
 const productsBrands: Ref<any> = ref({
-  displayName_En: "",
-  displayName_Ar: "",
+  displayName_En: '',
+  displayName_Ar: '',
 });
 const types = ref([
   {
     id: 0,
-    displayName_En: "Variable",
-    displayName_Ar: "متغير",
+    displayName_En: 'Variable',
+    displayName_Ar: 'متغير',
   },
   {
     id: 1,
-    displayName_En: "Simple",
-    displayName_Ar: "بسيط",
+    displayName_En: 'Simple',
+    displayName_Ar: 'بسيط',
   },
   {
     id: 2,
-    displayName_En: "Bundle",
-    displayName_Ar: "بندل",
+    displayName_En: 'Bundle',
+    displayName_Ar: 'بندل',
   },
 ]);
 const brands = ref([]);
@@ -78,7 +79,7 @@ const addNewBrand = async () => {
       photoFile: imgToSend.value,
       ...productsBrands.value,
     });
-    await sendFormData("brands", form);
+    await sendFormData('brands', form);
     productsBrands.value = {};
   } catch (error) {
   } finally {
@@ -94,10 +95,10 @@ const handleUpdateBrand = async () => {
       photoFile: imgToSend.value,
       ...productsBrands.value,
     });
-    await sendFormData(`brands/${productsBrands.value.uuid}`, form, "put");
+    await updateFormData(`brands`, form, productsBrands.value.uuid);
     productsBrands.value = {};
-    editedImag.value = "";
-    imgSrcs.value = "";
+    editedImag.value = '';
+    imgSrcs.value = '';
   } catch (error) {
   } finally {
     isPageLoading.value = false;
@@ -277,7 +278,7 @@ onMounted(() => {
                   <p
                     class="card-file-text text-decoration-underline cursor-pointer"
                   >
-                    {{ imgSrcs ? "Change Image" : "Upload Image" }}
+                    {{ imgSrcs ? 'Change Image' : 'Upload Image' }}
                   </p>
                   <div class="text-center">
                     <p class="card-file-subtitle my-1">
@@ -444,7 +445,7 @@ onMounted(() => {
   white-space: nowrap;
 }
 .circle:before {
-  content: "";
+  content: '';
   display: inline-block;
   vertical-align: middle;
   padding-top: 100%;

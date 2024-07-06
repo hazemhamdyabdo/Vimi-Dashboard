@@ -10,11 +10,11 @@ export const getFormData = (_data: object): FormData => {
         const __key = initial
           ? _key
           : key +
-          (isObject(value)
-            ? [`${_key}`]
-            : Array.isArray(value)
-              ? '[]'
-              : _key);
+            (isObject(value)
+              ? [`${_key}`]
+              : Array.isArray(value)
+                ? '[]'
+                : _key);
 
         append(_value, __key, false);
       });
@@ -28,21 +28,21 @@ export const getFormData = (_data: object): FormData => {
   return data;
 };
 
-export const sendFormData = async function (path: string, form: FormData, method = "post") {
+export const sendFormData = async function (path: string, form: FormData) {
   try {
-    await axios[method](
+    await axios.post(
       `https://techify-001-site1.htempurl.com/api/v1/${path}`,
       form,
       {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken'))}`,
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken') ?? '')}`,
           'x-api-key': 'x5b9j8p2qRz3vdK1st7yf4ul6wa0ezcv',
         },
       }
     );
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw error;
   }
 };
@@ -59,7 +59,7 @@ export const updateFormData = async function (
       {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken'))}`,
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken') ?? '')}`,
           'x-api-key': 'x5b9j8p2qRz3vdK1st7yf4ul6wa0ezcv',
         },
       }
