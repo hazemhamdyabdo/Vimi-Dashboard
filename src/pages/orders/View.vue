@@ -334,6 +334,7 @@ const orderSummary = computed(() => {
               class="listen-table"
               :items="order.items"
               :headers="headers"
+              v-bind="$attrs"
               hide-default-footer
             >
               <template v-slot:item.productDisplayName_En="{ item }">
@@ -347,7 +348,6 @@ const orderSummary = computed(() => {
                   >
                     <img
                       style="width: 72px; height: 72px; object-fit: cover"
-                      :alt="item.productDisplayName_En"
                       :src="`https://techify-001-site1.htempurl.com${item.productImagePath}`"
                     />
                   </div>
