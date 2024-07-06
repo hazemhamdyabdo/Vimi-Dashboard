@@ -2,7 +2,7 @@
 const props = defineProps({
   color: {
     type: String,
-    default: '#27ae60',
+    default: "#27ae60",
   },
   notification: {
     type: Boolean,
@@ -10,17 +10,17 @@ const props = defineProps({
   },
   notificationText: {
     type: String,
-    default: 'Done',
+    default: "Done",
   },
 });
 
-const emit = defineEmits(['closeNotification']);
+const emit = defineEmits(["closeNotification"]);
 watch(
   () => props.notification,
   (val) => {
     if (val) {
       setTimeout(() => {
-        emit('closeNotification');
+        emit("closeNotification");
       }, 2000);
     }
   }

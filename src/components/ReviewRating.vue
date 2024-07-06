@@ -8,20 +8,21 @@ withDefaults(
     title?: string;
     imgSrc?: string;
     numberOfRecords?: number;
+    rating?: number;
   }>(),
   {
     deleteIcon: false,
-    imgSrc: "../assets/avatar.png",
     numberOfRecords: 1,
   }
 );
 </script>
 <template>
-  <div>
+  <VCol cols="12" md="6" lg="4">
     <h3 v-if="title" class="card-title">{{ title }}</h3>
     <section
       style="
         display: flex;
+        gap: 2rem;
         gap: 2rem;
         align-items: center;
         margin-bottom: 1.5rem;
@@ -31,8 +32,11 @@ withDefaults(
     >
       <section style="display: flex; gap: 4rem">
         <div class="d-flex" style="gap: 0.7rem">
-          <div>
-            <img src="../assets/avatar.png" style="border-radius: 50%" />
+          <div v-if="imgSrc">
+            <img
+              :src="`https://techify-001-site1.htempurl.com${imgSrc}`"
+              style="border-radius: 50%; width: 40px; height: 40px"
+            />
           </div>
           <div style="white-space: nowrap">
             <h5>{{ name }}</h5>
@@ -41,13 +45,7 @@ withDefaults(
         </div>
         <div>
           <div class="d-flex align-items-center">
-            <VIcon
-              icon="mdi-star"
-              style="color: #ffa800"
-              size="24"
-              v-for="i in 4"
-            />
-            <VIcon icon="mdi-star-outline" style="color: #ffa800" size="24" />
+            <StarRating :rating="rating" />
           </div>
           <p style="color: #afaacb; font-size: 12px">
             {{ description }}
@@ -61,7 +59,7 @@ withDefaults(
         <VIcon icon="mdi-trash-can-outline" size="24" color="#afaacb" />
       </div>
     </section>
-  </div>
+  </VCol>
 </template>
 
 <style scoped>
