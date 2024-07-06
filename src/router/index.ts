@@ -212,6 +212,7 @@ const router = createRouter({
           component: () => import('@/pages/promotion-discounts/List.vue'),
           meta: {
             title: 'Promotion',
+            key: 'promotion-discounts',
           },
         },
         {
@@ -220,6 +221,14 @@ const router = createRouter({
           component: () => import('@/pages/promotion-discounts/Add.vue'),
           meta: {
             title: 'Add promotion',
+          },
+        },
+        {
+          path: 'edit-promotion-discounts/:id',
+          name: 'edit-promotion-discounts',
+          component: () => import('@/pages/promotion-discounts/Add.vue'),
+          meta: {
+            title: 'Edit promotion',
           },
         },
         {
@@ -244,7 +253,7 @@ const router = createRouter({
           name: 'add-promotion-ad',
           component: () => import('@/pages/promotion-ads/Add.vue'),
           meta: {
-            title: 'Add promotion',
+            title: 'Add Ads',
           },
         },
         {
@@ -252,7 +261,7 @@ const router = createRouter({
           name: 'edit-promotion-ad',
           component: () => import('@/pages/promotion-ads/Add.vue'),
           meta: {
-            title: 'Edit promotion',
+            title: 'Edit Ads',
           },
         },
         {
@@ -260,7 +269,7 @@ const router = createRouter({
           name: 'view-promotion-ad',
           component: () => import('@/pages/promotion-ads/View.vue'),
           meta: {
-            title: 'promotion Details',
+            title: 'View AD',
           },
         },
       ],

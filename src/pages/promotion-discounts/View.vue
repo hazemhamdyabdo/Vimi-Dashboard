@@ -1,7 +1,78 @@
+<script setup lang="ts">
+import { getDiscount, deleteDiscounts } from '@/apis/discounts';
+import { useStyleState } from '@/composables/UseStyleState';
+
+const { getStyleStatus } = useStyleState();
+
+const dateFormattinmg = (date: any) => {
+  return new Date(date).toLocaleDateString('en-UK', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
+const route = useRoute();
+const router = useRouter();
+const modalOptions = ref({});
+let modalState = ref(false);
+let discount: any = ref({});
+let isPageLoading = ref(false);
+let isDeletionInProgress = ref(false);
+
+const DeleteEmits: any = computed(() => {
+  return {
+    options: {
+      title: 'Delete Discount',
+      text: 'Are you sure you want to delete all of the selected Products ?',
+      buttonTitle: 'Yes, Delete',
+      secondaryButtonTitle: 'Cancel',
+      buttonColor: '#EB5757',
+      icon: 'deleteIcon',
+      sheetColor: '#eb57571a',
+    },
+  };
+});
+
+const setDiscountsData = async () => {
+  isPageLoading.value = true;
+  try {
+    const { data } = await getDiscount(route.params.id as string);
+    discount.value = data.data;
+    isPageLoading.value = false;
+  } catch {}
+};
+
+const deleteDiscount = async () => {
+  isDeletionInProgress.value = true;
+  try {
+    await deleteDiscounts(discount.value.uuid);
+  } catch {
+  } finally {
+    router.push({ name: 'promotion-ads' });
+    isDeletionInProgress.value = false;
+  }
+};
+
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
+  modalOptions.value = options;
+  modalState.value = !!Object.keys(options).length;
+};
+
+const handleCancel = () => {
+  toggleDeleteModal({});
+};
+
+onMounted(async () => {
+  setDiscountsData();
+});
+</script>
 <template>
   <section class="add-products px-6">
     <VContainer>
+      <v-skeleton-loader v-if="isPageLoading" type="list-item-two-line" />
       <VCard
+        v-else
         flat
         color="#fff"
         class="d-flex justify-space-between px-5 py-6"
@@ -20,7 +91,7 @@
               line-height: 150%; /* 24px */
             "
           >
-            #43763898
+            #{{ discount?.uuid?.slice(0, 6) }}
           </p>
           <div class="d-flex me-8">
             <svgIcon icon="event calendar" class="my-auto me-1" />
@@ -52,7 +123,7 @@
                 line-height: 150%; /* 24px */
               "
             >
-              21/3/2024
+              {{ dateFormattinmg(discount.dateCreated) }}
             </p>
           </div>
           <div class="d-flex my-auto">
@@ -63,11 +134,10 @@
                 font-size: 12px;
                 padding: 0.2rem 0;
                 border-radius: 8px;
-                background-color: #27ae601a;
-                color: #27ae60;
               "
+              :style="`background-color: ${getStyleStatus(discount.status)?.background}; color: ${getStyleStatus(discount.status)?.color}`"
             >
-              Active
+              {{ discount.status }}
             </p>
           </div>
         </div>
@@ -77,10 +147,15 @@
             <p>Renew Discount</p>
           </div>
           <v-divider vertical class="mx-4" />
-          <div class="d-flex my-auto">
+          <VBtn
+            flat
+            class="d-flex my-auto"
+            :loading="isDeletionInProgress"
+            @click="toggleDeleteModal(DeleteEmits)"
+          >
             <svgIcon icon="delete (1)" class="me-2 my-auto" />
             <p>Delete</p>
-          </div>
+          </VBtn>
         </div>
       </VCard>
       <VCard
@@ -91,7 +166,9 @@
       >
         <VRow>
           <VCol cols="4">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
@@ -129,13 +206,15 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  Vitamins & Minerals
+                  {{ discount.discountOn }}
                 </p>
               </div>
             </VCard>
           </VCol>
           <VCol cols="4">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
@@ -154,7 +233,11 @@
               >
                 Discount to
               </p>
-              <div class="mt-5">
+              <div
+                class="mt-5"
+                v-for="gov in discount.governorates"
+                :key="gov.uuid"
+              >
                 <p
                   class="my-auto"
                   style="
@@ -167,58 +250,16 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  Governorate 1
+                  {{ gov.governorateUuid }}
                 </p>
                 <v-divider class="my-3" />
-                <p
-                  class="my-auto"
-                  style="
-                    color: var(--Black, #21094a);
-                    /* 14/B2-R-14 */
-                    font-family: Roboto;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 150%; /* 21px */
-                  "
-                >
-                  Governorate 2
-                </p>
-                <v-divider class="my-3" />
-                <p
-                  class="my-auto"
-                  style="
-                    color: var(--Black, #21094a);
-                    /* 14/B2-R-14 */
-                    font-family: Roboto;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 150%; /* 21px */
-                  "
-                >
-                  Governorate 3
-                </p>
-                <v-divider class="my-3" />
-                <p
-                  class="my-auto"
-                  style="
-                    color: var(--Black, #21094a);
-                    /* 14/B2-R-14 */
-                    font-family: Roboto;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 150%; /* 21px */
-                  "
-                >
-                  Governorate 4
-                </p>
               </div>
             </VCard>
           </VCol>
           <VCol cols="4">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
@@ -249,10 +290,12 @@
                   line-height: 150%; /* 24px */
                 "
               >
-                30%
+                {{ discount.ratio }}%
               </p>
             </VCard>
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
@@ -284,7 +327,7 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  25 March 2024
+                  {{ dateFormattinmg(discount.dateCreated) }}
                 </p>
                 <svgIcon icon="arrow" class="mx-4" />
                 <p
@@ -299,13 +342,19 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  30 March 2024
+                  {{ dateFormattinmg(discount.dateCreated) }}
                 </p>
               </div>
             </VCard>
           </VCol>
         </VRow>
       </VCard>
+      <GlobalPopup
+        :options="modalOptions"
+        :modalState="modalState"
+        :onCancel="handleCancel"
+        :onConfirm="deleteDiscount"
+      />
     </VContainer>
   </section>
 </template>

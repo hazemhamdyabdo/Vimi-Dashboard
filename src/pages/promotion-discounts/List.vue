@@ -1,98 +1,3 @@
-<script setup lang="ts">
-import { discountHeaders, dicountFilter, items } from '@/constants/prmotions';
-let page = ref(1);
-let isPageLoading = ref(false);
-let isDeletionInProgress = ref(false);
-
-const selectedItems: Ref<string[]> = ref([]);
-let totalCount = ref(0);
-
-let pagesCount = computed(() => {
-  return !totalCount.value || !items.length
-    ? 0
-    : Math.ceil(totalCount.value / 10);
-});
-
-const modalOptions = ref({});
-
-let modalState = ref(false);
-let table: any = ref(null);
-
-let triggerResetSelectedItems = ref(false);
-let triggerSelectAll = ref(false);
-
-const getNextCategoriesPage = () => {
-  page.value += 1;
-};
-const resetSelectedItems = () => {
-  selectedItems.value = [];
-  triggerResetSelectedItems.value = !triggerResetSelectedItems.value;
-};
-
-const SelectAll = (selectAll: boolean) => {
-  triggerSelectAll.value = !selectAll;
-};
-
-watch(
-  () => selectedItems.value,
-  (val) => {
-    if (val.length === 10) {
-      return setCheckAll(true);
-    }
-    return setCheckAll(false);
-  }
-);
-
-const triggerCheckAll = ref(false);
-const setCheckAll = (val: boolean) => {
-  triggerCheckAll.value = val;
-};
-
-const toggleDeleteModal = ({ uuid = '', options = {} }) => {
-  modalOptions.value = options;
-  modalState.value = !!Object.keys(options).length;
-  uuid.length && selectedItems.value.push(uuid);
-};
-
-const deleteMultiple = async () => {
-  isDeletionInProgress.value = true;
-  try {
-    await selectedItems.value.map(async (item) => {
-      try {
-        // await deleteCtegories(item);
-      } finally {
-        isDeletionInProgress.value = false;
-      }
-    });
-  } catch {
-  } finally {
-    setTimeout(() => {
-      toggleDeleteModal({});
-      setCategories();
-    });
-  }
-};
-
-const setCategories = async () => {
-  isPageLoading.value = true;
-  try {
-    // const { data } = await getCtegories();
-    // categories.value = data.data.result ?? [];
-    totalCount.value = items.length;
-    isPageLoading.value = false;
-  } catch {
-  } finally {
-    resetSelectedItems();
-  }
-};
-
-const tableItems = computed(() => {
-  return items.slice(10 * page.value - 10, 10 * page.value);
-});
-
-setCategories();
-</script>
-
 <template>
   <div class="px-12 w-100">
     <listingHeader
@@ -100,10 +5,11 @@ setCategories();
       addAction="Add Discount"
       placeholder="Search for discount"
       pathName="add-promotion-discounts"
+      @updateSearch="updateSearch"
     />
     <tableFilters
       v-else
-      :filters="dicountFilter"
+      :filters="discountFilter"
       :triggerCheckAll="triggerCheckAll"
       @Delete="toggleDeleteModal"
       @CancelSellection="resetSelectedItems"
@@ -129,21 +35,137 @@ setCategories();
       </p>
       <v-pagination
         v-if="pagesCount > 1"
-        v-model="page"
+        v-model="currentPage"
         :length="pagesCount"
         :total-visible="pagesCount"
-        @change="getNextCategoriesPage"
       />
     </div>
     <GlobalPopup
       :options="modalOptions"
       :modalState="modalState"
       :isDeletionInProgress="isDeletionInProgress"
-      @closeModal="toggleDeleteModal"
-      @deleteItem="deleteMultiple"
+      :onCancel="handleCancel"
+      :onConfirm="deleteMultiple"
     />
   </div>
 </template>
+<script lang="ts" setup>
+import { discountFilter, discountHeaders } from '@/constants/discounts';
+import { getDiscounts, deleteDiscounts } from '@/apis/discounts.ts';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
+const { buildQueryString } = useBuildQueryString();
+import { debounce } from '@/helpers/debounce.ts';
+
+let isPageLoading = ref(false);
+let isDeletionInProgress = ref(false);
+
+const selectedItems: Ref<string[]> = ref([]);
+let discounts = ref([]);
+let currentPage = ref(1);
+let totalCount = ref(0);
+let search = ref('');
+
+let pagesCount = computed(() => {
+  return !totalCount.value || !discounts.value.length
+    ? 0
+    : Math.ceil(totalCount.value / 10);
+});
+
+const modalOptions = ref({});
+
+let modalState = ref(false);
+let table: any = ref(null);
+
+let triggerResetSelectedItems = ref(false);
+let triggerSelectAll = ref(false);
+
+watch(currentPage, async () => {
+  setDiscounts();
+});
+
+const resetSelectedItems = () => {
+  selectedItems.value = [];
+  triggerResetSelectedItems.value = !triggerResetSelectedItems.value;
+};
+
+const SelectAll = (selectAll: boolean) => {
+  triggerSelectAll.value = !selectAll;
+};
+
+watch(
+  () => selectedItems.value,
+  (val) => {
+    if (val.length === 10) {
+      return setCheckAll(true);
+    }
+    return setCheckAll(false);
+  }
+);
+
+const updateSearch = debounce((searchKey: any) => {
+  search.value = searchKey;
+  setDiscounts();
+}, 500);
+
+const triggerCheckAll = ref(false);
+const setCheckAll = (val: boolean) => {
+  triggerCheckAll.value = val;
+};
+
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
+  modalOptions.value = options;
+  modalState.value = !!Object.keys(options).length;
+  uuid.length && selectedItems.value.push(uuid);
+};
+
+const deleteMultiple = async () => {
+  isDeletionInProgress.value = true;
+  try {
+    await selectedItems.value.map(async (item) => {
+      try {
+        await deleteDiscounts(item);
+      } finally {
+        isDeletionInProgress.value = false;
+      }
+    });
+  } catch {
+  } finally {
+    setTimeout(() => {
+      toggleDeleteModal({});
+      setDiscounts();
+    });
+  }
+};
+
+const setDiscounts = async () => {
+  isPageLoading.value = true;
+  const params = buildQueryString({
+    rowCount: 10,
+    pageNo: currentPage.value,
+    keyWord: search.value,
+  });
+  try {
+    const { data } = await getDiscounts(params);
+    discounts.value = data.data.result ?? [];
+    totalCount.value = data.data.totalCount;
+    isPageLoading.value = false;
+  } catch {
+  } finally {
+    resetSelectedItems();
+  }
+};
+
+const tableItems = computed(() => {
+  return discounts.value;
+});
+const handleCancel = () => {
+  toggleDeleteModal({});
+};
+
+onMounted(() => {
+  setDiscounts();
+});
+</script>
 
 <style>
 .bg-f4f3f9 {

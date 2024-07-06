@@ -46,25 +46,26 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-  "Delete",
-  "CancelSellection",
-  "SelectAll",
-  "viewDetails",
-  "edit",
-  "restPassword",
-  "changeStatus",
-  "cancelOrder",
+  'Delete',
+  'CancelSellection',
+  'SelectAll',
+  'viewDetails',
+  'edit',
+  'restPassword',
+  'changeStatus',
+  'cancelOrder',
 ]);
 
 const DeleteEmits: any = computed(() => {
   return {
     options: {
-      title: "Delete Selected Products",
-      text: "Are you sure you want to delete all of the selected Products ?",
-      buttonTitle: "Yes, Delete",
-      buttonColor: "#EB5757",
-      icon: "deleteIcon",
-      sheetColor: "#eb57571a",
+      title: 'Delete Selected Products',
+      text: 'Are you sure you want to delete all of the selected Products ?',
+      buttonTitle: 'Yes, Delete',
+      secondaryButtonTitle: 'Cancel',
+      buttonColor: '#EB5757',
+      icon: 'deleteIcon',
+      sheetColor: '#eb57571a',
     },
   };
 });
@@ -81,29 +82,29 @@ watch(
 
 const handleEmitActions = (filter: any) => {
   switch (filter.label) {
-    case "Delete":
-      emit("Delete", DeleteEmits.value);
+    case 'Delete':
+      emit('Delete', DeleteEmits.value);
       break;
-    case "Cancel Sellection":
-      emit("CancelSellection");
+    case 'Cancel Sellection':
+      emit('CancelSellection');
       break;
-    case "Select All":
-      emit("SelectAll", selectAll.value);
+    case 'Select All':
+      emit('SelectAll', selectAll.value);
       break;
-    case "View Details":
-      emit("viewDetails");
+    case 'View Details':
+      emit('viewDetails');
       break;
-    case "Edit":
-      emit("edit");
+    case 'Edit':
+      emit('edit');
       break;
-    case "Reset Password":
-      emit("restPassword");
+    case 'Reset Password':
+      emit('restPassword');
       break;
-    case "Change Status":
-      emit("changeStatus");
+    case 'Change Status':
+      emit('changeStatus');
       break;
-    case "Cancel Order":
-      emit("cancelOrder");
+    case 'Cancel Order':
+      emit('cancelOrder');
       break;
     default:
       break;

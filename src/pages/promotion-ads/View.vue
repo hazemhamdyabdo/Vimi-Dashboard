@@ -1,7 +1,76 @@
+<script setup lang="ts">
+import { getAd, deleteAds } from '@/apis/ads';
+
+const dateFormattinmg = (date: any) => {
+  return new Date(date).toLocaleDateString('en-UK', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
+const route = useRoute();
+const router = useRouter();
+const modalOptions = ref({});
+let modalState = ref(false);
+let ad: any = ref({});
+let isPageLoading = ref(false);
+let isDeletionInProgress = ref(false);
+
+const DeleteEmits: any = computed(() => {
+  return {
+    options: {
+      title: 'Delete Ad',
+      text: 'Are you sure you want to delete all of the selected Products ?',
+      buttonTitle: 'Yes, Delete',
+      secondaryButtonTitle: 'Cancel',
+      buttonColor: '#EB5757',
+      icon: 'deleteIcon',
+      sheetColor: '#eb57571a',
+    },
+  };
+});
+
+const setAdData = async () => {
+  isPageLoading.value = true;
+  try {
+    const { data } = await getAd(route.params.id as string);
+    ad.value = data.data;
+    isPageLoading.value = false;
+  } catch {}
+};
+
+const deleteAd = async () => {
+  isDeletionInProgress.value = true;
+  try {
+    await deleteAds(ad.value.uuid);
+  } catch {
+  } finally {
+    router.push({ name: 'promotion-ads' });
+    isDeletionInProgress.value = false;
+  }
+};
+
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
+  modalOptions.value = options;
+  modalState.value = !!Object.keys(options).length;
+};
+
+const handleCancel = () => {
+  toggleDeleteModal({});
+};
+
+onMounted(async () => {
+  setAdData();
+});
+</script>
+
 <template>
   <section class="add-products px-6">
     <VContainer>
+      <v-skeleton-loader v-if="isPageLoading" type="list-item-two-line" />
       <VCard
+        v-else
         flat
         color="#fff"
         class="d-flex justify-space-between px-5 py-6"
@@ -20,7 +89,7 @@
               line-height: 150%; /* 24px */
             "
           >
-            #43763898
+            #{{ ad?.uuid?.slice(0, 6) }}
           </p>
           <div class="d-flex me-8">
             <svgIcon icon="event calendar" class="my-auto me-1" />
@@ -52,7 +121,7 @@
                 line-height: 150%; /* 24px */
               "
             >
-              21/3/2024
+              {{ dateFormattinmg(ad.dateCreated) }}
             </p>
           </div>
           <div class="d-flex my-auto">
@@ -67,20 +136,25 @@
                 color: #27ae60;
               "
             >
-              Active
+              {{ ad.status }}
             </p>
           </div>
         </div>
         <div class="d-flex justify-space-between">
           <div class="d-flex my-auto">
             <svgIcon icon="Change" class="me-2 my-auto" />
-            <p>Renew Discount</p>
+            <p>Renew Ad</p>
           </div>
           <v-divider vertical class="mx-4" />
-          <div class="d-flex my-auto">
+          <VBtn
+            flat
+            class="d-flex my-auto"
+            :loading="isDeletionInProgress"
+            @click="toggleDeleteModal(DeleteEmits)"
+          >
             <svgIcon icon="delete (1)" class="me-2 my-auto" />
             <p>Delete</p>
-          </div>
+          </VBtn>
         </div>
       </VCard>
       <VCard
@@ -91,7 +165,9 @@
       >
         <VRow>
           <VCol cols="4">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
@@ -108,12 +184,12 @@
                   line-height: 150%; /* 27px */
                 "
               >
-                Discount on
+                Navigate To
               </p>
               <div class="d-flex justify-start mt-5">
                 <img
                   style="width: 38px; height: 38px"
-                  src="@/assets/multivitaminDetails.png"
+                  :src="`https://techify-001-site1.htempurl.com${ad.imagePath}`"
                   alt="product"
                   class="me-2"
                 />
@@ -129,17 +205,20 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  Vitamins & Minerals
+                  {{ ad.navigation }}
                 </p>
               </div>
             </VCard>
           </VCol>
           <VCol cols="4">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
-              class="pa-6 h-100"
+              class="pa-6"
+              v-if="ad.governorates?.length"
             >
               <p
                 style="
@@ -152,7 +231,47 @@
                   line-height: 150%; /* 27px */
                 "
               >
-                Discount to
+                AD to
+              </p>
+              <div class="mt-5" v-for="gov in ad.governorates" :key="gov.uuid">
+                <p
+                  class="my-auto"
+                  style="
+                    color: var(--Black, #21094a);
+                    /* 14/B2-R-14 */
+                    font-family: Roboto;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 150%; /* 21px */
+                  "
+                >
+                  {{ gov.governorateUuid }}
+                </p>
+                <v-divider class="my-3" />
+              </div>
+            </VCard>
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
+            <VCard
+              v-else
+              flat
+              color="#FAF9FE"
+              style="border-radius: 12px"
+              class="pa-6"
+              :class="{ 'mt-6': ad.governorates?.length }"
+            >
+              <p
+                style="
+                  color: var(--Heavy, #7066a2);
+                  /* 18/H9-B-18 */
+                  font-family: Roboto;
+                  font-size: 18px;
+                  font-style: normal;
+                  font-weight: 700;
+                  line-height: 150%; /* 27px */
+                "
+              >
+                AD Place
               </p>
               <div class="mt-5">
                 <p
@@ -167,58 +286,16 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  Governorate 1
+                  {{ ad.place }}
                 </p>
                 <v-divider class="my-3" />
-                <p
-                  class="my-auto"
-                  style="
-                    color: var(--Black, #21094a);
-                    /* 14/B2-R-14 */
-                    font-family: Roboto;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 150%; /* 21px */
-                  "
-                >
-                  Governorate 2
-                </p>
-                <v-divider class="my-3" />
-                <p
-                  class="my-auto"
-                  style="
-                    color: var(--Black, #21094a);
-                    /* 14/B2-R-14 */
-                    font-family: Roboto;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 150%; /* 21px */
-                  "
-                >
-                  Governorate 3
-                </p>
-                <v-divider class="my-3" />
-                <p
-                  class="my-auto"
-                  style="
-                    color: var(--Black, #21094a);
-                    /* 14/B2-R-14 */
-                    font-family: Roboto;
-                    font-size: 14px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 150%; /* 21px */
-                  "
-                >
-                  Governorate 4
-                </p>
               </div>
             </VCard>
           </VCol>
           <VCol cols="4">
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
@@ -235,24 +312,16 @@
                   line-height: 150%; /* 27px */
                 "
               >
-                Discount Ratio
+                AD Banner
               </p>
-              <p
-                class="my-auto mt-5"
-                style="
-                  color: var(--Red, #eb5757);
-                  /* 16/B1-B-16 */
-                  font-family: Roboto;
-                  font-size: 16px;
-                  font-style: normal;
-                  font-weight: 700;
-                  line-height: 150%; /* 24px */
-                "
-              >
-                30%
-              </p>
+              <img
+                :src="`https://techify-001-site1.htempurl.com${ad.imagePath}`"
+                class="w-100 mt-6"
+              />
             </VCard>
+            <v-skeleton-loader v-if="isPageLoading" type="card" />
             <VCard
+              v-else
               flat
               color="#FAF9FE"
               style="border-radius: 12px"
@@ -269,7 +338,7 @@
                   line-height: 150%; /* 27px */
                 "
               >
-                Schedule discount
+                Schedule AD
               </p>
               <div class="d-flex justify-start mt-6">
                 <p
@@ -284,7 +353,7 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  25 March 2024
+                  {{ dateFormattinmg(ad.dateCreated) }}
                 </p>
                 <svgIcon icon="arrow" class="mx-4" />
                 <p
@@ -299,13 +368,19 @@
                     line-height: 150%; /* 21px */
                   "
                 >
-                  30 March 2024
+                  {{ dateFormattinmg(ad.endDate) }}
                 </p>
               </div>
             </VCard>
           </VCol>
         </VRow>
       </VCard>
+      <GlobalPopup
+        :options="modalOptions"
+        :modalState="modalState"
+        :onCancel="handleCancel"
+        :onConfirm="deleteAd"
+      />
     </VContainer>
   </section>
 </template>
