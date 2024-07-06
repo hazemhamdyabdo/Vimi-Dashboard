@@ -10,11 +10,11 @@ export const getFormData = (_data: object): FormData => {
         const __key = initial
           ? _key
           : key +
-            (isObject(value)
-              ? [`${_key}`]
-              : Array.isArray(value)
-                ? '[]'
-                : _key);
+          (isObject(value)
+            ? [`${_key}`]
+            : Array.isArray(value)
+              ? '[]'
+              : _key);
 
         append(_value, __key, false);
       });
@@ -28,9 +28,9 @@ export const getFormData = (_data: object): FormData => {
   return data;
 };
 
-export const sendFormData = async function (path: string, form: FormData) {
+export const sendFormData = async function (path: string, form: FormData, method = "post") {
   try {
-    await axios.post(
+    await axios[method](
       `https://techify-001-site1.htempurl.com/api/v1/${path}`,
       form,
       {
@@ -42,6 +42,7 @@ export const sendFormData = async function (path: string, form: FormData) {
       }
     );
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
