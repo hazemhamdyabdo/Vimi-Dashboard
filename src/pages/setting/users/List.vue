@@ -25,7 +25,7 @@ const deleteMultiple = async () => {
   }
 };
 
-const toggleEditModal = (uuid: string) => {
+const toggleEditModal = () => {
   modalOptions.value = {
     buttonColor: '#27AE60',
     buttonTitle: 'Save changes',
@@ -37,7 +37,7 @@ const toggleEditModal = (uuid: string) => {
   };
   modalState.value = true;
 };
-const restPassword = (uuid: string) => {
+const restPassword = () => {
   modalOptions.value = {
     buttonColor: '#733EE4',
     buttonTitle: 'Reset Password',
@@ -77,7 +77,7 @@ const handleConfirm = () => {
     <TableFilters
       v-if="selectedItems.length"
       :filters="userFilter"
-      @restPassword="restPassword(selectedItems[0])"
+      @restPassword="restPassword()"
       @Delete="toggleDeleteModal"
       @edit="toggleEditModal"
     />

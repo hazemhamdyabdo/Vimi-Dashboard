@@ -57,6 +57,7 @@ const deleteDiscount = async () => {
 const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
+  console.log(uuid);
 };
 
 const handleCancel = () => {
