@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useUserStore } from "@/stores/user.state.js";
+import { useUserStore } from '@/stores/user.state.js';
 
 // Pinia Store
 const userStore = useUserStore();
 
-const props = defineProps(["navItems", "drawer", "actions"]);
+const props = defineProps(['navItems', 'drawer', 'actions']);
 const builtMenu = ref();
 let rail = ref(false);
 
@@ -152,49 +152,52 @@ const route = useRoute();
       </v-navigation-drawer>
 
       <v-main style="background: #faf9fe; min-height: 100vh">
-        <div class="pl-12" v-if="route.fullPath.includes('/promotion')">
-          <VCard flat color="#21094A" class="px-8 d-flex mb-6">
-            <router-link
-              :to="{ name: 'promotion-discounts' }"
-              exact-active-class="active-prmotion-link"
-              class="me-8 text-decoration-none pt-4"
-            >
-              <p
-                style="
-                  color: var(--White, #fff);
-                  /* 16/B1-B-16 */
-                  font-family: Roboto;
-                  font-size: 16px;
-                  font-style: normal;
-                  font-weight: 700;
-                  line-height: 150%; /* 24px */
-                "
+        <div
+          :class="{ 'pt-9': !route.fullPath.includes('/promotion') }"
+          style="margin-top: 5rem"
+        >
+          <div class="pl-0" v-if="route.fullPath.includes('/promotion')">
+            <VCard flat color="#21094A" class="px-8 d-flex mb-6">
+              <router-link
+                :to="{ name: 'promotion-discounts' }"
+                exact-active-class="active-prmotion-link"
+                class="me-8 text-decoration-none pt-4 pb-4"
               >
-                Discounts List
-              </p>
-            </router-link>
-            <router-link
-              :to="{ name: 'promotion-ads' }"
-              exact-active-class="active-prmotion-link"
-              class="me-8 text-decoration-none pt-4"
-            >
-              <p
-                style="
-                  color: var(--White, #fff);
-                  /* 16/B1-B-16 */
-                  font-family: Roboto;
-                  font-size: 16px;
-                  font-style: normal;
-                  font-weight: 700;
-                  line-height: 150%; /* 24px */
-                "
+                <p
+                  style="
+                    color: var(--White, #fff);
+                    /* 16/B1-B-16 */
+                    font-family: Roboto;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 150%; /* 24px */
+                  "
+                >
+                  Discounts List
+                </p>
+              </router-link>
+              <router-link
+                :to="{ name: 'promotion-ads' }"
+                exact-active-class="active-prmotion-link"
+                class="me-8 text-decoration-none pt-4 pb-4"
               >
-                Ads List
-              </p>
-            </router-link>
-          </VCard>
-        </div>
-        <div class="pt-9" style="margin-top: 5rem">
+                <p
+                  style="
+                    color: var(--White, #fff);
+                    /* 16/B1-B-16 */
+                    font-family: Roboto;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 150%; /* 24px */
+                  "
+                >
+                  Ads List
+                </p>
+              </router-link>
+            </VCard>
+          </div>
           <RouterView />
         </div>
       </v-main>
@@ -228,7 +231,7 @@ a {
 }
 
 a p {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
 }
 

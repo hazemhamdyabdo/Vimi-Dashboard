@@ -171,15 +171,15 @@ const props = defineProps({
   },
   options: {
     default: {
-      sheetColor: "#733EE4",
-      icon: "AddIcon",
-      title: "Title",
-      text: "Text",
-      buttonColor: "#733EE4",
-      buttonTitle: "Button",
-      secondaryButtonTitle: "Cancel",
+      sheetColor: '#733EE4',
+      icon: 'AddIcon',
+      title: 'Title',
+      text: 'Text',
+      buttonColor: '#733EE4',
+      buttonTitle: 'Button',
+      secondaryButtonTitle: 'Cancel',
       input: false,
-      svg: "",
+      svg: '',
     },
     required: true,
   },
@@ -202,12 +202,12 @@ let localModalState = computed({
     return props.modalState;
   },
   set(value) {
-    emit("updateState", value);
+    emit('updateState', value);
   },
 });
-const emit = defineEmits(["closeModal", "updateState", "deleteItem"]);
+const emit = defineEmits(['closeModal', 'updateState', 'deleteItem']);
 const closeModal = () => {
-  emit("closeModal", {});
+  emit('closeModal', {});
 };
 
 const cancelAction = () => {
@@ -219,6 +219,6 @@ const confirmAction = () => {
 };
 
 const deleteItem = () => {
-  emit("deleteItem");
+  emit('deleteItem');
 };
 </script>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { headers, ordersFilter } from "@/constants/order";
-import { useBuildQueryString } from "@/composables/UseBuildQueryString";
-import { useDebounceFn } from "@vueuse/core";
+import { headers, ordersFilter } from '@/constants/order';
+import { useBuildQueryString } from '@/composables/UseBuildQueryString';
+import { useDebounceFn } from '@vueuse/core';
 import {
   getOrders,
   rejectOrder,
   changeOrderStatusAndEstimatedDays,
-} from "@/apis/orders";
-import { useOrderStatus } from "@/composables/orders/UseOrderStatus";
+} from '@/apis/orders';
+import { useOrderStatus } from '@/composables/orders/UseOrderStatus';
 const { nextStatus } = useOrderStatus();
 interface ModalOptions {
   buttonTitle: string;
@@ -27,14 +27,14 @@ const orders = ref([]);
 const totalCount = ref(0);
 const modalOptions = ref({}) as Ref<ModalOptions>;
 const modalState = ref(false);
-const reason = ref("");
+const reason = ref('');
 const isPageLoading = ref(false);
 const selectedOrder = ref({}) as Ref<{ uuid: string; status: string }>;
 const triggerResetSelectedItems = ref(false);
 const triggerSelectAll = ref(false);
 const triggerCheckAll = ref(false);
-const search = ref("");
-const searchDate = ref("");
+const search = ref('');
+const searchDate = ref('');
 
 const setCheckAll = (val: boolean) => {
   triggerCheckAll.value = val;
@@ -66,7 +66,7 @@ watch(page, async () => {
   await getAllOrders();
 });
 
-const toggleDeleteModal = ({ uuid = "", options = {} }) => {
+const toggleDeleteModal = ({ uuid = '', options = {} }) => {
   modalOptions.value = options;
   modalState.value = !!Object.keys(options).length;
   uuid.length && selectedItems.value.push(uuid);
@@ -90,34 +90,34 @@ const changeStatus = async (id = selectedItems.value[0]) => {
   getSelectedOrder(id);
 
   const modalOptionsBase = {
-    buttonColor: "#733EE4",
-    secondaryButtonTitle: "Cancel",
-    icon: "",
-    sheetColor: "#733EE41a",
+    buttonColor: '#733EE4',
+    secondaryButtonTitle: 'Cancel',
+    icon: '',
+    sheetColor: '#733EE41a',
   };
 
   const modalOptionsWithTitleAndSvg = {
-    title: "Change order status",
-    svg: "edit (3)",
-    buttonTitle: "Change",
+    title: 'Change order status',
+    svg: 'edit (3)',
+    buttonTitle: 'Change',
     ...modalOptionsBase,
   };
 
   const modalOptionsWithTitleAndSvgAndEstimation = {
     title:
-      selectedOrder.value.status === "Pending"
-        ? "Estimated delivery days"
-        : "Estimated Return days",
-    svg: "Time",
-    buttonTitle: "Add Estimation",
+      selectedOrder.value.status === 'Pending'
+        ? 'Estimated delivery days'
+        : 'Estimated Return days',
+    svg: 'Time',
+    buttonTitle: 'Add Estimation',
     ...modalOptionsBase,
   };
 
   modalOptions.value =
-    selectedOrder.value.status === "Pending" ||
-    selectedOrder.value.status === "ReturnRequested"
+    selectedOrder.value.status === 'Pending' ||
+    selectedOrder.value.status === 'ReturnRequested'
       ? modalOptionsWithTitleAndSvgAndEstimation
-      : { ...modalOptionsWithTitleAndSvg, text: "" };
+      : { ...modalOptionsWithTitleAndSvg, text: '' };
 
   modalState.value = true;
 };
@@ -125,14 +125,14 @@ const changeStatus = async (id = selectedItems.value[0]) => {
 const cancelOrder = async () => {
   getSelectedOrder(selectedItems.value[0]);
   modalOptions.value = {
-    buttonTitle: "Yes, Cancel",
-    buttonColor: "#F44336",
-    title: "Cancel Order",
-    text: "Are you sure you want to cancel this order?",
-    svg: "close-circle (2)",
-    secondaryButtonTitle: "Back",
-    icon: "",
-    sheetColor: "#f443361a",
+    buttonTitle: 'Yes, Cancel',
+    buttonColor: '#F44336',
+    title: 'Cancel Order',
+    text: 'Are you sure you want to cancel this order?',
+    svg: 'close-circle (2)',
+    secondaryButtonTitle: 'Back',
+    icon: '',
+    sheetColor: '#f443361a',
   };
   modalState.value = true;
 };
@@ -143,12 +143,12 @@ const pagesCount = computed(() => {
 });
 
 const handleConfirm = async () => {
-  if (modalOptions.value.buttonTitle === "Yes, Cancel") {
+  if (modalOptions.value.buttonTitle === 'Yes, Cancel') {
     try {
       await rejectOrder(selectedOrder.value.uuid, reason.value)();
       toggleDeleteModal({});
     } catch (error) {}
-  } else if (modalOptions.value.buttonTitle === "Add Estimation") {
+  } else if (modalOptions.value.buttonTitle === 'Add Estimation') {
     try {
       const query = buildQueryString({
         estimatedDays: estimatedDays.value,
@@ -159,7 +159,7 @@ const handleConfirm = async () => {
       )();
       toggleDeleteModal({});
     } catch (error) {}
-  } else if (modalOptions.value.buttonTitle === "Change") {
+  } else if (modalOptions.value.buttonTitle === 'Change') {
     try {
       await changeOrderStatusAndEstimatedDays(selectedOrder.value.uuid)();
       toggleDeleteModal({});
@@ -200,9 +200,8 @@ onMounted(async () => {
 </script>
 <template>
   <section class="px-12 w-100">
-    <div style="display: flex">
+    <div style="display: flex" v-if="!selectedItems.length">
       <ListingHeader
-        v-if="!selectedItems.length"
         @updateSearch="updateSearch"
         @searchWithDate="searchWithDate"
         addAction="Add Product"
@@ -211,7 +210,7 @@ onMounted(async () => {
       />
     </div>
     <TableFilters
-      v-if="selectedItems.length"
+      v-else
       :filters="ordersFilter"
       @changeStatus="changeStatus"
       @SelectAll="SelectAll"
@@ -256,7 +255,7 @@ onMounted(async () => {
         "
       >
         <h4 class="card-info-title">
-          {{ modalOptions.title.split(" ")[0] }} Reason
+          {{ modalOptions.title.split(' ')[0] }} Reason
         </h4>
         <VRow>
           <VCol>

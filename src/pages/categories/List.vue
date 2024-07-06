@@ -92,7 +92,7 @@ const setCategories = async () => {
   const params = buildQueryString({
     rowCount: 10,
     pageNo: currentPage.value,
-    search: search.value,
+    keyWord: search.value,
   });
   try {
     const { data } = await getCtegories(params);

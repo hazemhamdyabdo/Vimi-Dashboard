@@ -1,17 +1,17 @@
 interface Ad {
-  uuid?:String;
-  Place: String;
-  Status: String;
-  Target: String;
-  Navigation: String;
-  StartDate: String;
-  EndDate: String;
-  CategoryUuid: String;
-  SubCategoryUuid: String;
-  BrandUuid: String;
-  ProductUuids: Array<String>;
-  GovernorateUuids: Array<String>;;
+  uuid?: string;
+  Place: string;
+  Status: string;
+  Target: string;
+  Navigation: string;
+  StartDate: string;
+  EndDate: string;
+  CategoryUuid: string;
+  SubCategoryUuid: string;
+  BrandUuid: string;
+  ProductUuids: Array<string>;
+  GovernorateUuids: Array<string>;
+  dateCreated?: string;
 }
-
 
 export { Ad };

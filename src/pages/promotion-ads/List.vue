@@ -5,6 +5,7 @@
       addAction="Add Ad"
       placeholder="Search for ads"
       pathName="add-promotion-ad"
+      @updateSearch="updateSearch"
     />
     <tableFilters
       v-else
@@ -54,6 +55,7 @@ import { adsFilter, headers } from '@/constants/ads';
 import { getAds, deleteAds } from '@/apis/ads.ts';
 import { useBuildQueryString } from '@/composables/UseBuildQueryString';
 const { buildQueryString } = useBuildQueryString();
+import { debounce } from '@/helpers/debounce.ts';
 
 let isPageLoading = ref(false);
 let isDeletionInProgress = ref(false);
@@ -81,6 +83,11 @@ let triggerSelectAll = ref(false);
 watch(currentPage, async () => {
   setAds();
 });
+
+const updateSearch = debounce((searchKey: any) => {
+  search.value = searchKey;
+  setAds();
+}, 500);
 
 const resetSelectedItems = () => {
   selectedItems.value = [];
@@ -133,7 +140,11 @@ const deleteMultiple = async () => {
 
 const setAds = async () => {
   isPageLoading.value = true;
-  const params = buildQueryString({ rowCount: 10, pageNo: currentPage.value });
+  const params = buildQueryString({
+    rowCount: 10,
+    pageNo: currentPage.value,
+    keyWord: search.value,
+  });
   try {
     const { data } = await getAds(params);
     ads.value = data.data.result ?? [];

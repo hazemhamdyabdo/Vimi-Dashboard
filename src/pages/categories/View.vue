@@ -18,7 +18,9 @@ const setCategoryData = async () => {
   } catch {}
 };
 
-setCategoryData();
+onMounted(async () => {
+  setCategoryData();
+});
 </script>
 
 <template>
